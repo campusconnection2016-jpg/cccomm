@@ -1,0 +1,39 @@
+/* src/college/Dashboard/EventForm.css */
+.event-form {
+    padding: 1rem;
+    background-color: #39444e;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .event-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+  
+  .event-form input {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: #39444e;
+    color: #d4dae0;
+    border: 1px solid white;
+    border-radius: 5px;
+    margin-top: 15px;
+  }
+  
+  .event-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .event-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #39444e;
+    margin-bottom: 10px;
+  }
+  

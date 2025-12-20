@@ -1,0 +1,122 @@
+/* styles.css */
+
+  
+  /* Gradient bar styles */
+  .gradient-bar {
+    height: 50px;
+    width: 100%;
+    background: linear-gradient(to right, #4F46E5, #8F59F7, #D780F3);
+  }
+  
+  /* Dropdown container styles */
+  .dropdown-container {
+    padding: 0.5rem 1rem;
+  }
+  
+  /* Code editor container styles */
+  .code-editor-container {
+    flex: 1;
+  }
+  
+  
+  /* Right container styles */
+  .right-container {
+    flex-shrink: 0;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Custom input container styles */
+  
+  
+  /* Compile button styles */
+  .compile-button {
+    background-image: linear-gradient(to right, #4F46E5, #8F59F7, #D780F3);
+    color: white;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border: 1px solid #4F46E5;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .compile-button:hover {
+    background-image: none;
+    background-color: rgb(221, 78, 11);
+    color: black;
+  }
+  
+  
+/* Additional styles for smaller width */
+.small-width {
+    width: 70%; /* Adjust the width as needed */
+  }
+  
+
+
+ /* Output details container styles */
+.output-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; 
+}
+.output-details * {
+  flex: 1; /* Each child takes up equal space */
+  margin-right: 10px; /* Adjust spacing between items */
+}
+
+.custom-input-container {
+  margin-top:40px;
+  flex: 2; /* CustomInput takes up more space */
+}
+/* Output title styles */
+.output-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  background-clip: text;
+  background-color: transparent;
+  background-image: linear-gradient(to right, #1e293b, #1a202c);
+  margin-bottom: 0.5rem;
+}
+
+/* Output container styles */
+.output-container {
+  width: 100%;
+  margin-top:40px;
+  margin-left:-200px;
+  height: 14rem; /* Adjust as needed */
+  background-color: #1e293b;
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 1rem;
+  font-weight: normal;
+  overflow-y: auto;
+}
+
+  
+/* Main container styles */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin-top:60px;
+   margin-right:-940px;
+   width:700px;
+  }
+  
+  /* Add space between children elements */
+  .main-container > * {
+    margin-right: 1rem; /* Adjust as needed */
+  } 
+
+  
+/* Flex row container styles */
+.flex-row {
+  margin-right:-10px;
+    display: flex;
+    flex-direction: row;
+  }
+
+ 

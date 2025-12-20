@@ -1,0 +1,347 @@
+import React, { useEffect, useState } from 'react';
+
+import { Row, Col } from 'react-bootstrap';
+import { getQuestionsApi_QP_ID, updateQuestionApi_IO_code } from '../../api/endpoints';
+import QuesPaperTb from './quespapertb';
+import { useParams, useLocation } from 'react-router-dom';
+import ErrorModal from '../auth/errormodal';
+import Next from '../../assets/images/nextarrow.png'
+import Back from '../../assets/images/backarrow.png'
+const Update_CodeForm = () => {
+  const { id } = useParams(); // This id is for the overall question paper or set
+  console.log(id);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);  // ✅ new
+  const remarks = params.get("remarks");  // ✅ new
+  console.log("Remarks from URL:", remarks); 
+
+  const [formData, setFormData] = useState({
+    questionText: '',
+    questionTextImage: null,
+    inputformat: '',
+    correctAnswer: null,
+    explainAnswer: '',
+    mark: null,
+    test_case1:null,
+    test_case3:null,
+    test_case2:null,
+   difficulty_level:'',
+  });
+
+  const [fileNames, setFileNames] = useState({
+    questionTextImage: '',
+
+  });
+
+  const [currentForm, setCurrentForm] = useState(0);
+  const [totalForms, setTotalForms] = useState(0);
+  const [questionIds, setQuestionIds] = useState([]); // To store IDs of individual questions
+  const [questionsData, setQuestionsData] = useState([]); // Store all question data
+  const [showQuestionPaper, setShowQuestionPaper] = useState(false); // Initialize showQuestionPaper
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isTestCase, setIsTestCase] = useState(false);
+  const handleCloseError = () => {
+    setShowError(false);
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getQuestionsApi_QP_ID(id);
+        const questionData = response; // Access the data correctly
+
+        setQuestionsData(questionData);
+        console.log('setQuestionsData', questionData);
+
+        setTotalForms(questionData.length); // Set total forms based on the length of the array
+        console.log('setTotalForms', questionData.length);
+
+        setQuestionIds(questionData.map(q => q.id)); // Assuming response has question ids
+        console.log('setQuestionIds', questionData.map(q => q.id));
+
+        if (questionData.length > 0) {
+          setFormData({
+            questionText: questionData[0].question_text || '',
+            questionTextImage: questionData[0].question_image_data || null,
+            inputformat: questionData[0].input_format || null,
+            correctAnswer: questionData[0].answer || null,
+            explainAnswer: questionData[0].explain_answer || null,
+            mark: questionData[0].mark || null,
+            test_case1:questionData[0].test_case1||null,
+            test_case2:questionData[0].test_case2||null,
+            test_case3:questionData[0].test_case3||null,
+             difficulty_level:questionData[0].difficulty_level||','
+           
+          });
+          setIsTestCase(questionData[0].is_testcase || false);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = new FormData();
+    for (const key in formData) {
+      form.append(key, formData[key]);
+    }
+
+    try {
+      const dataToSubmit = {
+        //  'question_name_id': questionIds[currentForm], // Use the current question ID
+        'question_text': form.get('questionText'),
+        'question_image_data': form.get('questionTextImage'),
+        'input_format': form.get('inputformat'),
+        'answer': form.get('correctAnswer'),
+        'explain_answer': form.get('explainAnswer'),
+        'mark': form.get('mark'),
+        'difficulty_level':form.get('difficulty_level'),
+'test_case1':form.get('test_case1'),'test_case2':form.get('test_case2'),'test_case3':form.get('test_case3')
+      };
+
+      console.log('Data to Submit: ', dataToSubmit);
+      console.log('Question id: ', questionIds[currentForm]);
+
+      await updateQuestionApi_IO_code(questionIds[currentForm], dataToSubmit);
+      //alert('Data updated successfully');
+      setErrorMessage('Data Updated Successfully');
+      setShowError(true);
+    } catch (error) {
+      console.error('Error updating data:', error);
+    }
+  };
+
+  const moveToNextForm = () => {
+    if (currentForm < totalForms - 1) {
+      setCurrentForm(currentForm + 1);
+      const nextFormData = questionsData[currentForm + 1];
+
+      setFormData({
+        questionText: nextFormData.question_text || '',
+        questionTextImage: nextFormData.question_image_data || null,
+        inputformat: nextFormData.input_format || '',
+        correctAnswer: nextFormData.answer || null,
+        explainAnswer: nextFormData.explain_answer || '',
+        mark: nextFormData.mark || null,
+        test_case1:nextFormData.test_case1||null,
+        test_case2:nextFormData.test_case2||null,
+        test_case3:nextFormData.test_case3||null,
+           difficulty_level:nextFormData.difficulty_level||''
+      });
+    }
+  };
+
+  const moveToPreviousForm = () => {
+    if (currentForm > 0) {
+      setCurrentForm(currentForm - 1);
+      const prevFormData = questionsData[currentForm - 1];
+
+      setFormData({
+        questionText: prevFormData.question_text || '',
+        questionTextImage: prevFormData.question_image_data || null,
+        inputformat: prevFormData.input_format || '',
+        correctAnswer: prevFormData.answer || null,
+        explainAnswer: prevFormData.explain_answer || '',
+        mark: prevFormData.mark || null,
+       test_case1:prevFormData.test_case1||null,
+       test_case2:prevFormData.test_case2||null,
+       test_case3:prevFormData.test_case3||null,
+        difficulty_level:prevFormData.difficulty_level||''
+      });
+    }
+  };
+
+  const currentData = formData;
+  const totalCount = currentForm + 1;
+
+  return (
+    <div className='form-update-code' style={{ height: "500px" }}>
+      {showQuestionPaper ? (
+        <QuesPaperTb />
+      ) : (
+        <form onSubmit={handleSubmit} className='form-update-mcq'>
+          {/*   <div className='form-navigation'>
+           <h4>Question Number: {totalCount}</h4>  
+            <button  style={{ float: 'right'}} type="submit" className='button-ques-save'>Edit</button>
+          </div> */}
+          <div>
+            <button style={{ float: 'right', width: "100px" }} type="submit" className='button-ques-save'>Edit</button>
+          </div>
+<Row><Col>
+          
+            <label className='label5-ques'>Question Text</label><p></p>
+            
+
+            <input
+              type="text"
+              name="questionText"
+              autocomplete="off"
+              value={currentData.questionText}
+              onChange={handleChange}
+              className='input-ques'
+             
+            /> </Col>
+{/*}
+            <label htmlFor="questionTextImage" className="input-button-ques-mcq">Attachment</label>
+            <input
+              type="file"
+              id="questionTextImage"
+              name="questionTextImage"
+              onChange={handleFileChange}
+              className="input-file-ques-mcq"
+            />
+             {fileNames.questionTextImage && <span className="file-name">{fileNames.questionTextImage}</span>}
+*/}
+        
+          {!isTestCase && (
+            <Col>
+              <div>
+                <label className='label6-ques'>Correct Answer</label><p></p>
+                <input
+                  type="text"
+                  autocomplete="off"
+                  name="correctAnswer"
+                  value={currentData.correctAnswer}
+                  onChange={handleChange}
+                  className='input-ques'
+                />
+              </div></Col>)}
+              </Row>
+              {!(remarks === "AudioTyping" || remarks === "Pronunciation") && (
+          <Row md={12}><Col>
+            <div >
+              <label className='label6-ques'>Input Format</label><p></p>
+              <textarea
+                type="text"
+                name="inputformat"
+                autocomplete="off"
+                value={currentData.inputformat}
+                onChange={handleChange}
+                className='input-ques'
+              />
+            </div></Col>
+            <Col>
+              <div >
+                <label className='label6-ques'>Explain Answer</label><p></p>
+                <textarea
+                  type="text"
+                  name="explainAnswer"
+                  autocomplete="off"
+                  value={currentData.explainAnswer}
+                  onChange={handleChange}
+                  className='input-ques'
+                />
+              </div></Col>
+          </Row>
+          )}
+
+          <Row>
+           
+            <Col>
+              <div>
+                <label className='label6-ques'>Mark</label><p></p>
+                <input
+                  type="text"
+                  autocomplete="off"
+                  name="mark"
+                  value={currentData.mark}
+                  onChange={handleChange}
+                  className='input-ques'
+                />
+              </div></Col>
+                 <Col> <label className='label6-ques'>Difficulty Level<span style={{ color: '#F1A128' }}>**</span></label>
+                                     <p></p>
+                                    <select
+                           name="difficulty_level"
+                           value={currentData.difficulty_level}
+                           onChange={(e) => handleChange(e, currentForm)}
+                           className='input-ques'
+                         >
+                           <option value="">Select Difficulty Level</option>
+                           <option value="Easy">Easy</option>
+                           <option value="Intermediate">Intermediate</option>
+                           <option value="Challenging">Challenging</option>
+                                         <option value="Difficulty">Difficulty</option>
+                           <option value="Company_Specific">Company Specific</option>
+                         </select>
+                         
+                                    </Col>
+              {!isTestCase && (<Col></Col>)}
+              {isTestCase && (
+
+<Col>
+              <div>
+                <label className='label6-ques'>TestCase1</label><p></p>
+                <input
+                  type="text"
+                  autocomplete="off"
+                  name="test_case1"
+                  value={currentData.test_case1}
+                  onChange={handleChange}
+                  className='input-ques'
+                />
+              </div></Col>)}
+
+          </Row>
+          {isTestCase && (
+<Row>
+
+              
+              <Col>
+              <div>
+                <label className='label6-ques'>TestCase2</label><p></p>
+                <input
+                  type="text"
+                  autocomplete="off"
+                  name="test_case2"
+                  value={currentData.test_case2}
+                  onChange={handleChange}
+                  className='input-ques'
+                />
+              </div></Col>
+              <Col>
+              <div>
+                <label className='label6-ques'>TestCase3</label><p></p>
+                <input
+                  type="text"
+                  autocomplete="off"
+                  name="test_case3"
+                  value={currentData.test_case3}
+                  onChange={handleChange}
+                  className='input-ques'
+                />
+              </div></Col>
+</Row>)}
+<p></p>
+        </form>)}
+      <div className="form-navigation" style={{ display: 'flex', justifyContent: 'space-between' }}>
+        {currentForm > 0 && (
+          <button onClick={moveToPreviousForm} className="button-ques-save" style={{ width: "100px" }}>
+            <img src={Back} className='nextarrow' alt='Back' /> Back
+          </button>
+        )}
+
+
+
+        {currentForm < totalForms - 1 && (
+          <button onClick={moveToNextForm} className="button-ques-save" style={{ width: "100px" }}>
+            Next <img src={Next} className='nextarrow' alt='Next' />
+          </button>
+        )}
+      </div>
+      <ErrorModal show={showError} handleClose={handleCloseError} errorMessage={errorMessage} />
+
+    </div>
+  );
+};
+
+export default Update_CodeForm;

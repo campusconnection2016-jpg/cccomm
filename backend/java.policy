@@ -1,0 +1,4 @@
+grant {
+        // Deny read/write access to all other files
+    permission java.io.FilePermission "<<ALL FILES>>", "read, write";
+};

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Import Coding Questions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Import Coding Questions</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="question_paper_name">Question Paper Name:</label>
+        <input type="text" name="question_paper_name" required>
+
+        <label for="duration_of_test">Duration of Test:</label>
+        <input type="text" name="duration_of_test" required>
+
+        <label for="topic">Topic:</label>
+        <input type="text" name="topic" required>
+
+        <label for="sub_topic">Sub Topic:</label>
+        <input type="text" name="sub_topic" required>
+
+        <label for="no_of_questions">Number of Questions:</label>
+        <input type="number" name="no_of_questions" required>
+
+        <label for="upload_type">Upload Type:</label>
+        <input type="text" name="upload_type" required>
+
+        <label for="test_type">Test Type:</label>
+        <input type="text" name="test_type">
+        
+        <label for="folder_name">folder Name:</label>
+        <input type="text" id="folder_name" name="folder_name" required><br><br>
+
+
+        <label for="docfile">Upload Document:</label>
+        <input type="file" name="docfile" accept=".docx" required>
+
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Successful</title>
+</head>
+<body>
+    <h2>Update Successful for {{ candidate.user_name }}!</h2>
+
+    {% if resume_url %}
+        <p>New Resume: <a href="{{ resume_url }}" target="_blank">View Resume</a></p>
+    {% endif %}
+
+    {% if photo_url %}
+        <p>New Photo: <a href="{{ photo_url }}" target="_blank">View Photo</a></p>
+    {% endif %}
+
+    <a href="/update/1/">Update Another</a>
+</body>
+</html>

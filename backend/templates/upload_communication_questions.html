@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Communication Test</title>
+</head>
+<body>
+  <h2>Upload Communication Test</h2>
+
+  <form method="post" enctype="multipart/form-data" action="{% url 'upload_communication_test' %}">
+    {% csrf_token %}
+
+    <label>Question Paper Name:</label><br>
+    <input type="text" name="question_paper_name" required><br><br>
+
+    <label>Duration of Test (minutes):</label><br>
+    <input type="number" name="duration_of_test" required><br><br>
+
+    <label>No. of Questions:</label><br>
+    <input type="number" name="no_of_questions" required><br><br>
+
+   
+    <label>Test Type Category:</label><br>
+    <select name="test_type_categories" required>
+      <option value="">--Select Category--</option>
+      <option value="Pronunciation">Pronunciation</option>
+      <option value="AudioMCQ">AudioMCQ</option>
+      <option value="AudioTyping">AudioTyping</option>
+    </select><br><br>
+
+    <label>Topic:</label><br>
+    <input type="text" name="topic"><br><br>
+
+    <label>Sub Topic:</label><br>
+    <input type="text" name="sub_topic"><br><br>
+
+   
+    <!-- ✅ New Audio Text Field -->
+    <label>Audio Text:</label><br>
+    <textarea name="audio_text" rows="4" cols="50" placeholder="Enter audio text here..."></textarea><br><br>
+
+    <label>Excel File:</label><br>
+    <input type="file" name="excel_file" accept=".xlsx" required><br><br>
+
+    <button type="submit">Upload</button>
+  </form>
+
+  {% if message %}
+    <p style="color:green;">{{ message }}</p>
+  {% endif %}
+  {% if error %}
+    <p style="color:red;">{{ error }}</p>
+  {% endif %}
+</body>
+</html>

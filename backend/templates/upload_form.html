@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload OneDrive Link</title>
+</head>
+<body>
+    <h2>Enter OneDrive Link to Download</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="onedrive_link" placeholder="Enter OneDrive link here" required>
+        <button type="submit">Download & Extract</button>
+    </form>
+</body>
+</html>

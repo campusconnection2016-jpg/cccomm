@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Import Coding Questions</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+            form {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            label {
+                display: block;
+                margin-top: 10px;
+                font-weight: bold;
+            }
+            input, select, textarea {
+                width: 100%;
+                padding: 8px;
+                margin-top: 5px;
+                box-sizing: border-box;
+            }
+            button {
+                margin-top: 20px;
+                padding: 10px 15px;
+                background-color: #007BFF;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+        </style>
+    </head>
+<body>
+    <h1>Import Questions from Word Document</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Question Paper Details -->
+        <fieldset>
+            <legend>Question Paper Details</legend>
+
+            <label for="question_paper_name">Question Paper Name:</label>
+            <input type="text" id="question_paper_name" name="question_paper_name" required><br><br>
+
+            <label for="duration_of_test">Duration of Test:</label>
+            <input type="text" id="duration_of_test" name="duration_of_test" required><br><br>
+
+            <label for="topic">Topic:</label>
+            <input type="text" id="topic" name="topic" required><br><br>
+
+            <label for="sub_topic">Sub-topic:</label>
+            <input type="text" id="sub_topic" name="sub_topic" ><br><br>
+
+            <label for="no_of_questions">Number of Questions:</label>
+            <input type="number" id="no_of_questions" name="no_of_questions"><br><br>
+
+            <label for="upload_type">Upload Type:</label>
+            <input type="text" name="upload_type" required>
+    
+
+            <label for="test_type">Test Type:</label>
+            <input type="text" id="test_type" name="test_type"><br><br>
+
+            <label for="folder_name">folder Name:</label>
+            <input type="text" id="folder_name" name="folder_name" required><br><br>
+
+        </fieldset>
+
+        <!-- File Upload -->
+        <fieldset>
+            <legend>Upload Document</legend>
+
+            <label for="docx_file">Choose a Word Document:</label>
+            <input type="file" id="docx_file" name="docx_file" accept=".docx" required><br><br>
+        </fieldset>
+
+        <button type="submit">Import Questions</button>
+    </form>
+</body>
+</html>

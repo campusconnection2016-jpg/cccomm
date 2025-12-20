@@ -1,0 +1,5 @@
+<form method="post" action="{% url 'test_candidates_answer_view' %}">
+    {% csrf_token %}
+    <!-- form fields -->
+    <button type="submit">Submit</button>
+</form>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Update Trainer Date</title>
+</head>
+<body>
+  <h2>Update Trainer Date for College ID: {{ college_id }}</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update</button>
+  </form>
+</body>
+</html>

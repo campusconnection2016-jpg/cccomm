@@ -1,0 +1,56 @@
+.custom-video-player {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .player-wrapper {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 aspect ratio */
+  }
+  
+  .react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .table-container {
+    width: 100%; /* Adjust the width as needed */
+    border-collapse: collapse; /* Collapse borders between cells */
+  }
+  
+  .table-container th,
+  .table-container td {
+    padding: 8px; /* Adjust the padding as needed */
+    border: 1px solid #ccc; /* Add borders to cells */
+    width: 400px;
+  }
+  
+  .table-container th {
+    text-align: left; /* Align header text to the left */
+    background-color: #f2f2f2; /* Add background color to header */
+  }
+  
+  .table-container tr:nth-child(even) {
+    background-color: #f2f2f2; /* Add background color to even rows */
+  }
+  
+  .table-container tr:hover {
+    background-color: #ddd; /* Add background color on hover */
+  }
+
+
+/* App.css */
+
+/* Prevent text selection */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+}
+
+

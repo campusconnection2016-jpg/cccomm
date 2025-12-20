@@ -1,0 +1,81 @@
+<!DOCTYPE html> 
+<html>
+<head>
+  <title>Training Schedule</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      margin: 20px;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #eee;
+    }
+    .fn { background-color: #d1f0d1; }   /* FN green */
+    .an { background-color: #fce5cd; }   /* AN orange */
+  </style>
+</head>
+<body>
+ {% load custom_filters %}
+  <!-- Load the custom filter -->
+
+  <h2>📅 Trainer Schedule Overview</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Date / Day</th>
+        {% for batch in trainer_schedule.keys %}
+          <th colspan="2">{{ batch }}</th>
+        {% endfor %}
+      </tr>
+      <tr>
+        <th></th>
+        {% for batch in trainer_schedule.keys %}
+          <th>FN</th>
+          <th>AN</th>
+        {% endfor %}
+      </tr>
+    </thead>
+   <tbody>
+  {% for day_date in trainer_dates %}
+    {% with day=day_date.0 date=day_date.1 %}
+    <tr>
+      <td><strong>{{ date }}</strong><br>Day {{ forloop.counter }}</td>
+      {% for batch in trainer_schedule.keys %}
+        {% with day_schedule=trainer_schedule|get_item:batch|get_item:day %}
+          <td class="fn">
+            {% with fn=day_schedule|get_item:"FN" %}
+              {% if fn %}
+                <strong>{{ fn.trainer_name }}</strong><br>
+                {{ fn.topic }}<br>
+                <small>({{ fn.skill }})</small>
+              {% else %}
+                -
+              {% endif %}
+            {% endwith %}
+          </td>
+          <td class="an">
+            {% with an=day_schedule|get_item:"AN" %}
+              {% if an %}
+                <strong>{{ an.trainer_name }}</strong><br>
+                {{ an.topic }}<br>
+                <small>({{ an.skill }})</small>
+              {% else %}
+                -
+              {% endif %}
+            {% endwith %}
+          </td>
+        {% endwith %}
+      {% endfor %}
+    </tr>
+    {% endwith %}
+  {% endfor %}
+</tbody>
+
+  </table>
+</body>
+</html>

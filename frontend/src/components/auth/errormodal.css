@@ -1,0 +1,54 @@
+.custom-modal-width .modal-dialog {
+    max-width: 300px !important; /* Adjust the width as needed */
+    margin-top: 50px; /* Center horizontally, adjust top margin for positioning */
+    top: 0;
+    border-radius: 5px; 
+}
+
+.custom-modal-width .modal-content {
+    background-color: #F1A128; /* Ensure the modal content background matches your design */
+    border: none; /* Remove any border */
+    box-shadow: none; /* Remove default bootstrap shadow if needed */
+    cursor: default;
+    border-radius: 8px; /* Uniform border radius */
+    overflow: hidden; /* Ensure content does not overflow */
+}
+
+.custom-modal-header {
+    height: 30px;
+    background-color: #F1A128;
+    color: black;
+    border-bottom: none;
+    padding: 0; /* Adjust padding if needed */
+
+}
+
+.custom-modal-body {
+    font-size: 16px;
+    background-color: #F1A128;
+   margin-left: 20px;
+    padding: 10px;
+     margin: 0; 
+    border-top: none; /* Remove any border if present */
+   
+}
+/* Custom close button styles */
+.custom-modal-header .close {
+    color: black;
+    /*opacity: 1;*/
+}
+
+.custom-modal-header .close:hover,
+.custom-modal-header .close:focus {
+    color: black;
+    text-decoration: none;
+    /*opacity: 1;*/
+}
+
+.custom-modal-header .close {
+    border: 2px solid black; /* Initial transparent border */
+}
+
+.custom-modal-header .close:hover {
+    border: 2px solid black; /* Black border on hover */
+}

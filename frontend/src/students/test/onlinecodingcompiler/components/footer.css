@@ -1,0 +1,39 @@
+/* footer.css */
+
+/* Footer container styles */
+.footer {
+    background-color: '#1b6cb3'; /* Replace 'primary' with your desired color */
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  /* Container styles */
+  .footer-container {
+    max-width: 1200px; /* Adjust as needed */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Flex container styles */
+  .flex-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  /* Social media links styles */
+  .social-links {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  /* Social media icon styles */
+  .social-icon {
+    color: black; /* Adjust the color as needed */
+    font-size: 1.25rem; /* Adjust the font size as needed */
+  }
+  
+ 

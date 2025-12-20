@@ -1,6 +1,7 @@
 import "react-datepicker/dist/react-datepicker.css"; // Ensure you import this
 import '../../styles/placement.css';
-import { get_Department_Report_API,getTest_Name_DropDown_PO_API, getDepart_Report_dropDown_Po_API,get_Individual_Department_Report_API} from '../../api/endpoints';
+import { get_Department_Report_API,get_Departmentaudio_Report_API,
+  getTest_Name_DropDown_PO_API, getDepart_Report_dropDown_Po_API,get_Individual_Department_Report_API} from '../../api/endpoints';
 import React, { useState, useEffect } from "react";
 import { Form, Pagination } from 'react-bootstrap';
 import CustomPagination from "../../api/custompagination";
@@ -92,11 +93,12 @@ useEffect(() => {
     getDepartmentReport(currentPage);
   }
 }, [collegeId, selectedDepartment, filters.year, filters.test_name, currentPage]);
-const getDepartmentReport = async (page = 1) => {
+const getDepartmentReportold = async (page = 1) => {
   try {
     const testNameToSend = (filters.test_name && filters.test_name !== "ALL") ? filters.test_name : "";
 
     const data = await get_Department_Report_API(
+    
       page,
       searchQuery,
       collegeId,
@@ -110,6 +112,43 @@ const getDepartmentReport = async (page = 1) => {
     setTotalPages(Math.ceil(data.count / pageSize));
   } catch (error) {
     console.error("Error fetching department report:", error);
+  }
+};
+
+const getDepartmentReport = async (page = 1) => {
+  try {
+    const testNameToSend =
+      filters.test_name && filters.test_name !== "ALL"
+        ? filters.test_name
+        : "";
+
+    const data = await get_Departmentaudio_Report_API(
+      page,
+      searchQuery,
+      collegeId,
+      selectedDepartment,
+      filters.year,
+      testNameToSend
+    );
+
+    console.log("🟢 Raw API response:", data);
+
+    let finalResults = [];
+
+    if (Array.isArray(data)) {
+      finalResults = data;
+      setTotalPages(1);
+    } else if (Array.isArray(data?.results)) {
+      finalResults = data.results;
+      setTotalPages(Math.ceil((data.count || 0) / pageSize));
+    }
+
+    console.log("🟢 finalResults:", finalResults);
+    setTestData(finalResults);
+
+  } catch (error) {
+    console.error("🔴 Error fetching department report:", error);
+    setTestData([]);
   }
 };
 
@@ -344,11 +383,17 @@ const exportToExcel = async (filteredData, fileName = 'Report.xlsx') => {
         <tr>
           <th style={{ textAlign: "left" }}>Student Name</th>
           <th style={{ textAlign: "left" }}>RegNo</th>
-          <th style={{ textAlign: "center" }}>TestsTaken</th>
+        {/*}  <th style={{ textAlign: "center" }}>TestsTaken</th>
           <th style={{ textAlign: "center" }}>Aptitude Average</th>
           <th style={{ textAlign: "center" }}>Tech Average</th>
           <th style={{ textAlign: "center" }}>Softskills Average</th>
-          <th style={{ textAlign: "center" }}>Average</th>
+          <th style={{ textAlign: "center" }}>Average</th>*/}
+          <th style={{ textAlign: "center" }}>Listening Avg</th>
+      <th style={{ textAlign: "center" }}>Speaking Avg</th>
+      <th style={{ textAlign: "center" }}>Reading Avg</th>
+      <th style={{ textAlign: "center" }}>Writing Avg</th>
+      <th style={{ textAlign: "center" }}>Overall Avg</th>
+      <th style={{ textAlign: "center" }}>Feedback</th>
         </tr>
       </thead>
       <tbody>
@@ -357,11 +402,34 @@ const exportToExcel = async (filteredData, fileName = 'Report.xlsx') => {
             <tr key={index}>
               <td style={{ textAlign: "left" }}>{test.students_name}</td>
               <td style={{ textAlign: "left" }}>{test.registration_number}</td>
-              <td style={{ textAlign: "center" }}>{test.total_tests_taken}</td>
+             {/*} <td style={{ textAlign: "center" }}>{test.total_tests_taken}</td>
               <td style={{ textAlign: "center" }}>{test.aptitude_avg}</td>
               <td style={{ textAlign: "center" }}>{test.technical_avg}</td>
               <td style={{ textAlign: "center" }}>{test.softskills_avg}</td>
-              <td style={{ textAlign: "center" }}>{test.overall_avg}</td>
+              <td style={{ textAlign: "center" }}>{test.overall_avg}</td>*/}
+              <td style={{ textAlign: "center" }}>
+            {test["Listening Avg"] ?? 0}
+          </td>
+
+          <td style={{ textAlign: "center" }}>
+            {test["Speaking Total Avg"] ?? 0}
+          </td>
+
+          <td style={{ textAlign: "center" }}>
+            {test["Reading Total Avg"] ?? 0}
+          </td>
+
+          <td style={{ textAlign: "center" }}>
+            {test["Writing Total Avg"] ?? 0}
+          </td>
+
+          <td style={{ textAlign: "center" }}>
+            {test.overall_avg ?? 0}
+          </td>
+
+          <td style={{ textAlign: "center" }}>
+            {test.feedback}
+          </td>
             </tr>
           ))
         ) : (

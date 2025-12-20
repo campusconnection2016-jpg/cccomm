@@ -133,12 +133,18 @@ const Sidebar = ({ isSidebarOpen, institute, username }) => {
 
               {levelAccess !== 'Silver' && levelAccess !== 'Gold' && (
                 <Link
+                className="disabled-link"
+  onClick={(e) => e.preventDefault()} 
                   to="/practice-question"
                   onContextMenu={(e) => e.preventDefault()}
                   style={{ color: "white", textDecoration: "none" }}
                 >
                   <li
-                    className={activeMenuItem === 'practiceQuestion' ? 'active' : ''}
+                  className={`menu-item disabled ${
+    activeMenuItem === "training" ? "active" : ""
+  }`}
+           
+                   // className={activeMenuItem === 'practiceQuestion' ? 'active' : ''}
                     onClick={() => handleMenuItemClick('practiceQuestion')}
                   >
                     <img src={PracticesIcon} alt="Practice Question" className="icon-image" />
@@ -146,6 +152,23 @@ const Sidebar = ({ isSidebarOpen, institute, username }) => {
                   </li>
                 </Link>
               )}
+
+              <Link
+  to="/students/practice/audioaccess"
+  onContextMenu={(e) => e.preventDefault()}
+  style={{ color: "white", textDecoration: "none" }}
+>
+  <li
+    style={{ paddingLeft: '26px' }}
+    className={`test-option ${
+      activeMenuItem === 'practiceCommunication' ? 'active' : ''
+    }`}
+    onClick={() => handleMenuItemClick('practiceCommunication')}
+  >  <img src={PracticesIcon} alt="Practice Question" className="icon-image" />
+                  
+    <span className="dashboard-text">Practice Communication</span>
+  </li>
+</Link>
 
               <li>
                 <div

@@ -1021,6 +1021,21 @@ className={`menu-item disabled ${
             <span className="dashboard-text">Practice Worksheet</span>
           </li>
         </Link>)}
+        <Link
+                                  to="/test/audio/assign/"
+                                  onContextMenu={(e) => e.preventDefault()}
+                                  style={{ color: "white", textDecoration: "none" }}
+                                >
+                                  <li
+                                    style={{ paddingLeft: '26px' }}
+                                    className={`test-option ${
+                                      activeMenuItem === 'practiceCommunication' ? 'active' : ''
+                                    }`}
+                                    onClick={() => handleMenuItemClick('practiceCommunication')}
+                                  >
+                                    <span className="dashboard-text">Communication Test</span>
+                                  </li>
+                                </Link>
       </ul>
     )}
   </div>

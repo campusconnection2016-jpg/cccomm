@@ -8,7 +8,7 @@ import {
 import Sidebar from "./students/sidebar";
 // import Dashboard from "./students/Dashboard/Dashboard";
 import LanguagesTranslate from './components/languages/LanguageTranslate.js';
-
+import PracticeCommunication from "./students/practice/attendpraccommun.js";
 import LearningMaterial from "./students/lms/learningmaterial";
 import AttendCodeTest from "./students/test/tests/attendcodetest";
 import AttendOnlineMockTest from "./students/test/tests/attendonlinemocktest";
@@ -40,6 +40,7 @@ import ThankYouPage from "./students/test/tests/audio/thankyoupage";
 import AttendAudioTyping from "./students/test/tests/audio/audiotyping";
 import Pronunciation from "./students/test/tests/audio/pronunciation";
 import AttendFillBlankTest from './students/test/tests/audio/fillintheblank'
+import AudioAccess from "./students/practice/audioaccess";
 const Students = ({ collegeName, username, institute, userRole }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [needInfo, setNeedInfo] = useState(false);
@@ -154,6 +155,14 @@ const Students = ({ collegeName, username, institute, userRole }) => {
                           }
                         />
                         <Route
+  path="/students/practice/audioaccess"
+  element={<AudioAccess 
+   username={username}
+                              collegeName={collegeName}
+                              institute={institute}
+  />}
+/>
+                        <Route
                           path="/test/ts-online"
                           element={
                             <AttendOnlineMockTest
@@ -259,6 +268,18 @@ const Students = ({ collegeName, username, institute, userRole }) => {
                           path="/test/practice-mcq/"
                           element={
                             <AttendOnlinePracticeTest
+                              username={username}
+                              collegeName={collegeName}
+                              isSidebarOpen={isSidebarOpen}
+                              disableSidebar={disableSidebar}
+                              enableSidebar={enableSidebar}
+                            />
+                          }
+                        />
+                         <Route
+                          path="/test/practice-communication/"
+                          element={
+                            <PracticeCommunication
                               username={username}
                               collegeName={collegeName}
                               isSidebarOpen={isSidebarOpen}

@@ -23498,6 +23498,7 @@ def get_student_feedback_report(request):
     print(f"📌 Paginated results: {len(paginated_data)}")
     return paginator.get_paginated_response(paginated_data)
 
+
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -26788,19 +26789,6 @@ def assign_difficulty_questions(request):
     if existing:
         print("🔄 Updating existing test assignment")
         assign_count = (existing.assign_count or 1) + 1
-
-       # current_avg = existing.avg_mark or 0.0
-       # prev_avg = existing.stu_avg_mark or 0.0
-
-       # if assign_count == 2:
-       #     existing.stu_avg_mark = current_avg
-       #     existing.avg_mark = 0
-       #     existing.total_score = 0
-       # elif assign_count >= 3:
-       #     new_stu_avg = (prev_avg * (assign_count - 2) + current_avg) / (assign_count - 1)
-       #     existing.stu_avg_mark = new_stu_avg
-       #     existing.avg_mark = 0
-       #     existing.total_score = 0
 
         existing.assign_count = assign_count
         existing.question_id = paper
@@ -34082,6 +34070,7 @@ def update_total_and_avg_marks_deleteanswer(request):
         with transaction.atomic():
             map_entry.total_score = total_score
             map_entry.avg_mark = avg_mark
+            map_entry.stu_avg_mark = avg_mark
             map_entry.save()
             deleted_count = 0
             if test_type_category and test_type_category.strip().lower() in ["mock/interview", "mock", "interview"]:
@@ -34105,6 +34094,7 @@ def update_total_and_avg_marks_deleteanswer(request):
             'total_score': total_score,
             'total_marks': total_marks,
             'avg_mark': avg_mark,
+             'stu_avg_mark': avg_mark,
             'deleted_answers_count': deleted_count
         })
 
@@ -35395,8 +35385,1039 @@ class GetSkillTypeByTestNameView(APIView):
 
 
 
+def get_test_listenting_category(request):
+    try:
+        college_id = request.GET.get('college_id')
+
+        categories = ['AudioTyping', 'Multi_AudioTyping']
+
+        assigned_tests = tests_candidates_map.objects.filter(
+            deleted=0
+        ).exclude(created_by='Student')
+
+        if college_id:
+            assigned_tests = assigned_tests.filter(college_id=college_id)
+
+        assigned_test_names = assigned_tests.values_list('test_name', flat=True)
+
+        count = test_master.objects.filter(
+            deleted=0,
+            test_name__in=assigned_test_names,
+            test_type_id__test_type_categories__in=categories
+        ).count()
+
+        return JsonResponse({'count': count}, status=200)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+from django.http import JsonResponse
+
+def get_test_reading_category(request):
+    try:
+        college_id = request.GET.get('college_id')
+
+        categories = ['AudioMCQ']
+
+        assigned_tests = tests_candidates_map.objects.filter(
+            deleted=0
+        ).exclude(created_by='Student')
+
+        if college_id:
+            assigned_tests = assigned_tests.filter(college_id=college_id)
+
+        assigned_test_names = assigned_tests.values_list('test_name', flat=True)
+
+        count = test_master.objects.filter(
+            deleted=0,
+            test_name__in=assigned_test_names,
+            test_type_id__test_type_categories__in=categories
+        ).count()
+
+        # ✅ Always return count (0 if no data)
+        return JsonResponse({'count': count}, status=200)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 
+def get_test_Speaking_category(request):
+    try:
+        college_id = request.GET.get('college_id')
+
+        categories = ['Pronunciation', 'Multi_Pronunciation']
+
+        assigned_tests = tests_candidates_map.objects.filter(
+            deleted=0
+        ).exclude(created_by='Student')
+
+        if college_id:
+            assigned_tests = assigned_tests.filter(college_id=college_id)
+
+        assigned_test_names = assigned_tests.values_list('test_name', flat=True)
+
+        count = test_master.objects.filter(
+            deleted=0,
+            test_name__in=assigned_test_names,
+            test_type_id__test_type_categories__in=categories
+        ).count()
+
+        return JsonResponse({'count': count}, status=200)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+from django.http import JsonResponse
+
+def get_test_Writing_category(request):
+    try:
+        college_id = request.GET.get('college_id')
+
+        categories = ['TypingBlank']
+
+        assigned_tests = tests_candidates_map.objects.filter(
+            deleted=0
+        ).exclude(created_by='Student')
+
+        if college_id:
+            assigned_tests = assigned_tests.filter(college_id=college_id)
+
+        assigned_test_names = assigned_tests.values_list('test_name', flat=True)
+
+        count = test_master.objects.filter(
+            deleted=0,
+            test_name__in=assigned_test_names,
+            test_type_id__test_type_categories__in=categories
+        ).count()
+
+        # ✅ Always returns count (0 if no data)
+        return JsonResponse({'count': count}, status=200)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+@api_view(['GET'])
+def get_avg_score_listening_cc(request):
+    try:
+        college_id = request.GET.get('college_id')
+        dtm_start = request.GET.get('dtm_start')
+
+        if not dtm_start:
+            return JsonResponse({'error': 'dtm_start is required'}, status=400)
+
+        dtm_start_date = timezone.make_aware(
+            timezone.datetime.strptime(dtm_start, '%Y-%m-%d')
+        ).date()
+
+        # 🎯 Step 1: Get test names based on test_type + category
+        categories = ['AudioTyping', 'Multi_AudioTyping']
+
+        audio_test_names = test_master.objects.filter(
+            test_type_id__test_type='Audio',
+            test_type_id__test_type_categories__in=categories
+        ).values_list('test_name', flat=True)
+
+
+        # 🎯 Step 2: Base queryset (NO MCQ filter)
+        base_qs = tests_candidates_map.objects.filter(
+            deleted=0,
+            dtm_start__date=dtm_start_date,
+            test_name__in=audio_test_names,
+            total_score__isnull=False
+        ).exclude(created_by='Student')
+
+        if college_id:
+            base_qs = base_qs.filter(college_id=college_id)
+
+        # 🎯 Step 3: Aggregate by department
+        department_scores = base_qs.values('department_id').annotate(
+            avg_score=Avg('total_score')
+        )
+
+        # Department ID → Name map
+        dept_map = {
+            d['id']: d['department']
+            for d in department_master.objects.filter(deleted=0)
+            .values('id', 'department')
+        }
+
+        # Final response
+        results = [
+            {
+                'department_name': dept_map.get(row['department_id'], 'Unknown'),
+                'avg_score': round(row['avg_score'] or 0, 2)
+            }
+            for row in department_scores
+        ]
+
+        return JsonResponse(results, safe=False, status=200)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+
+
+@api_view(['GET'])
+def get_avg_score_speaking_cc(request):
+    try:
+        college_id = request.GET.get('college_id')
+        dtm_start = request.GET.get('dtm_start')
+
+        if not dtm_start:
+            return JsonResponse({'error': 'dtm_start is required'}, status=400)
+
+        dtm_start_date = timezone.make_aware(
+            timezone.datetime.strptime(dtm_start, '%Y-%m-%d')
+        ).date()
+        categories = ['Pronunciation', 'Multi_Pronunciation']
+
+        audio_test_names = test_master.objects.filter(
+            test_type_id__test_type='Audio',
+            test_type_id__test_type_categories__in=categories
+        ).values_list('test_name', flat=True)
+
+        
+
+        # 🎯 Step 2: Base queryset (NO MCQ filter)
+        base_qs = tests_candidates_map.objects.filter(
+            deleted=0,
+            dtm_start__date=dtm_start_date,
+            test_name__in=audio_test_names,
+            total_score__isnull=False
+        ).exclude(created_by='Student')
+
+        if college_id:
+            base_qs = base_qs.filter(college_id=college_id)
+
+        # 🎯 Step 3: Aggregate by department
+        department_scores = base_qs.values('department_id').annotate(
+            avg_score=Avg('total_score')
+        )
+
+        # Department ID → Name map
+        dept_map = {
+            d['id']: d['department']
+            for d in department_master.objects.filter(deleted=0)
+            .values('id', 'department')
+        }
+
+        # Final response
+        results = [
+            {
+                'department_name': dept_map.get(row['department_id'], 'Unknown'),
+                'avg_score': round(row['avg_score'] or 0, 2)
+            }
+            for row in department_scores
+        ]
+
+        return JsonResponse(results, safe=False, status=200)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+
+@api_view(['GET'])
+def get_avg_score_reading_cc(request):
+    try:
+        college_id = request.GET.get('college_id')
+        dtm_start = request.GET.get('dtm_start')
+
+        if not dtm_start:
+            return JsonResponse({'error': 'dtm_start is required'}, status=400)
+
+        dtm_start_date = timezone.make_aware(
+            timezone.datetime.strptime(dtm_start, '%Y-%m-%d')
+        ).date()
+
+        # 🎯 Step 1: Get test names based on test_type + category
+        audio_test_names = test_master.objects.filter(
+            test_type_id__test_type='Audio',
+            test_type_id__test_type_categories='AudioMCQ'
+        ).values_list('test_name', flat=True)
+
+        # 🎯 Step 2: Base queryset (NO MCQ filter)
+        base_qs = tests_candidates_map.objects.filter(
+            deleted=0,
+            dtm_start__date=dtm_start_date,
+            test_name__in=audio_test_names,
+            total_score__isnull=False
+        ).exclude(created_by='Student')
+
+        if college_id:
+            base_qs = base_qs.filter(college_id=college_id)
+
+        # 🎯 Step 3: Aggregate by department
+        department_scores = base_qs.values('department_id').annotate(
+            avg_score=Avg('total_score')
+        )
+
+        # Department ID → Name map
+        dept_map = {
+            d['id']: d['department']
+            for d in department_master.objects.filter(deleted=0)
+            .values('id', 'department')
+        }
+
+        # Final response
+        results = [
+            {
+                'department_name': dept_map.get(row['department_id'], 'Unknown'),
+                'avg_score': round(row['avg_score'] or 0, 2)
+            }
+            for row in department_scores
+        ]
+
+        return JsonResponse(results, safe=False, status=200)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+
+@api_view(['GET'])
+def get_avg_score_writing_cc(request):
+    try:
+        college_id = request.GET.get('college_id')
+        dtm_start = request.GET.get('dtm_start')
+
+        if not dtm_start:
+            return JsonResponse({'error': 'dtm_start is required'}, status=400)
+
+        dtm_start_date = timezone.make_aware(
+            timezone.datetime.strptime(dtm_start, '%Y-%m-%d')
+        ).date()
+
+        # 🎯 Step 1: Get test names based on test_type + category
+        audio_test_names = test_master.objects.filter(
+            test_type_id__test_type='Audio',
+            test_type_id__test_type_categories='TypingBlank'
+        ).values_list('test_name', flat=True)
+
+        # 🎯 Step 2: Base queryset (NO MCQ filter)
+        base_qs = tests_candidates_map.objects.filter(
+            deleted=0,
+            dtm_start__date=dtm_start_date,
+            test_name__in=audio_test_names,
+            total_score__isnull=False
+        ).exclude(created_by='Student')
+
+        if college_id:
+            base_qs = base_qs.filter(college_id=college_id)
+
+        # 🎯 Step 3: Aggregate by department
+        department_scores = base_qs.values('department_id').annotate(
+            avg_score=Avg('total_score')
+        )
+
+        # Department ID → Name map
+        dept_map = {
+            d['id']: d['department']
+            for d in department_master.objects.filter(deleted=0)
+            .values('id', 'department')
+        }
+
+        # Final response
+        results = [
+            {
+                'department_name': dept_map.get(row['department_id'], 'Unknown'),
+                'avg_score': round(row['avg_score'] or 0, 2)
+            }
+            for row in department_scores
+        ]
+
+        return JsonResponse(results, safe=False, status=200)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+from django.db.models import Sum, Count
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+from .models import tests_candidates_map, test_master, test_type
+
+
+from django.db.models import Sum, Count
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+from .models import tests_candidates_map, test_master, test_type
+
+
+from django.db.models import Sum, Count
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+
+from .models import tests_candidates_map, test_master
+
+
+@api_view(['GET'])
+def get_College_topper_ccall(request):
+    try:
+        print("\n===== get_College_topper_ccall START =====")
+
+        # --------------------------------------------------
+        # STEP 0: Read request params
+        # --------------------------------------------------
+        college_id = request.GET.get('college_id')
+        test_type_param = request.GET.get('test_type')  # Audio | MCQTest | CodingTest | All
+        test_type_categories_param = request.GET.get('test_type_categories')
+
+        print("Request Params:")
+        print("college_id =", college_id)
+        print("test_type =", test_type_param)
+        print("test_type_categories =", test_type_categories_param)
+
+        # --------------------------------------------------
+        # STEP 1: Base queryset
+        # --------------------------------------------------
+        queryset = tests_candidates_map.objects.filter(
+            deleted=0
+        ).exclude(created_by='Student')
+
+        print("\nStep 1 → Base queryset count:", queryset.count())
+
+        # --------------------------------------------------
+        # STEP 2: Normalize test_type
+        # --------------------------------------------------
+        TEST_TYPE_NORMALIZATION = {
+            'CodingTest': 'Coding Test',
+            'MCQTest': 'MCQ Test',
+            'Audio': 'Audio'
+        }
+
+        normalized_test_type = TEST_TYPE_NORMALIZATION.get(
+            test_type_param, test_type_param
+        )
+
+        print("Normalized test_type:", normalized_test_type)
+
+        # --------------------------------------------------
+        # STEP 3: Audio category alias mapping
+        # --------------------------------------------------
+        AUDIO_CATEGORY_ALIASES = {
+            'Pronunciation': ['Pronunciation', 'Multi_Pronunciation'],
+            'Multi_Pronunciation': ['Pronunciation', 'Multi_Pronunciation'],
+
+            'AudioTyping': ['AudioTyping', 'Multi_AudioTyping'],
+            'Multi_AudioTyping': ['AudioTyping', 'Multi_AudioTyping'],
+
+            'AudioMCQ': ['AudioMCQ'],
+            'TypingBlank': ['TypingBlank'],
+        }
+
+        # --------------------------------------------------
+        # STEP 4: Apply test_type filtering
+        # --------------------------------------------------
+        if normalized_test_type and normalized_test_type.lower() != 'all':
+
+            print("\nStep 4 → Applying test_type filter")
+
+            # 🔹 AUDIO → category based filtering
+            if normalized_test_type == 'Audio':
+
+                print("Audio test selected")
+
+                if test_type_categories_param:
+                    raw_categories = [c.strip() for c in test_type_categories_param.split(',')]
+                    print("Selected raw audio categories:", raw_categories)
+
+                    expanded_categories = set()
+                    for cat in raw_categories:
+                        expanded_categories.update(
+                            AUDIO_CATEGORY_ALIASES.get(cat, [cat])
+                        )
+
+                    expanded_categories = list(expanded_categories)
+                    print("Expanded audio categories:", expanded_categories)
+
+                    test_names = test_master.objects.filter(
+                        test_type_id__test_type='Audio',
+                        test_type_id__test_type_categories__in=expanded_categories
+                    ).values_list('test_name', flat=True)
+
+                else:
+                    print("No category provided → all Audio tests")
+                    test_names = test_master.objects.filter(
+                        test_type_id__test_type='Audio'
+                    ).values_list('test_name', flat=True)
+
+            # 🔹 MCQ & CODING → NO category filtering
+            else:
+                print(f"{normalized_test_type} selected → NO category filtering")
+
+                test_names = test_master.objects.filter(
+                    test_type_id__test_type=normalized_test_type
+                ).values_list('test_name', flat=True)
+
+            print("Matching test names:", list(test_names))
+
+            queryset = queryset.filter(test_name__in=test_names)
+            print("Queryset count after test_type filter:", queryset.count())
+
+        # --------------------------------------------------
+        # STEP 5: College filter
+        # --------------------------------------------------
+        if college_id:
+            queryset = queryset.filter(college_id=college_id)
+            print("\nStep 5 → After college filter count:", queryset.count())
+
+        # --------------------------------------------------
+        # STEP 6: Group by student
+        # --------------------------------------------------
+        student_stats = queryset.values(
+            'student_id',
+            'student_id__students_name',
+            'department_id__department'
+        ).annotate(
+            total_marks=Sum('avg_mark'),
+            test_count=Count('id')
+        )
+
+        print("\nStep 6 → Student grouped stats:")
+        for s in student_stats:
+            print(s)
+
+        # --------------------------------------------------
+        # STEP 7: Calculate normalized average
+        # --------------------------------------------------
+        results = []
+        print("\nStep 7 → Calculating averages")
+
+        for s in student_stats:
+            student_name = s['student_id__students_name'] or "N/A"
+            department = s['department_id__department'] or "N/A"
+            total_marks = s['total_marks']
+            test_count = s['test_count']
+
+            print(f"{student_name} | {department} | {total_marks} | {test_count}")
+
+            if test_count and total_marks is not None:
+                avg = total_marks / test_count
+                results.append({
+                    'student_name': student_name,
+                    'department': department,
+                    'avg_mark': round(avg)
+                })
+
+        # --------------------------------------------------
+        # STEP 8: Top 5
+        # --------------------------------------------------
+        results = sorted(results, key=lambda x: x['avg_mark'], reverse=True)[:5]
+
+        print("\nFinal Top 5 Results:")
+        for r in results:
+            print(r)
+
+        print("===== get_College_topper_ccall END =====\n")
+
+        return JsonResponse(results, safe=False)
+
+    except Exception as e:
+        print("❌ ERROR:", str(e))
+        return JsonResponse({'error': str(e)}, status=400)
+
+@api_view(['GET'])
+def get_listening_test_stu(request):
+    try:
+        print("\n===== get_listening_test_stu START =====")
+
+        username = request.GET.get('username')
+        print("Username:", username)
+
+        if not username:
+            return JsonResponse({'error': 'Username required'}, status=400)
+
+        # --------------------------------------------------
+        # Step 1: Fixed categories (NO request param)
+        # --------------------------------------------------
+        expanded_categories = ['AudioTyping', 'Multi_AudioTyping']
+        print("Listening Categories:", expanded_categories)
+
+        # --------------------------------------------------
+        # Step 2: Get active test names for student
+        # --------------------------------------------------
+        active_test_names = tests_candidates_map.objects.filter(
+            deleted=0,
+            student_id__user_name=username,
+            is_active=True
+        ).values_list('test_name', flat=True)
+
+        print("Active Test Names:", list(active_test_names))
+
+        # --------------------------------------------------
+        # Step 3: Build filters
+        # --------------------------------------------------
+        filters = Q(
+            deleted=0,
+            test_name__in=active_test_names,
+            test_type_id__test_type_categories__in=expanded_categories
+        )
+
+        print("Applied Filters:", filters)
+
+        # --------------------------------------------------
+        # Step 4: Final count
+        # --------------------------------------------------
+        count = test_master.objects.filter(filters).count()
+        print("Listening Test Count:", count)
+
+        print("===== get_listening_test_stu END =====\n")
+        return JsonResponse({'count': count}, status=200)
+
+    except Exception as e:
+        print("❌ ERROR:", str(e))
+        return JsonResponse({'error': str(e)}, status=500)
+
+@api_view(['GET'])
+def get_Writing_test_stu(request):
+    try:
+        print("\n===== get_Writing_test_stu START =====")
+
+        username = request.GET.get('username')
+        print("Username:", username)
+
+        if not username:
+            return JsonResponse({'error': 'Username required'}, status=400)
+
+        expanded_categories = ['TypingBlank']
+        print("Writing Categories:", expanded_categories)
+
+        active_test_names = tests_candidates_map.objects.filter(
+            deleted=0,
+            student_id__user_name=username,
+            is_active=True
+        ).values_list('test_name', flat=True)
+
+        print("Active Test Names:", list(active_test_names))
+
+        filters = Q(
+            deleted=0,
+            test_name__in=active_test_names,
+            test_type_id__test_type_categories__in=expanded_categories
+        )
+
+        count = test_master.objects.filter(filters).count()
+        print("Writing Test Count:", count)
+
+        print("===== get_Writing_test_stu END =====\n")
+        return JsonResponse({'count': count}, status=200)
+
+    except Exception as e:
+        print("❌ ERROR:", str(e))
+        return JsonResponse({'error': str(e)}, status=500)
+
+@api_view(['GET'])
+def get_Reading_test_stu(request):
+    try:
+        print("\n===== get_Reading_test_stu START =====")
+
+        username = request.GET.get('username')
+        print("Username:", username)
+
+        if not username:
+            return JsonResponse({'error': 'Username required'}, status=400)
+
+        expanded_categories = ['AudioMCQ']
+        print("Reading Categories:", expanded_categories)
+
+        active_test_names = tests_candidates_map.objects.filter(
+            deleted=0,
+            student_id__user_name=username,
+            is_active=True
+        ).values_list('test_name', flat=True)
+
+        print("Active Test Names:", list(active_test_names))
+
+        filters = Q(
+            deleted=0,
+            test_name__in=active_test_names,
+            test_type_id__test_type_categories__in=expanded_categories
+        )
+
+        count = test_master.objects.filter(filters).count()
+        print("Reading Test Count:", count)
+
+        print("===== get_Reading_test_stu END =====\n")
+        return JsonResponse({'count': count}, status=200)
+
+    except Exception as e:
+        print("❌ ERROR:", str(e))
+        return JsonResponse({'error': str(e)}, status=500)
+
+@api_view(['GET'])
+def get_speaking_test_stu(request):
+    try:
+        print("\n===== get_speaking_test_stu START =====")
+
+        username = request.GET.get('username')
+        print("Username:", username)
+
+        if not username:
+            return JsonResponse({'error': 'Username required'}, status=400)
+
+        expanded_categories = ['Pronunciation', 'Multi_Pronunciation']
+        print("Speaking Categories:", expanded_categories)
+
+        active_test_names = tests_candidates_map.objects.filter(
+            deleted=0,
+            student_id__user_name=username,
+            is_active=True
+        ).values_list('test_name', flat=True)
+
+        print("Active Test Names:", list(active_test_names))
+
+        filters = Q(
+            deleted=0,
+            test_name__in=active_test_names,
+            test_type_id__test_type_categories__in=expanded_categories
+        )
+
+        count = test_master.objects.filter(filters).count()
+        print("Speaking Test Count:", count)
+
+        print("===== get_speaking_test_stu END =====\n")
+        return JsonResponse({'count': count}, status=200)
+
+    except Exception as e:
+        print("❌ ERROR:", str(e))
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+
+def get_student_skill_percentage(request):
+    print("\n===== get_student_skill_percentage START =====")
+
+    username = request.GET.get('username')
+    start_date = request.GET.get('start_date')
+
+    print("Username:", username)
+    print("Start Date:", start_date)
+
+    if not username:
+        return JsonResponse({'error': 'Username required'}, status=400)
+
+    # --------------------------------------------------
+    # Step 1: Date conversion
+    # --------------------------------------------------
+    dtm_start_date = None
+    if start_date:
+        dtm_start_date = timezone.make_aware(
+            timezone.datetime.strptime(start_date, '%Y-%m-%d')
+        )
+        print("Converted Date:", dtm_start_date)
+
+    # --------------------------------------------------
+    # Step 2: Get student
+    # --------------------------------------------------
+    student = candidate_master.objects.filter(
+        deleted=0,
+        user_name=username
+    ).first()
+
+    print("Student:", student)
+
+    if not student:
+        return JsonResponse({'error': 'Student not found'}, status=404)
+
+    # --------------------------------------------------
+    # Step 3: Category Groups (ONLY test_type_categories)
+    # --------------------------------------------------
+    CATEGORY_GROUPS = {
+        'listening_typing': ['AudioTyping', 'Multi_AudioTyping'],
+        'listening_mcq': ['AudioMCQ'],
+        'typing_blank': ['TypingBlank'],
+        'pronunciation': ['Pronunciation', 'Multi_Pronunciation'],
+    }
+
+    print("Category Groups:", CATEGORY_GROUPS)
+
+    result = {}
+
+    # --------------------------------------------------
+    # Step 4: Loop each category group
+    # --------------------------------------------------
+    for key, categories in CATEGORY_GROUPS.items():
+        print(f"\n--- Processing {key} ---")
+        print("Categories:", categories)
+
+        test_names = test_master.objects.filter(
+            deleted=0,
+            test_type_id__test_type_categories__in=categories
+        ).values_list('test_name', flat=True)
+
+        print("Test Names:", list(test_names))
+
+        attempts = tests_candidates_map.objects.filter(
+            student_id=student,
+            test_name__in=test_names,
+            deleted=0,
+            
+        )
+
+        if dtm_start_date:
+            attempts = attempts.filter(dtm_start__date=dtm_start_date.date())
+            print("Date filter applied")
+
+        total_score = attempts.aggregate(
+            total=Sum('avg_mark')
+        )['total'] or 0
+
+        print(f"{key} Total Score:", total_score)
+
+        result[key] = total_score
+
+    # --------------------------------------------------
+    # Step 5: Final response
+    # --------------------------------------------------
+    print("Final Result:", result)
+    print("===== get_student_skill_percentage END =====\n")
+
+    return JsonResponse(result)
+
+
+@api_view(['GET'])
+def student_test_summary_communold(request):
+    student_name = request.GET.get('student_name')
+
+    if not student_name:
+        return Response({"error": "student_name is required"}, status=400)
+
+    student = candidate_master.objects.filter(
+        students_name=student_name
+    ).first()
+
+    if not student:
+        return Response({"error": "Student not found"}, status=404)
+
+    # -------------------------------
+    # BASE QUERYSET
+    # -------------------------------
+    base_qs = tests_candidates_map.objects.filter(
+        student_id=student
+    )
+
+    audio_test_names = test_master.objects.filter(
+        test_type_id__test_type='Audio'
+    ).values_list('test_name', flat=True)
+
+    audio_base_qs = base_qs.filter(
+        test_name__in=audio_test_names
+    )
+
+    total_assigned_tests = audio_base_qs.count()
+    total_attended_tests = audio_base_qs.filter(is_active=True).count()
+
+    # -------------------------------
+    # CATEGORY GROUP DEFINITIONS
+    # -------------------------------
+    CATEGORY_GROUPS = {
+        "AudioMCQ": ["AudioMCQ"],
+        "AudioTyping": ["AudioTyping", "Multi_AudioTyping"],
+        "Pronunciation": ["Pronunciation", "Multi_Pronunciation"],
+        "TypingBlank": ["TypingBlank"],
+    }
+
+    category_data = []
+    category_test_details = []
+
+    # -------------------------------
+    # CATEGORY SUMMARY + DETAILS
+    # -------------------------------
+    for display_category, db_categories in CATEGORY_GROUPS.items():
+
+        test_names = test_master.objects.filter(
+            test_type_id__test_type='Audio',
+            test_type_id__test_type_categories__in=db_categories
+        ).values_list('test_name', flat=True)
+
+        cat_qs = audio_base_qs.filter(test_name__in=test_names)
+
+        assigned_count = cat_qs.count()
+        attended_qs = cat_qs.filter(is_active=True)
+        attended_count = attended_qs.count()
+
+        avg_mark = attended_qs.aggregate(
+            avg_score=Avg('stu_avg_mark')
+        )['avg_score'] or 0
+
+        if assigned_count > 0:
+            category_data.append({
+                "category": display_category,
+                "assigned_tests": assigned_count,
+                "attended_tests": attended_count,
+                "avg_mark": round(avg_mark, 2)
+            })
+
+        # -------- TEST LEVEL DETAILS --------
+        tests_list = []
+
+        for test_name in test_names:
+            test_qs = attended_qs.filter(test_name=test_name)
+
+            if not test_qs.exists():
+                continue
+
+            test_avg = test_qs.aggregate(
+                avg_score=Avg('stu_avg_mark')
+            )['avg_score'] or 0
+
+            last_test = test_qs.order_by(
+                '-dtm_submit',
+                '-dtm_end',
+                '-dtm_start_test'
+            ).first()
+
+            test_date = (
+                last_test.dtm_submit or
+                last_test.dtm_end or
+                last_test.dtm_start_test
+            )
+
+            tests_list.append({
+                "test_name": test_name,
+                "test_date": test_date,
+                "avg_mark": round(test_avg, 2)
+            })
+
+        if tests_list:
+            category_test_details.append({
+                "category": display_category,
+                "tests": tests_list
+            })
+
+    # -------------------------------
+    # OVERALL AVERAGE
+    # -------------------------------
+    overall_avg = audio_base_qs.filter(
+        is_active=True
+    ).aggregate(
+        overall_avg=Avg('stu_avg_mark')
+    )['overall_avg'] or 0
+
+    return Response({
+        "student_name": student.students_name,
+        "total_assigned_tests": total_assigned_tests,
+        "total_attended_tests": total_attended_tests,
+        "overall_avg_mark": round(overall_avg, 2),
+        "category_wise": category_data,
+        "category_test_details": category_test_details
+    })
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.db.models import Avg
+from .models import candidate_master, tests_candidates_map, test_master, department_master
+
+# Function to get feedback based on avg_mark
+def get_feedback(avg_mark):
+    if avg_mark >= 90:
+        return "Excellent"
+    elif avg_mark >= 75:
+        return "Good"
+    elif avg_mark >= 50:
+        return "Average"
+    else:
+        return "Poor"
+
+@api_view(['GET'])
+def student_test_summary_commun(request):
+    student_name = request.GET.get('student_name')
+
+    if not student_name:
+        return Response({"error": "student_name is required"}, status=400)
+
+    student = candidate_master.objects.filter(
+        students_name=student_name
+    ).select_related('department_id').first()
+
+    if not student:
+        return Response({"error": "Student not found"}, status=404)
+
+    # Base queryset
+    base_qs = tests_candidates_map.objects.filter(student_id=student)
+
+    audio_test_names = test_master.objects.filter(
+        test_type_id__test_type='Audio'
+    ).values_list('test_name', flat=True)
+
+    audio_base_qs = base_qs.filter(test_name__in=audio_test_names)
+
+    total_assigned_tests = audio_base_qs.count()
+    total_attended_tests = audio_base_qs.filter(is_active=True).count()
+
+    # Category groups
+    CATEGORY_GROUPS = {
+        "AudioMCQ": ["AudioMCQ"],
+        "AudioTyping": ["AudioTyping", "Multi_AudioTyping"],
+        "Pronunciation": ["Pronunciation", "Multi_Pronunciation"],
+        "TypingBlank": ["TypingBlank"],
+    }
+
+    category_data = []
+    category_test_details = []
+
+    for display_category, db_categories in CATEGORY_GROUPS.items():
+        test_names = test_master.objects.filter(
+            test_type_id__test_type='Audio',
+            test_type_id__test_type_categories__in=db_categories
+        ).values_list('test_name', flat=True)
+
+        cat_qs = audio_base_qs.filter(test_name__in=test_names)
+        assigned_count = cat_qs.count()
+        attended_qs = cat_qs.filter(is_active=True)
+        attended_count = attended_qs.count()
+        avg_mark = attended_qs.aggregate(avg_score=Avg('stu_avg_mark'))['avg_score'] or 0
+
+        if assigned_count > 0:
+            category_data.append({
+                "category": display_category,
+                "assigned_tests": assigned_count,
+                "attended_tests": attended_count,
+                "avg_mark": round(avg_mark, 2),
+                "feedback": get_feedback(avg_mark)  # <-- feedback based on avg_mark
+            })
+
+        # Test level details
+        tests_list = []
+        for test_name in test_names:
+            test_qs = attended_qs.filter(test_name=test_name)
+            if not test_qs.exists():
+                continue
+
+            test_avg = test_qs.aggregate(avg_score=Avg('stu_avg_mark'))['avg_score'] or 0
+            last_test = test_qs.order_by('-dtm_submit', '-dtm_end', '-dtm_start_test').first()
+            test_date = last_test.dtm_submit or last_test.dtm_end or last_test.dtm_start_test
+
+            tests_list.append({
+                "test_name": test_name,
+                "test_date": test_date,
+                "avg_mark": round(test_avg, 2),
+                "feedback": get_feedback(test_avg)  # <-- feedback per test
+            })
+
+        if tests_list:
+            category_test_details.append({
+                "category": display_category,
+                "tests": tests_list
+            })
+
+    # Overall average
+    overall_avg = audio_base_qs.filter(is_active=True).aggregate(overall_avg=Avg('stu_avg_mark'))['overall_avg'] or 0
+
+    # -------------------------------
+    # RESPONSE WITH STUDENT INFO + FEEDBACK
+    # -------------------------------
+    return Response({
+        "student_name": student.students_name,
+        "registration_number": student.registration_number,
+        "department": student.department_id.department if student.department_id else None,
+        "year": student.year,
+        "total_assigned_tests": total_assigned_tests,
+        "total_attended_tests": total_attended_tests,
+        "overall_avg_mark": round(overall_avg, 2),
+        "overall_feedback": get_feedback(overall_avg),
+        "category_wise": category_data,
+        "category_test_details": category_test_details
+    })
 
 class LogSkillTypeQuestionView(APIView):
     """
@@ -35443,7 +36464,11 @@ class LogSkillTypeQuestionView(APIView):
                     )
 
                     data = r.json()
-                    translated_text = data[0][0][0]
+
+                    # ✅ JOIN ALL SENTENCES
+                    translated_text = "".join(
+                        [item[0] for item in data[0] if item[0]]
+                    )
 
                     print("➡ Translated To :", target_lang)
                     print("➡ Translated Q :", translated_text)
@@ -35462,3 +36487,679 @@ class LogSkillTypeQuestionView(APIView):
             },
             status=status.HTTP_200_OK
         )
+
+
+class AssignTestToStudentView(APIView):
+    def post(self, request):
+        data = request.data
+        print("📥 Step 1: Payload received:", data)
+
+        topic = data.get("topic")
+        sub_topic = data.get("sub_topic")
+        student_id = data.get("student_id")
+        question_paper_id = data.get("question_paper_id")
+        test_type_id = data.get("test_type_id")
+        skill_type_id = data.get("skill_type_id")  # optional
+        question_type_id = data.get("question_type_id")  # optional
+
+        # Step 2: Validate required fields
+        if not all([student_id, question_paper_id, test_type_id]):
+            print("❌ Missing required parameters")
+            return Response({"error": "Missing required parameters"}, status=400)
+        print("✅ Step 2: Required parameters validated")
+
+        # Step 3: Fetch student
+        student = candidate_master.objects.filter(id=student_id).first()
+        if not student:
+            print(f"❌ Student not found: ID={student_id}")
+            return Response({"error": "Student not found"}, status=404)
+        print(f"✅ Step 3: Student fetched: {student.user_name}")
+
+        # Step 4: Fetch question paper
+        paper = question_paper_master.objects.filter(id=question_paper_id).first()
+        if not paper:
+            print(f"❌ Question paper not found: ID={question_paper_id}")
+            return Response({"error": "Invalid question paper ID"}, status=404)
+        print(f"✅ Step 4: Question paper fetched: {paper.question_paper_name}")
+
+        # Step 5: Determine test_name (based on test type + category/subtopic/paper name)
+        test_type_obj = test_type.objects.filter(id=test_type_id).first()
+        test_type_name = test_type_obj.test_type if test_type_obj else "UnknownType"
+        test_type_category = test_type_obj.test_type_categories if test_type_obj else "UnknownCategory"
+        test_name = f"{test_type_name}_{sub_topic or topic or paper.folder_name}"
+        print(f"✅ Step 5: Test name determined: {test_name}")
+
+        # Step 6: Fetch or create test_master only if not exists
+        tm_defaults = {}
+        if skill_type_id:
+            tm_defaults["skill_type_id_id"] = skill_type_id
+        if question_type_id:
+            tm_defaults["question_type_id_id"] = question_type_id
+        if test_type_id:
+            tm_defaults["test_type_id_id"] = test_type_id
+
+        tm, created = test_master.objects.get_or_create(
+            test_name=test_name,
+            defaults=tm_defaults
+        )
+        print(f"✅ Step 6: Test master {'created' if created else 'already exists'}: {tm.id}")
+
+        # Step 7: Fetch rules
+        rule_obj = rules.objects.filter(rule_name__iexact=test_type_name).first() \
+            or rules.objects.filter(id=1).first()
+        print(f"✅ Step 7: Rules fetched: {rule_obj.id if rule_obj else 'None'}")
+
+        # Step 8: Fetch user role
+        user_login = login.objects.filter(user_name=student.user_name).first()
+        user_role = user_login.role if user_login else "unknown"
+        print(f"✅ Step 8: User role determined: {user_role}")
+
+        # Step 9: Check existing candidate assignment
+        existing = tests_candidates_map.objects.filter(
+            test_name=test_name,
+            student_id=student
+        ).first()
+        duration_of_test = paper.duration_of_test or 30
+        print(f"✅ Step 9: Duration of test: {duration_of_test}")
+
+        # Step 10: Update or create candidate assignment
+        if existing:
+            print(f"🔄 Step 10a: Updating existing assignment: ID={existing.id}")
+            existing.assign_count = (existing.assign_count or 1) + 1
+            existing.question_id = paper
+            existing.dtm_start = timezone.now()
+            existing.dtm_start1 = timezone.now()
+            existing.duration = duration_of_test
+            existing.duration_type = "QuestionTime"
+            existing.rules_id = rule_obj
+            existing.is_active = False
+            existing.created_by = user_role
+            existing.save()
+            tcm = existing
+            action = "updated"
+        else:
+            print("🆕 Step 10b: Creating new assignment")
+            tcm = tests_candidates_map.objects.create(
+                test_name=test_name,
+                question_id=paper,
+                student_id=student,
+                college_id=student.college_id,
+                department_id=student.department_id,
+                dtm_start=timezone.now(),
+                dtm_start1=timezone.now(),
+                duration=duration_of_test,
+                duration_type="QuestionTime",
+                is_active=False,
+                rules_id=rule_obj,
+                assign_count=1,
+                avg_mark=0,
+                total_score=0,
+                stu_avg_mark=0,
+                created_by=user_role
+            )
+            action = "created"
+
+        print(f"✅ Step 11: Assignment {action} successfully: CandidateMapID={tcm.id}")
+
+        # Step 12: Return response
+        return Response({
+            "status": "success",
+            "action": action,
+            "test_master_id": tm.id,
+            "candidates_map_id": tcm.id,
+            "test_name": tm.test_name,
+            "duration": duration_of_test,
+            "assign_count": tcm.assign_count,
+            "test_type_category": test_type_category
+
+        }, status=201)
+
+
+from openpyxl.styles import Font
+from django.db.models import Avg
+
+
+
+@api_view(['GET'])
+def download_audio_report_excelold(request):
+
+    college_id = request.GET.get('college_id')
+    department_id = request.GET.get('department_id')
+    year = request.GET.get('year')
+    batch = request.GET.get('batch')
+    start_date = request.GET.get('startDate')
+    end_date = request.GET.get('endDate')
+
+    chart_type = request.GET.get('chart_type', 'bar')
+
+    CATEGORY_CONFIG = {
+        'Listening': ['AudioTyping', 'Multi_AudioTyping'],
+        'Reading': ['AudioMCQ'],
+        'Speaking': ['Pronunciation', 'Multi_Pronunciation'],
+        'Writing': ['TypingBlank'],
+    }
+
+    wb = Workbook()
+    wb.remove(wb.active)
+
+    # =====================================================
+    # STEP 1: AUDIO TESTS
+    # =====================================================
+    audio_test_names = list(
+        test_master.objects.filter(
+            test_type_id__test_type__iexact='Audio'
+        ).values_list('test_name', flat=True)
+    )
+
+    # =====================================================
+    # STEP 2: BASE QUERY
+    # =====================================================
+    base_qs = tests_candidates_map.objects.filter(
+        is_active=True,
+        test_name__in=audio_test_names,
+        student_id__isnull=False
+    ).select_related('student_id', 'department_id', 'college_id')
+
+    if college_id:
+        base_qs = base_qs.filter(college_id=college_id)
+    if department_id:
+        base_qs = base_qs.filter(department_id=department_id)
+    if year:
+        base_qs = base_qs.filter(year=year)
+    if batch:
+        base_qs = base_qs.filter(student_id__batch_no=batch)
+    if start_date and end_date:
+        base_qs = base_qs.filter(dtm_submit__date__range=[start_date, end_date])
+
+    # =====================================================
+    # STEP 3: CATEGORY SHEETS
+    # =====================================================
+    for sheet_name, keywords in CATEGORY_CONFIG.items():
+
+        category_qs = base_qs.filter(
+            test_name__iregex=r'(' + '|'.join(keywords) + ')'
+        )
+
+        if not category_qs.exists():
+            continue
+
+        ws = wb.create_sheet(title=f"{sheet_name} Report")
+
+        test_names = list(category_qs.values_list('test_name', flat=True).distinct())
+
+        headers = [
+            'Candidate Name', 'Reg No', 'Department',
+            'Login ID', 'Year'
+        ] + test_names + ['Total Avg (%)']
+
+        ws.append(headers)
+        for c in range(1, len(headers) + 1):
+            ws.cell(row=1, column=c).font = Font(bold=True)
+
+        students = category_qs.values(
+            'student_id',
+            'student_id__students_name',
+            'student_id__registration_number',
+            'student_id__user_name',
+            'student_id__year',
+            'department_id__department'
+        ).distinct()
+
+        for stu in students:
+            row = [
+                stu['student_id__students_name'],
+                stu['student_id__registration_number'],
+                stu['department_id__department'],
+                stu['student_id__user_name'],
+                stu['student_id__year'],
+            ]
+
+            total_score = 0
+            total_tests = len(test_names)
+
+            for test in test_names:
+                mark = category_qs.filter(
+                    student_id=stu['student_id'],
+                    test_name=test
+                ).values_list('avg_mark', flat=True).first() or 0
+
+                mark = round(mark, 2)
+                row.append(mark)
+                total_score += mark
+
+            total_avg = round((total_score / total_tests), 2) if total_tests else 0
+            row.append(total_avg)
+
+            ws.append(row)
+
+    # =====================================================
+    # STEP 4: CATEGORY SUMMARY + CHART
+    # =====================================================
+    summary_ws = wb.create_sheet(title='Category Report')
+
+    headers = ['Department'] + [f"{k} Avg" for k in CATEGORY_CONFIG.keys()]
+    summary_ws.append(headers)
+
+    for c in range(1, len(headers) + 1):
+        summary_ws.cell(row=1, column=c).font = Font(bold=True)
+
+    for dept in department_master.objects.all():
+        row = [dept.department]
+
+        for keywords in CATEGORY_CONFIG.values():
+            avg_val = base_qs.filter(
+                department_id=dept.id,
+                test_name__iregex=r'(' + '|'.join(keywords) + ')'
+            ).aggregate(avg=Avg('avg_mark'))['avg']
+
+            row.append(round(avg_val, 2) if avg_val else 0)
+
+        summary_ws.append(row)
+
+    if chart_type == 'pie':
+        chart = PieChart()
+    elif chart_type == 'line':
+        chart = LineChart()
+    else:
+        chart = BarChart()
+
+    data = Reference(summary_ws, min_col=2, min_row=1,
+                     max_col=len(headers), max_row=summary_ws.max_row)
+    cats = Reference(summary_ws, min_col=1, min_row=2,
+                     max_row=summary_ws.max_row)
+
+    chart.add_data(data, titles_from_data=True)
+    chart.set_categories(cats)
+    chart.title = "Category Performance by Department"
+
+    summary_ws.add_chart(chart, "H2")
+
+    # =====================================================
+    # STEP 5: TOP 100 STUDENTS SHEET
+    # =====================================================
+    top_ws = wb.create_sheet(title='Top 100 Students')
+
+    headers = [
+        'Rank', 'Candidate Name', 'Reg No',
+        'Department', 'Category',
+        'Total Avg (%)', 'Feedback'
+    ]
+    top_ws.append(headers)
+    for c in range(1, len(headers) + 1):
+        top_ws.cell(row=1, column=c).font = Font(bold=True)
+
+    all_top_students = []
+
+    def get_feedback(avg):
+        if avg >= 80:
+            return 'Excellent'
+        elif avg >= 60:
+            return 'Good'
+        elif avg >= 40:
+            return 'Average'
+        return 'Needs Improvement'
+
+    for category, keywords in CATEGORY_CONFIG.items():
+        qs = base_qs.filter(
+            test_name__iregex=r'(' + '|'.join(keywords) + ')'
+        )
+
+        students = qs.values(
+            'student_id',
+            'student_id__students_name',
+            'student_id__registration_number',
+            'department_id__department'
+        ).annotate(avg_mark=Avg('avg_mark'))
+
+        for s in students:
+            all_top_students.append({
+                'name': s['student_id__students_name'],
+                'reg': s['student_id__registration_number'],
+                'dept': s['department_id__department'],
+                'category': category,
+                'avg': round(s['avg_mark'], 2) if s['avg_mark'] else 0
+            })
+
+    top_100 = sorted(all_top_students, key=lambda x: x['avg'], reverse=True)[:100]
+
+    for idx, stu in enumerate(top_100, start=1):
+        top_ws.append([
+            idx,
+            stu['name'],
+            stu['reg'],
+            stu['dept'],
+            stu['category'],
+            stu['avg'],
+            get_feedback(stu['avg'])
+        ])
+
+    # =====================================================
+    # RESPONSE
+    # =====================================================
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=Audio_Test_Report.xlsx'
+    wb.save(response)
+    return response
+
+from rest_framework.decorators import api_view
+from django.http import HttpResponse
+from django.db.models import Avg, Q
+from openpyxl import Workbook
+from openpyxl.styles import Font
+from openpyxl.chart import BarChart, LineChart, PieChart, Reference
+from .models import tests_candidates_map, test_master, department_master
+
+@api_view(['GET'])
+def download_audio_report_excel(request):
+    college_id = request.GET.get('college_id')
+    department_ids = request.GET.get('department_id')  # could be 'all' or comma-separated
+    years = request.GET.get('year')  # could be 'all' or comma-separated
+    batches = request.GET.get('batch')  # could be 'all' or comma-separated
+    start_date = request.GET.get('startDate')
+    end_date = request.GET.get('endDate')
+    chart_type = request.GET.get('chart_type', 'bar')
+    print("request",request)
+    CATEGORY_CONFIG = {
+        'Listening': ['AudioTyping', 'Multi_AudioTyping'],
+        'Reading': ['AudioMCQ'],
+        'Speaking': ['Pronunciation', 'Multi_Pronunciation'],
+        'Writing': ['TypingBlank'],
+    }
+
+    wb = Workbook()
+    wb.remove(wb.active)
+
+    # STEP 1: AUDIO TESTS
+    audio_test_names = list(
+        test_master.objects.filter(
+            test_type_id__test_type__iexact='Audio'
+        ).values_list('test_name', flat=True)
+    )
+
+    # STEP 2: BASE QUERY
+    base_qs = tests_candidates_map.objects.filter(
+        is_active=True,
+        test_name__in=audio_test_names,
+        student_id__isnull=False
+    ).select_related('student_id', 'department_id', 'college_id')
+
+    # Filter by college
+    if college_id and college_id != 'all':
+        base_qs = base_qs.filter(college_id__id__in=[int(cid) for cid in college_id.split(',')])
+
+    # Filter by department
+    if department_ids and department_ids != 'all':
+        base_qs = base_qs.filter(department_id__id__in=[int(did) for did in department_ids.split(',')])
+
+    # Filter by year
+    if years and years != 'all':
+        base_qs = base_qs.filter(student_id__year__in=[int(y) for y in years.split(',')])
+
+    # Filter by batch
+    if batches and batches != 'all':
+        base_qs = base_qs.filter(student_id__batch_no__in=batches.split(','))
+
+    # Filter by date range
+    if start_date and end_date:
+        base_qs = base_qs.filter(dtm_submit__date__range=[start_date, end_date])
+
+    # =====================================================
+    # STEP 3: CATEGORY SHEETS
+    # =====================================================
+    for sheet_name, keywords in CATEGORY_CONFIG.items():
+        category_qs = base_qs.filter(
+            test_name__iregex=r'(' + '|'.join(keywords) + ')'
+        )
+        if not category_qs.exists():
+            continue
+
+        ws = wb.create_sheet(title=f"{sheet_name} Report")
+
+        test_names = list(category_qs.values_list('test_name', flat=True).distinct())
+
+        headers = ['Candidate Name', 'Reg No', 'Department', 'Login ID', 'Year'] + test_names + ['Total Avg (%)']
+        ws.append(headers)
+        for c in range(1, len(headers) + 1):
+            ws.cell(row=1, column=c).font = Font(bold=True)
+
+        students = category_qs.values(
+            'student_id',
+            'student_id__students_name',
+            'student_id__registration_number',
+            'student_id__user_name',
+            'student_id__year',
+            'department_id__department'
+        ).distinct()
+
+        for stu in students:
+            row = [
+                stu['student_id__students_name'],
+                stu['student_id__registration_number'],
+                stu['department_id__department'],
+                stu['student_id__user_name'],
+                stu['student_id__year'],
+            ]
+
+            total_score = 0
+            total_tests = len(test_names)
+
+            for test in test_names:
+                mark = category_qs.filter(
+                    student_id=stu['student_id'],
+                    test_name=test
+                ).values_list('avg_mark', flat=True).first() or 0
+
+                mark = round(mark, 2)
+                row.append(mark)
+                total_score += mark
+
+            total_avg = round((total_score / total_tests), 2) if total_tests else 0
+            row.append(total_avg)
+
+            ws.append(row)
+
+    # =====================================================
+    # STEP 4: CATEGORY SUMMARY + CHART
+    # =====================================================
+    summary_ws = wb.create_sheet(title='Category Report')
+    headers = ['Department'] + [f"{k} Avg" for k in CATEGORY_CONFIG.keys()]
+    summary_ws.append(headers)
+    for c in range(1, len(headers) + 1):
+        summary_ws.cell(row=1, column=c).font = Font(bold=True)
+
+    for dept in department_master.objects.all():
+        row = [dept.department]
+        for keywords in CATEGORY_CONFIG.values():
+            avg_val = base_qs.filter(
+                department_id=dept.id,
+                test_name__iregex=r'(' + '|'.join(keywords) + ')'
+            ).aggregate(avg=Avg('avg_mark'))['avg']
+            row.append(round(avg_val, 2) if avg_val else 0)
+        summary_ws.append(row)
+
+    if chart_type == 'pie':
+        chart = PieChart()
+    elif chart_type == 'line':
+        chart = LineChart()
+    else:
+        chart = BarChart()
+
+    data = Reference(summary_ws, min_col=2, min_row=1,
+                     max_col=len(headers), max_row=summary_ws.max_row)
+    cats = Reference(summary_ws, min_col=1, min_row=2,
+                     max_row=summary_ws.max_row)
+
+    chart.add_data(data, titles_from_data=True)
+    chart.set_categories(cats)
+    chart.title = "Category Performance by Department"
+    summary_ws.add_chart(chart, "H2")
+
+    # =====================================================
+    # STEP 5: TOP 100 STUDENTS SHEET
+    # =====================================================
+    top_ws = wb.create_sheet(title='Top 100 Students')
+    headers = ['Rank', 'Candidate Name', 'Reg No', 'Department', 'Category', 'Total Avg (%)', 'Feedback']
+    top_ws.append(headers)
+    for c in range(1, len(headers) + 1):
+        top_ws.cell(row=1, column=c).font = Font(bold=True)
+
+    all_top_students = []
+
+    def get_feedback(avg):
+        if avg >= 80:
+            return 'Excellent'
+        elif avg >= 60:
+            return 'Good'
+        elif avg >= 40:
+            return 'Average'
+        return 'Needs Improvement'
+
+    for category, keywords in CATEGORY_CONFIG.items():
+        qs = base_qs.filter(
+            test_name__iregex=r'(' + '|'.join(keywords) + ')'
+        )
+
+        students = qs.values(
+            'student_id',
+            'student_id__students_name',
+            'student_id__registration_number',
+            'department_id__department'
+        ).annotate(avg_mark=Avg('avg_mark'))
+
+        for s in students:
+            all_top_students.append({
+                'name': s['student_id__students_name'],
+                'reg': s['student_id__registration_number'],
+                'dept': s['department_id__department'],
+                'category': category,
+                'avg': round(s['avg_mark'], 2) if s['avg_mark'] else 0
+            })
+
+    top_100 = sorted(all_top_students, key=lambda x: x['avg'], reverse=True)[:100]
+
+    for idx, stu in enumerate(top_100, start=1):
+        top_ws.append([
+            idx,
+            stu['name'],
+            stu['reg'],
+            stu['dept'],
+            stu['category'],
+            stu['avg'],
+            get_feedback(stu['avg'])
+        ])
+
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=Audio_Test_Report.xlsx'
+    wb.save(response)
+    return response
+from django.db.models import Q
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+@api_view(['GET'])
+def get_audio_feedback_report(request):
+    college_id = request.GET.get('college_id')
+    department_id = request.GET.get('department')
+    year = request.GET.get('year')
+
+    if not college_id:
+        return Response({"error": "college_id is required"}, status=400)
+
+    # ✅ Get Audio test names using CORRECT FK lookups
+    audio_test_names = test_master.objects.filter(
+        test_type_id__test_type="Audio"
+    ).values_list('test_name', flat=True)
+
+    qs = tests_candidates_map.objects.filter(
+        college_id=college_id,
+        is_active=True,
+        test_name__in=audio_test_names
+    )
+
+    if department_id:
+        qs = qs.filter(department_id=department_id)
+
+    if year:
+        qs = qs.filter(year=year)
+
+    students = qs.values(
+        "student_id",
+        "student_id__students_name",
+        "student_id__registration_number"
+    ).distinct()
+
+    # ✅ Category mapping based on test_type_categories
+    AUDIO_CATEGORY_MAP = {
+        "AudioTyping": "Listening Avg",
+        "Multi_AudioTyping": "Listening Avg",
+        "Pronunciation": "Speaking Total Avg",
+        "Multi_Pronunciation": "Speaking Total Avg",
+        "AudioMCQ": "Reading Total Avg",
+        "TypingBlank": "Writing Total Avg",
+    }
+
+    result = []
+
+    for s in students:
+        stu_qs = qs.filter(student_id=s['student_id'])
+
+        category_scores = {}
+
+        for row in stu_qs:
+            tm = test_master.objects.select_related('test_type_id').filter(
+                test_name=row.test_name
+            ).first()
+
+            if not tm or not tm.test_type_id:
+                continue
+
+            category_key = tm.test_type_id.test_type_categories
+            category_name = AUDIO_CATEGORY_MAP.get(category_key)
+
+            if not category_name:
+                continue
+
+            category_scores.setdefault(category_name, []).append(row.avg_mark or 0)
+
+        # ✅ Category-wise averages
+        audio_avg_result = {
+            k: round(sum(v) / len(v))
+            for k, v in category_scores.items()
+            if v
+        }
+
+        # ✅ Overall audio average
+        overall_avg = (
+            round(sum(audio_avg_result.values()) / len(audio_avg_result))
+            if audio_avg_result else 0
+        )
+
+        # ✅ Feedback
+        if overall_avg > 85:
+            feedback = "Excellent"
+        elif overall_avg > 60:
+            feedback = "Good"
+        elif overall_avg > 45:
+            feedback = "Need to Focus"
+        elif overall_avg > 30:
+            feedback = "Need Improvement"
+        else:
+            feedback = "Very Poor"
+
+        result.append({
+            "student_id": s['student_id'],
+            "students_name": s['student_id__students_name'],
+            "registration_number": s['student_id__registration_number'],
+            **audio_avg_result,
+            "overall_avg": overall_avg,
+            "feedback": feedback,
+        })
+
+    return Response({
+        "results": result,
+        "count": len(result)
+    })

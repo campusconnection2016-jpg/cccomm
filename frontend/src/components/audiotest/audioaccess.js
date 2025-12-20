@@ -11,7 +11,8 @@ import {
   FaWaveSquare,
 } from "react-icons/fa";
 
-const AudioAccess = () => {
+const AudioAccess = ({ institute, collegeName, username, userRole }) => {
+  console.log(" received aa",institute, collegeName, username, userRole);
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [questionPapers, setQuestionPapers] = useState([]);
@@ -210,11 +211,21 @@ onMouseOut={(e) => {
                     (e.currentTarget.style.transform = "scale(1.0)")
                   }
                 >
-                  <h5 style={{ color: "#F1A128" }}>{paper.question_paper_name}</h5>
-                 
-                  <p>
+                 <h5>
                      {paper.sub_topic || "N/A"}
-                  </p>
+                  </h5>
+                   <p style={{
+    color: "#F1A128",
+    textAlign: "center",
+    maxWidth: "160px",
+    wordWrap: "break-word",
+    overflowWrap: "break-word",
+    whiteSpace: "normal",
+    lineHeight: "1.3",
+    margin: "8px 5px 0",
+  }}>{paper.question_paper_name}</p>
+                 
+                  
                 </div>
               ))}
             </div>

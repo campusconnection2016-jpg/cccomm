@@ -4,7 +4,8 @@ import {
     getCollegeList_Concat_API,
     get_department_info_cumula_API,
     downloadTestReports,get_user_colleges_API,
-    getBatchnumberClgID_API, getLoginApi, downloadTestReportsMonthwise
+    exportAudioExcelReport,
+    getBatchnumberClgID_API, 
 } from "../../api/endpoints";
 import { Col, Row } from "react-bootstrap";
 import DatePicker from 'react-datepicker';
@@ -117,8 +118,10 @@ const yearOptions = [
   
 
     const [selectedYear, setSelectedYear] = useState([]);
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    //const [startDate, setStartDate] = useState("");
+   // const [endDate, setEndDate] = useState("");
+const [startDate, setStartDate] = useState(null);
+const [endDate, setEndDate] = useState(null);
 
     useEffect(() => {
         if (triggerFetch) {
@@ -201,57 +204,7 @@ const yearOptions = [
     }
 }, [username, userRole, institute, collegeName]);
 
-  /*  useEffect(() => {
-        if (selectedCollege) {
-            console.log("Fetching departments for College ID:", selectedCollege.value);
-
-            // Convert to an array if needed
-            const collegeIds = Array.isArray(selectedCollege.value) ? selectedCollege.value : [selectedCollege.value];
-
-            get_department_info_cumula_API(collegeIds)
-                .then((data) => {
-                    console.log("Raw API Response:", data); // ✅ Debugging
-
-                    if (!Array.isArray(data)) {
-                        console.error("API response is not an array:", data);
-                        setDepartmentList([]); // Prevent errors
-                        return;
-                    }
-
-                    const options = data.map((dept) => ({
-                        value: dept.department_id__id,
-                        label: dept.department_id__department
-                    }));
-
-                    console.log("Formatted Department Options:", options); // ✅ Debugging
-
-                    setDepartmentList(options);
-                })
-                .catch((error) => {
-                    console.error("Error fetching departments:", error);
-                    setDepartmentList([]);
-                });
-
-
-
-            getBatchnumberClgID_API(selectedCollege.value)
-                .then((batches) => {
-                    console.log('Batch Numbers:', batches);
-
-                    // Map the response to the format expected by react-select
-                    const options = batches.batch_numbers.map((batch) => ({
-                        label: batch,
-                        value: batch,
-                    }));
-                    setBatchNumbers(options);
-
-                })
-                .catch((error) => {
-                    console.error('Error fetching batch numbers:', error);
-                });
-        }
-    }, [selectedCollege]);*/
-
+ 
     useEffect(() => {
   if (selectedCollege) {
     const collegeIds = Array.isArray(selectedCollege.value)
@@ -294,18 +247,13 @@ setDepartmentList(options);
   }
 }, [selectedCollege]);
 
-    const handleDownload = () => {
+    const handleDownloadold = () => {
         if (!selectedCollege) {
             alert("Please select a college.");
             return;
         }
 
-        // Extract optional parameters safely
-      //  const departmentIds = selectedDepartments?.map(dept => dept.value).join(",") || null;
-       
-      //  const batchNos = selectedBatchNo?.map(bt => bt.value).join(",") || null;
-      //  const years = selectedYear?.map(yr => yr.value).join(",") || null;
-       const questionTypes = selectedQuestionType?.map(qs => qs.value).join(",") || null;
+           const questionTypes = selectedQuestionType?.map(qs => qs.value).join(",") || null;
 const departmentIds =
   selectedDepartments.length === departmentList.length
     ? 'all'
@@ -329,7 +277,7 @@ const years =
             year: years,
             startDate: startDateFormatted,
             endDate: endDateFormatted,
-            questionTypes,
+           questionTypes,
             createdByRole: selectedRole.value,
             batchNos, // Log batch numbers
             inactive: isInactive,
@@ -338,6 +286,55 @@ const years =
         downloadTestReports(selectedCollege.value, batchNos, departmentIds, years, startDateFormatted, endDateFormatted, questionTypes, selectedRole.value, selectedChartType.value, isInactive);
     };
 
+const handleDownload = () => {
+  if (!selectedCollege) {
+    alert("Please select a college.");
+    return;
+  }
+
+  const departmentIds =
+    selectedDepartments.length === departmentList.length
+      ? 'all'
+      : selectedDepartments.map(dept => dept.value).join(',');
+
+  const batchNos =
+    selectedBatchNo.length === batchNumbers.length
+      ? 'all'
+      : selectedBatchNo.map(bt => bt.value).join(',');
+
+  const years =
+    selectedYear.length === yearOptions.length - 1
+      ? 'all'
+      : selectedYear.map(yr => yr.value).join(',');
+
+  const startDateFormatted = startDate instanceof Date ? startDate.toISOString().split("T")[0] : null;
+  const endDateFormatted = endDate instanceof Date ? endDate.toISOString().split("T")[0] : null;
+
+  const payload = {
+    college_id: selectedCollege?.value || null,
+    batchNos,
+    departmentIds,
+    years,
+    startDate: startDateFormatted,
+    endDate: endDateFormatted,
+    chartType: selectedChartType?.value || null,
+  };
+
+  exportAudioExcelReport(payload)
+    .then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'audio_report.xlsx'); // name the file
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    })
+    .catch((err) => {
+      console.error("Download error:", err);
+      alert("Failed to download report.");
+    });
+};
 
 
     return (
@@ -350,49 +347,58 @@ const years =
                     <Col>
                         <label className="label-ques5">College**</label><p></p>
                         <Select
-                            options={collegeList}
-                            value={selectedCollege}
-                            onChange={(college) => {
-                                console.log("College Selected:", college);
-                                setSelectedCollege(college);
-                            }}
-                            placeholder="Select College"
-                            styles={customStyles}
-                            isDisabled={isCollegeDisabled} // Enable only for Super Admin
-                        />
+  options={collegeList}
+  value={selectedCollege}
+  onChange={(college) => {
+    console.log("College Selected:", college);
+    // Only set if a valid college is selected
+    if (college && college.value !== '') {
+      setSelectedCollege(college);
+    } else {
+      setSelectedCollege(null);
+      setDepartmentList([]);
+      setBatchNumbers([]);
+    }
+  }}
+  placeholder="Select College"
+  styles={customStyles}
+  isDisabled={isCollegeDisabled}
+/>
+
                     </Col>
                     <Col>
                         <label className="label-ques5">Batch</label><p></p>
-                        <Select
-                            options={batchNumbers}
-                            value={selectedBatchNo}
-                            onChange={(bt) => setSelectedBatchNo(bt)}
-                            placeholder="Select Batches"
-                            styles={customStyles}
-                            components={{ Option: CustomOption }}
-                            closeMenuOnSelect={false}
-                            isMulti // Allows selecting multiple batches
-                        /></Col>
+                       <Select
+  options={batchNumbers}
+  value={selectedBatchNo || []} // ensure array
+  onChange={(bt) => setSelectedBatchNo(bt || [])} // always array
+  placeholder="Select Batches"
+  styles={customStyles}
+  components={{ Option: CustomOption }}
+  closeMenuOnSelect={false}
+  isMulti
+/>
+</Col>
                     <Col>
                         <label className="label-ques5">Department</label><p></p>
  <Select
   options={departmentList}
-  value={displayDepartments}
+  value={displayDepartments || []} // MUST be an array
   onChange={(selected) => {
     if (selected && selected.some(opt => opt.value === 'all')) {
-      // Backend value = all departments except the 'all' dummy
       const realDepartments = departmentList.filter(opt => opt.value !== 'all');
-      setSelectedDepartments(realDepartments); // real ids for backend
-      setDisplayDepartments([{ value: 'all', label: 'All Departments' }]); // just show one chip
+      setSelectedDepartments(realDepartments); // send real IDs to backend
+      setDisplayDepartments([{ value: 'all', label: 'All Departments' }]); // show one chip
     } else {
-      setSelectedDepartments(selected);
-      setDisplayDepartments(selected);
+      setSelectedDepartments(selected || []); // always array
+      setDisplayDepartments(selected || []);
     }
   }}
   placeholder="Select Department(s)"
   styles={customStyles}
   isMulti
 />
+
 
 
                     </Col>
@@ -407,12 +413,12 @@ const years =
                       
 <Select
   options={yearOptions}
-  value={selectedYear}
+  value={selectedYear || []} // ensure array
   onChange={(selected) => {
     if (selected && selected.some(opt => opt.value === 'all')) {
       setSelectedYear(yearOptions.filter(opt => opt.value !== 'all'));
     } else {
-      setSelectedYear(selected);
+      setSelectedYear(selected || []);
     }
   }}
   styles={customStyles}
@@ -447,7 +453,7 @@ const years =
                 </Row>
 
                 <p></p>
-                <Row>
+              {/*}  <Row>
                     <Col>
                         <label className="label-ques5">Skills</label><p></p>
                         <Select
@@ -499,7 +505,7 @@ const years =
                     <Col></Col>
                     <Col>
                     </Col>
-                </Row>
+                </Row>*/}
                 <Row className="center-button-container">
                     <Col xs="auto">
                         <button onClick={handleDownload} className="downloads-button">

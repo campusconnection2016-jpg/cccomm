@@ -366,7 +366,7 @@ const GrowthReport = ({ collegeName, institute, username ,userRole}) => {
                             styles={customStyles}
                         />
                     </Col>
-                    <Col>
+                  {/*}  <Col>
                         <label className="label-ques5">Skills</label><p></p>
                         <Select
                             options={questionType} // Options to display
@@ -378,7 +378,7 @@ const GrowthReport = ({ collegeName, institute, username ,userRole}) => {
                             closeMenuOnSelect={false}
                             isMulti // Enable multi-select
                         />
-                    </Col>
+                    </Col>*/}
                 </Row>
 
                 <p></p>

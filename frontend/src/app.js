@@ -215,8 +215,8 @@ const App = ({ collegeName, username, userRole, institute }) => {
              <Route path="/question/mcq/test" element={<QuestionPaperMCQTest username={username} collegeName={collegeName} userRole={userRole} institute={institute} />} />
                         <Route path="/question/code/test" element={<QuestionPaperCodeTest username={username} collegeName={collegeName} userRole={userRole} institute={institute} />} />
                       <Route path="/question/communication/" element={<UploadCommunicationTest />} />
-                   <Route path="/test/audio/assign/" element={<AudioAccess />} />
-                     <Route path="/test/audio/assign-form/" element={<AudioTestAssign />} />
+                   <Route path="/test/audio/assign/" element={<AudioAccess username={username} collegeName={collegeName} userRole={userRole} institute={institute}/>} />
+                     <Route path="/test/audio/assign-form/" element={<AudioTestAssign username={username} collegeName={collegeName} userRole={userRole} institute={institute}/>} />
                                       
                       </Routes>
                     </TestQuesProvider>

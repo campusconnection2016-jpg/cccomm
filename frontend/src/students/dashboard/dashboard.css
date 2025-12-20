@@ -891,3 +891,18 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 }
+.chart-row {
+  display: flex;
+  gap: 20px; /* space between charts */
+}
+
+.chart-col {
+  flex: 1; /* split space equally */
+  background: transparent;
+}
+
+.chart-title {
+  font-size: 16px;
+  color: #fff;
+  font-weight: bold;
+}

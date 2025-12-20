@@ -1340,7 +1340,7 @@ const Sidebar = ({ userRole }) => {
                         <span className="dashboard-text">Daywise Report</span>
                       </li>
                     </Link>
-                    <Link to="/hdfc/test/report" onContextMenu={(e) => {
+                  {/*}  <Link to="/hdfc/test/report" onContextMenu={(e) => {
                       e.preventDefault();
                       const newWindow = window.open('https://ccportal.co.in', '_blank', 'noopener,noreferrer');
                       if (newWindow) newWindow.opener = null;
@@ -1349,7 +1349,7 @@ const Sidebar = ({ userRole }) => {
 
                         <span className="dashboard-text">Employees Report</span>
                       </li>
-                    </Link>
+                    </Link>*/}
                     <Link to="/practice/stu/report" onContextMenu={(e) => {
                       e.preventDefault();
                       const newWindow = window.open('https://ccportal.co.in', '_blank', 'noopener,noreferrer');
@@ -1407,11 +1407,11 @@ const Sidebar = ({ userRole }) => {
 
                       <Link to="/Database/login">CreateAccount</Link>
                     </li>
-                    {!["Training admin", "Placement admin"].includes(userRole) && (
+                   {/*} {!["Training admin", "Placement admin"].includes(userRole) && (
                       <li className={`test-option ${activeMenuItem === 'employees' ? 'active' : ''}`} onClick={() => { handleMenuItemClick('employees'); toggleSubmenu(); }}>
 
                         <Link to="/upload-employees">Employees</Link>
-                      </li>)}
+                      </li>)}*/}
                   </ul>
                 )}
               </div>

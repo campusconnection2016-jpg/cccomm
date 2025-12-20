@@ -3,9 +3,9 @@ import axios from "axios";
 import { format, formatDate } from "date-fns";
 import moment from 'moment';
 
-const API_URL = "http://localhost:8000";
+//const API_URL = "http://localhost:8000";
 
-//const API_URL = "https://ccportal.co.in";
+const API_URL = "https://ccportal.co.in";
 
 export function getLoginApi() {
   return axios
@@ -6350,8 +6350,7 @@ export function get_Department_Report_API(page = 1, search = "", college, depart
           college_id: college,
            ...(department ? { department_id: department } : {}),
     ...(year ? { year: year } : {})
-        //  department_id: department,
-         // year: year
+       
       }
   }) // Call the grouped course schedule API
     .then((response) => response.data)
@@ -8016,6 +8015,7 @@ export function updateTotalAndAvgMarksdeleteanswerApi(test_name, student_id) {
 }
 
 
+
 export function runmysqlApi(code) {
   return axios
     .post(`${API_URL}/api/run-mysql/`, { code })
@@ -8217,4 +8217,195 @@ export function logSkillTypeQuestionApi(skill_type, question_text) {
     skill_type,
     question_text,
   });
+}
+
+export function getlisteningCount_API(collegeId) {
+  return axios
+    .get(`${API_URL}/api/Listening-test-count/`, {
+      params: { college_id: collegeId },
+    })
+    .then((response) => response.data);
+}
+
+export function getReadingCount_API(collegeId) {
+  return axios
+    .get(`${API_URL}/api/reading-test-count/`, {
+      params: { college_id: collegeId },
+    })
+    .then((response) => response.data);
+}
+export function getSpeakingCount_API(collegeId) {
+  return axios
+    .get(`${API_URL}/api/speaking-test-count/`, {
+      params: { college_id: collegeId },
+    })
+    .then((response) => response.data);
+}
+export function getWritingCount_API(collegeId) {
+  return axios
+    .get(`${API_URL}/api/writing-test-count/`, {
+      params: { college_id: collegeId },
+    })
+    .then((response) => response.data);
+}
+export function getAvgListening_cc_API(collegeId, dtmStart) {
+  const formattedDate = format(dtmStart, "yyyy-MM-dd");
+  return axios
+    .get(`${API_URL}/api/avg-score/listening/`, {
+      params: { college_id: collegeId, dtm_start: formattedDate },
+    })
+    .then((response) => response.data);
+}
+export function getAvgSpeaking_cc_API(collegeId, dtmStart) {
+  const formattedDate = format(dtmStart, "yyyy-MM-dd");
+  return axios
+    .get(`${API_URL}/api/avg-score/speaking/`, {
+      params: { college_id: collegeId, dtm_start: formattedDate },
+    })
+    .then((response) => response.data);
+}
+export function getAvgReading_cc_API(collegeId, dtmStart) {
+  const formattedDate = format(dtmStart, "yyyy-MM-dd");
+  return axios
+    .get(`${API_URL}/api/avg-score/reading/`, {
+      params: { college_id: collegeId, dtm_start: formattedDate },
+    })
+    .then((response) => response.data);
+}
+export function getAvgWriting_cc_API(collegeId, dtmStart) {
+  const formattedDate = format(dtmStart, "yyyy-MM-dd");
+  return axios
+    .get(`${API_URL}/api/avg-score/writing/`, {
+      params: { college_id: collegeId, dtm_start: formattedDate },
+    })
+    .then((response) => response.data);
+}
+
+export function getClgTopper_all_CC_API(collegeId, test_type, test_type_categories) {
+
+  console.log("📦 getClgTopper_all_CC_API CALLED");
+  console.log("➡️ collegeId:", collegeId);
+  console.log("➡️ test_type:", test_type);
+  console.log("➡️ test_type_categories:", test_type_categories);
+
+  const params = {
+    college_id: collegeId,
+    test_type: test_type,
+    ...(test_type_categories ? { test_type_categories } : {})
+  };
+
+  console.log("📤 FINAL PARAMS SENT TO BACKEND:", params);
+
+  return axios
+    .get(`${API_URL}/api/clg-topper-all/cc/`, { params })
+    .then((res) => {
+      console.log("✅ BACKEND RESPONSE STATUS:", res.status);
+      console.log("✅ BACKEND RESPONSE DATA:", res.data);
+
+      if (!Array.isArray(res.data)) {
+        console.warn("⚠️ Response is NOT an array:", res.data);
+      } else {
+        console.log("📊 Response length:", res.data.length);
+      }
+
+      return res.data;
+    })
+    .catch((error) => {
+      console.error("❌ API ERROR OCCURRED");
+
+      if (error.response) {
+        console.error("❌ ERROR STATUS:", error.response.status);
+        console.error("❌ ERROR DATA:", error.response.data);
+      } else if (error.request) {
+        console.error("❌ NO RESPONSE RECEIVED:", error.request);
+      } else {
+        console.error("❌ AXIOS ERROR MESSAGE:", error.message);
+      }
+
+      throw error;
+    });
+}
+
+export function Stu_listen_test_API(userName) {
+  return axios
+    .get(`${API_URL}/api/liten-test-count/stu/`, {
+      params: { username: userName},
+    })
+    .then((response) => response.data);
+}
+
+
+export function Stu_speak_test_API(userName) {
+  return axios
+    .get(`${API_URL}/api/speak-test-count/stu/`, {
+      params: { username: userName },
+    })
+    .then((response) => response.data);
+}
+
+
+export function Stu_read_test_API(userName) {
+  return axios
+    .get(`${API_URL}/api/reading-test-count/stu/`, {
+      params: { username: userName },
+    })
+    .then((response) => response.data);
+}
+
+
+export function Stu_write_test_API(userName) {
+  return axios
+    .get(`${API_URL}/api/writing-test-count/stu/`, {
+      params: { username: userName },
+    })
+    .then((response) => response.data);
+}
+export function Stu_Communicationall_Reports_API(userName, cat, dtmStart) {
+  const formattedDate = format(dtmStart, "yyyy-MM-dd");
+  return axios
+    .get(`${API_URL}/api/get_student_skill_percentage/`, {
+      params: {
+        username: userName,
+        categories: cat,
+        start_date: formattedDate,
+      },
+    })
+    .then((response) => response.data);
+}
+
+export function Communication_student_test_summary_API(studentName) {
+  return axios
+    .get(`${API_URL}/api/student-test-summary/commun/`, {
+      params: { student_name: studentName },
+    })
+    .then((response) => response.data);
+}
+export function logAudioTestStartApi(payload) {
+  return axios.post(`${API_URL}/api/log-audio-test-start/`, payload);
+}
+
+// endpoints.js
+export const exportAudioExcelReport = (payload) => {
+  return axios.get(`${API_URL}/api/reports/audio/excel/`, {
+    params: payload,       // send payload as query parameters
+    responseType: 'blob',  // required for file download
+  });
+};
+export function get_Departmentaudio_Report_API(page = 1, search = "", college, department, year) { 
+  return axios
+    .get(`${API_URL}/api/department-repo/feedback/`, {
+      params: { 
+          page, 
+          search, 
+          college_id: college,
+           ...(department ? { department_id: department } : {}),
+    ...(year ? { year: year } : {})
+       
+      }
+  }) // Call the grouped course schedule API
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("Error fetching feedback details in dept report data:", error);
+      throw error;
+    });
 }

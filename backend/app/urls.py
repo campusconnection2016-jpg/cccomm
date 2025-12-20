@@ -818,17 +818,17 @@ path('api/start-reassigned-exam/', views.start_reassigned_exam, name='start_reas
     path('api/capture-first-login-email/', views.capture_first_login_send_email, name='capture_first_login_send_email'),
 path('api/reassign-test-status/refresh/', views.reassign_test_candidates_status_refresh, name='reassign_test_candidates_status_refresh'),
 path('api/update_movetab_test/', views.update_movetab_test, name='update_remarks'),
-path('api/run-node/', views.run_node, name='run_node'),
-    path('api/run-springboot/', views.run_springboot, name='run_springboot'),
-path('api/matlab-compiler/', views.run_matlab_code, name='matlab-compiler'),
-    path('api/vlsi-compiler/', views.run_vlsi_code, name='vlsi-compiler'),
- path('api/run-csharp/', views.run_csharp_code, name='run_csharp_code'),
- path('api/run-php/', views.run_php, name='run-php'),
+#path('api/run-node/', views.run_node, name='run_node'),
+#    path('api/run-springboot/', views.run_springboot, name='run_springboot'),
+#path('api/matlab-compiler/', views.run_matlab_code, name='matlab-compiler'),
+#    path('api/vlsi-compiler/', views.run_vlsi_code, name='vlsi-compiler'),
+# path('api/run-csharp/', views.run_csharp_code, name='run_csharp_code'),
+# path('api/run-php/', views.run_php, name='run-php'),
  path('api/update-total-avg-marks/', views.update_total_and_avg_marks, name='update_total_and_avg_marks'),
 
  path('api/update-total-avg-marks-delete-answer/', views.update_total_and_avg_marks_deleteanswer, name='update_total_and_avg_marks_deleteanswer'),
-path("api/run-mysql/", views.run_mysql, name="run_mysql"),
-path('api/run-jquery/', views.run_jquery, name='run_jquery'),  # ✅ new line added
+#path("api/run-mysql/", views.run_mysql, name="run_mysql"),
+#path('api/run-jquery/', views.run_jquery, name='run_jquery'),  # ✅ new line added
 
 
 #_________________________________________aUDIO__________________________________3
@@ -851,6 +851,30 @@ path("api/generate-questions/", views.generate_questions),
 
 path("api/get-skill-type-by-test/",views.GetSkillTypeByTestNameView.as_view(),name="get-skill-type-by-test",),
 path("api/log-skilltype-question/", views.LogSkillTypeQuestionView.as_view(), name="log-skilltype-question",),
+  path('api/Listening-test-count/', views.get_test_listenting_category, name='get_test_count_by_typing_category'),
+  
+path('api/reading-test-count/', views.get_test_reading_category, name='reading-test-count'),
+    path('api/speaking-test-count/', views.get_test_Speaking_category, name='speaking-test-count'),
+    path('api/writing-test-count/', views.get_test_Writing_category, name='writing-test-count'),
+ path('api/avg-score/listening/',views.get_avg_score_listening_cc,name='avg-score-listening' ),
+    path('api/avg-score/speaking/',views.get_avg_score_speaking_cc, name='avg-score-speaking'),
+    path('api/avg-score/reading/',views.get_avg_score_reading_cc, name='avg-score-reading'),
+    path('api/avg-score/writing/',views.get_avg_score_writing_cc,name='avg-score-writing' ),
+ path('api/clg-topper-all/cc/', views.get_College_topper_ccall, name='get_College_topper_ccall'),
+   
+ path('api/liten-test-count/stu/', views.get_listening_test_stu, name='get_aptitute_test_stu'),
+    path('api/speak-test-count/stu/', views.get_speaking_test_stu, name='get_technical_test_stu'),
+
+path('api/reading-test-count/stu/', views.get_Reading_test_stu, name='get_aptitute_test_stu'),
+    path('api/writing-test-count/stu/', views.get_Writing_test_stu, name='get_technical_test_stu'),
+
+ path('api/get_student_skill_percentage/', views.get_student_skill_percentage, name='get_technical_test_stu'),
+
+ path( 'api/student-test-summary/commun/', views.student_test_summary_commun, name='student-test-summary'),
+path("api/log-audio-test-start/", views.AssignTestToStudentView.as_view(), name="log-audio-test-start"),
+ path('api/reports/audio/excel/', views.download_audio_report_excel),
+   path('api/department-repo/feedback/', views.get_audio_feedback_report, name='get_audio_avg_report'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

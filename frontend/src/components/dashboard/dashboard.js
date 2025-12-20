@@ -9,6 +9,8 @@ import TextField from "@mui/material/TextField";
 import DatePicker from "react-datepicker";
 import Footer from "../../footer/footer";
 import {
+  getClgTopper_all_CC_API,
+  getAvgListening_cc_API,getAvgSpeaking_cc_API,getAvgReading_cc_API,getAvgWriting_cc_API,
   getcollegeApi,
   getcompanyTotalCount_API,
   getcommunTotalCount_API,
@@ -20,7 +22,7 @@ getjoboffer_announcement_cc_API,
   getRequestCount_CC_API,
   getAvgAptitude_cc_API,
   getAvgCoding_cc_API,
-  getClgTopper_MCQ_CC_API,
+ 
   getNewUpdates_cc_API,
   getOfferChart_cc_API,
   getUpcomingInterview_cc_API,
@@ -33,7 +35,8 @@ getjoboffer_announcement_cc_API,
   getClgTotal_Core_Count_API,
 
    getCollegeList_Concat_API,
-      get_user_colleges_API
+      get_user_colleges_API,
+      getlisteningCount_API,getReadingCount_API,getSpeakingCount_API,getWritingCount_API
 } from "../../api/endpoints";
 import { Link } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
@@ -54,6 +57,11 @@ const Dashboard = ({ userRole, username }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [avgAptitudeScore, setAvgAptitudeScore] = useState([]);
   const [avgCodingScore, setAvgCodingScore] = useState([]);
+  const [avgListeningScore, setAvgListeningScore] = useState([]);
+const [avgSpeakingScore, setAvgSpeakingScore] = useState([]);
+const [avgReadingScore, setAvgReadingScore] = useState([]);
+const [avgWritingScore, setAvgWritingScore] = useState([]);
+
   const [clgTopper, setClgTopper] = useState([]);
   const [selectedOptionClgTop, setSelectedOptionClgTop] = useState("MCQ Test");
   const [clgTopperCode, setClgTopperCode] = useState([]);
@@ -85,8 +93,10 @@ const Dashboard = ({ userRole, username }) => {
   const [chartType, setChartType] = useState("Pie");
   const [chartTypePlace, setChartTypePlace] = useState("Pie");
   const [triggerFetch, setTriggerFetch] = useState(true);
-
-
+  const [selectedTestType] = useState("Audio"); 
+ // const [selectedTestType, setSelectedTestType] = useState("Audio");
+  const [selectedTestCategory, setSelectedTestCategory] = useState("All"); // default to All categories
+ 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -115,7 +125,9 @@ const Dashboard = ({ userRole, username }) => {
       fetchTotalRequestCount();
       aptitudeAvgScore();
       getCodingAvgCore();
-      getCollegeTopper();
+      getwritingAvgCore();
+      getSpeakingAvgCore();
+    
       fetchAnnouncements();
       fetchcmpyCount();
       fetchcommunCount();
@@ -240,7 +252,8 @@ const fetchCompanies = async () => {
 
   const fetchAptitudeCount = async () => {
     try {
-      const response = await getAptitudeTotalCount_API(collegeId);
+     // const response = await getAptitudeTotalCount_API(collegeId);
+      const response = await getSpeakingCount_API(collegeId);
       //console.log("total Aptitude count: ", response);
       //console.log("userrole", userRole)
       setTotalAptitudeCount(response.count);
@@ -251,7 +264,9 @@ const fetchCompanies = async () => {
 
   const fetchTechnicalCount = async () => {
     try {
-      const response = await getTechnicalTotalCount_API(collegeId); // Await the promise
+     // const response = await getTechnicalTotalCount_API(collegeId);
+     const response = await getReadingCount_API(collegeId);
+      // Await the promise
       //console.log("response of total technical count: ", response);
       setTotalTechicalCount(response.count); // Access data directly
     } catch (err) {
@@ -272,7 +287,10 @@ const fetchCompanies = async () => {
 
   const fetchcommunCount = async () => {
     try {
-      const response = await getcommunTotalCount_API(collegeId); // Await the promise
+     // const response = await getcommunTotalCount_API(collegeId); 
+      const response = await getlisteningCount_API(collegeId); // Await the promise
+    
+      // Await the promise
       //console.log("response of total technical count: ", response);
       setTotalcommunCount(response.count); // Access data directly
     } catch (err) {
@@ -282,9 +300,11 @@ const fetchCompanies = async () => {
 
 const fetchTotalRequestCount = async () => {
   try {
-    const response = await getRequestCount_CC_API(collegeId);
+   // const response = await getRequestCount_CC_API(collegeId);
+   const response = await getWritingCount_API(collegeId);
     console.log("📡 Request count API response:", response);
-    setTotalRequest(response.request_count); // must match backend key
+    setTotalRequest(response.count || 0); 
+    //setTotalRequest(response.request_count); // must match backend key
   } catch (err) {
     console.log("❌ Error fetching request count:", err.message);
   }
@@ -293,9 +313,12 @@ const fetchTotalRequestCount = async () => {
 
   const aptitudeAvgScore = async () => {
     try {
-      const response = await getAvgAptitude_cc_API(collegeId, selectedDate);
+      
+      const response = await getAvgListening_cc_API(collegeId, selectedDate);
+      setAvgAptitudeScore(Array.isArray(response) ? response : []);
+      //const response = await getAvgAptitude_cc_API(collegeId, selectedDate);
       //console.log("Avg score of Department: ", response);
-      setAvgAptitudeScore(response);
+     // setAvgAptitudeScore(response);
     } catch (err) {
       console.log(err.message);
     }
@@ -304,45 +327,87 @@ const fetchTotalRequestCount = async () => {
   const getCodingAvgCore = async () => {
     try {
       console.log("coding avg entering........");
-      const response = await getAvgCoding_cc_API(collegeId, selectedDate);
+      
+      const response = await getAvgReading_cc_API(collegeId, selectedDate);
+      setAvgCodingScore(Array.isArray(response) ? response : []);
+     // const response = await getAvgCoding_cc_API(collegeId, selectedDate);
       // console.log("Coding Avg score of Department: ", response);
-      setAvgCodingScore(response);
+     // setAvgCodingScore(response);
     } catch (err) {
       console.log(err.message);
     }
   };
 
+  const getSpeakingAvgCore = async () => {
+    try {
+      console.log("coding avg entering........");
+      
+      const response = await getAvgSpeaking_cc_API(collegeId, selectedDate);
+      setAvgSpeakingScore(Array.isArray(response) ? response : []);
+     // const response = await getAvgCoding_cc_API(collegeId, selectedDate);
+      // console.log("Coding Avg score of Department: ", response);
+     // setAvgSpeakingScore(response);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+  const getwritingAvgCore = async () => {
+    try {
+      console.log("coding avg entering........");
+      
+      const response = await getAvgWriting_cc_API(collegeId, selectedDate);
+      setAvgWritingScore(Array.isArray(response) ? response : []);
+     // const response = await getAvgCoding_cc_API(collegeId, selectedDate);
+      // console.log("Coding Avg score of Department: ", response);
+     // setAvgWritingScore(response);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+  useEffect(() => {
+    if (!collegeId) return;
+  
+    console.log("🔁 useEffect triggered");
+    console.log("test_type:", selectedTestType);
+    console.log("test_type_category:", selectedTestCategory);
+  
+    getCollegeTopper();
+  }, [collegeId, selectedTestType, selectedTestCategory]);
+  
   const getCollegeTopper = () => {
-  if (selectedOptionClgTop === "MCQ Test") {
-    getClgTopper_MCQ_CC_API(collegeId, selectedOptionClgTop)
+    const params = {
+      collegeId,
+      test_type: selectedTestType,
+    };
+  
+    // 🔹 Only send category for Audio
+    if (
+      selectedTestType === "Audio" &&
+      selectedTestCategory &&
+      selectedTestCategory !== "All"
+    ) {
+      params.test_type_categories = selectedTestCategory;
+    }
+  
+  
+    console.log("📤 API Params:", params);
+  
+    getClgTopper_all_CC_API(
+      params.collegeId,
+      params.test_type,
+      params.test_type_categories
+    )
       .then((data) => {
-        setClgTopper(data);
+        console.log("✅ API Response:", data);
+        setClgTopper(Array.isArray(data) ? data : []);
       })
-      .catch((error) =>
-        console.error("Error fetching getting College Topper:", error)
-      );
-  } else if (selectedOptionClgTop === "Coding Test") {
-    getClgTopper_MCQ_CC_API(collegeId, selectedOptionClgTop)
-      .then((data) => {
-        setClgTopperCode(data);
-      })
-      .catch((error) =>
-        console.error("Error fetching getting College Topper:", error)
-      );
-  } else if (selectedOptionClgTop === "All") {
-    // 🔹 call the same API but pass "All"
-    getClgTopper_MCQ_CC_API(collegeId, "All")
-      .then((data) => {
-        // you can either merge them or just show combined list
-        setClgTopper(data); // use one state for combined
-        setClgTopperCode([]); // reset coding state
-      })
-      .catch((error) =>
-        console.error("Error fetching getting College Topper:", error)
-      );
-  }
-};
-
+      .catch((error) => {
+        console.error("❌ Error fetching College Topper:", error);
+        setClgTopper([]);
+      });
+  };
+  
+    
  const fetchAnnouncementsPlace = () => {
     getjoboffer_announcement_cc_API(collegeId)
       .then((data) => {
@@ -751,6 +816,190 @@ const fetchTotalRequestCount = async () => {
     }
   };
 
+  
+  const chartDataAvgwriting = {
+    labels: avgWritingScore.map((data) => data.department_name),
+    datasets: [
+      {
+        data: avgWritingScore.map((data) => data.avg_score || 0),
+        borderColor: "rgba(75,192,192,1)",
+        backgroundColor: "rgba(75,192,192,0.4)",
+        fill: false,
+        tension: 0.4,
+      },
+    ],
+  };
+
+  const renderChartAvgWritingScore = () => {
+    if (chartType === "Pie") {
+      return (
+        <div
+          style={{
+            width: "220px", // Set fixed width
+            height: "220px", // Set fixed height
+            margin: "0 auto", // Center the chart horizontally
+          }}
+        >
+          <Pie
+            data={{
+              labels: avgWritingScore.map((data) => data.department_name),
+              datasets: [
+                {
+                  data: avgWritingScore.map((data) => data.avg_score || 0),
+                  backgroundColor: [
+                    "rgba(75, 192, 192, 0.6)",
+                    "rgba(255, 99, 132, 0.6)",
+                    "rgba(54, 162, 235, 0.6)",
+                    "rgba(255, 206, 86, 0.6)",
+                    "rgba(153, 102, 255, 0.6)",
+                    "rgba(255, 159, 64, 0.6)",
+                  ],
+                  borderColor: [
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(255, 206, 86, 1)",
+                    "rgba(153, 102, 255, 1)",
+                    "rgba(255, 159, 64, 1)",
+                  ],
+                  borderWidth: 1,
+                },
+              ],
+            }}
+            options={{
+              responsive: true,
+             plugins: {
+  legend: {
+    display: false, // 🔹 hide the legend entirely
+  },
+  tooltip: {
+    enabled: true, // 🔹 show department name & score only on hover
+    callbacks: {
+      label: (context) => {
+        const department = context.label;
+        const score = context.formattedValue;
+        return `${department}: ${score}`;
+      },
+    },
+  },
+},
+
+              layout: {
+                padding: {
+                  left: 10, // Add some padding to avoid crowding
+                  right: 10,
+                },
+              },
+              scales: {
+                x: {
+                  display: false, // Disable the x-axis
+                },
+                y: {
+                  display: false, // Disable the y-axis
+                },
+              },
+            }}
+          />
+        </div>
+      );
+    } else if (chartType === "Bar") {
+      return <Bar data={chartDataAvgwriting} options={chartOptions} />;
+    } else {
+      return <Line data={chartDataAvgwriting} options={chartOptions} />;
+    }
+  };
+
+  const chartDataAvgspeaking = {
+    labels: avgSpeakingScore.map((data) => data.department_name),
+    datasets: [
+      {
+        data: avgSpeakingScore.map((data) => data.avg_score || 0),
+        borderColor: "rgba(75,192,192,1)",
+        backgroundColor: "rgba(75,192,192,0.4)",
+        fill: false,
+        tension: 0.4,
+      },
+    ],
+  };
+
+  const renderChartAvgspeakingScore = () => {
+    if (chartType === "Pie") {
+      return (
+        <div
+          style={{
+            width: "220px", // Set fixed width
+            height: "220px", // Set fixed height
+            margin: "0 auto", // Center the chart horizontally
+          }}
+        >
+          <Pie
+            data={{
+              labels: avgSpeakingScore.map((data) => data.department_name),
+              datasets: [
+                {
+                  data: avgSpeakingScore.map((data) => data.avg_score || 0),
+                  backgroundColor: [
+                    "rgba(75, 192, 192, 0.6)",
+                    "rgba(255, 99, 132, 0.6)",
+                    "rgba(54, 162, 235, 0.6)",
+                    "rgba(255, 206, 86, 0.6)",
+                    "rgba(153, 102, 255, 0.6)",
+                    "rgba(255, 159, 64, 0.6)",
+                  ],
+                  borderColor: [
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(255, 206, 86, 1)",
+                    "rgba(153, 102, 255, 1)",
+                    "rgba(255, 159, 64, 1)",
+                  ],
+                  borderWidth: 1,
+                },
+              ],
+            }}
+            options={{
+              responsive: true,
+              plugins: {
+  legend: {
+    display: false, // 🔹 hide the legend entirely
+  },
+  tooltip: {
+    enabled: true, // 🔹 show department name & score only on hover
+    callbacks: {
+      label: (context) => {
+        const department = context.label;
+        const score = context.formattedValue;
+        return `${department}: ${score}`;
+      },
+    },
+  },
+},
+
+              layout: {
+                padding: {
+                  left: 10, // Add some padding to avoid crowding
+                  right: 10,
+                },
+              },
+              scales: {
+                x: {
+                  display: false, // Disable the x-axis
+                },
+                y: {
+                  display: false, // Disable the y-axis
+                },
+              },
+            }}
+          />
+        </div>
+      );
+    } else if (chartType === "Bar") {
+      return <Bar data={chartDataAvgspeaking} options={chartOptions} />;
+    } else {
+      return <Line data={chartDataAvgspeaking} options={chartOptions} />;
+    }
+  };
   const chartDataOfferStatus = {
     labels: assessmentData1.map((data) => data.type),
     datasets: [
@@ -1049,7 +1298,9 @@ const fetchTotalRequestCount = async () => {
             {role === "Training admin" && (
               <div>
                 <section className="card-list-train">
-                  <div className="component-super"  onClick={() => handleCardClickTotalCompanyTest(collegeId)} >
+                  <div className="component-super"  
+                 // onClick={() => handleCardClickTotalCompanyTest(collegeId)}
+                   >
                     <div className="card-container-super">
                       <div className="square-container-super"><div
                         className={`card-lms card-test-count`}
@@ -1067,8 +1318,8 @@ const fetchTotalRequestCount = async () => {
                   <p></p>
  <div
                     className="component-super"
-                   onClick={() => handleCardClickTotalCommunTest(collegeId)} 
-                   style={{ cursor: 'pointer' }}>
+                  // style={{ cursor: 'pointer' }} onClick={() => handleCardClickTotalCommunTest(collegeId)} 
+                   >
                     <div className="card-container-super">
                       <div className="square-container-super">
                         <div className="card-lms card-companies">
@@ -1080,12 +1331,14 @@ const fetchTotalRequestCount = async () => {
                         </div>
                       </div>
                     </div>
-                    <h2 className="card-title-super">Softskill Test </h2>
+                    <h2 className="card-title-super">Listening </h2>
                   </div>
                   <p></p>
                   <div
                     className="component-super"
-                    onClick={() => handleCardClickTotalAptitudeTest(collegeId)} style={{ cursor: 'pointer' }}>
+                  //  style={{ cursor: 'pointer' }} onClick={() => handleCardClickTotalAptitudeTest(collegeId)} 
+                 
+                  >
                     <div className="card-container-super">
                       <div className="square-container-super">
                         <div className="card-lms card-companies">
@@ -1097,12 +1350,14 @@ const fetchTotalRequestCount = async () => {
                         </div>
                       </div>
                     </div>
-                    <h2 className="card-title-super">Aptitude Test</h2>
+                    <h2 className="card-title-super">Speaking</h2>
                   </div>
                   <p></p>
 
 
-                  <div className="component-super" onClick={() => handleCardClickTotalTechnicalTest(collegeId)} style={{ cursor: 'pointer' }}>
+                  <div className="component-super" 
+                  //onClick={() => handleCardClickTotalTechnicalTest(collegeId)}  style={{ cursor: 'pointer' }}
+          >
                     <div className="card-container-super">
                       <div className="square-container-super">
                         <div className="card-lms card-offers">
@@ -1115,11 +1370,13 @@ const fetchTotalRequestCount = async () => {
                         </div>
                       </div>
                     </div>
-                    <h2 className="card-title-super">Technical Test </h2>
+                    <h2 className="card-title-super">Reading </h2>
                   </div>
                   <p></p>
 
-                  <div className="component-super" onClick={() => handleCardClickTotalRequest(collegeId)}>
+                  <div className="component-super" 
+                 // onClick={() => handleCardClickTotalRequest(collegeId)}
+                  >
                     <div className="card-container-super">
                       <div className="square-container-super">
                         <div className="card-lms card-requests">
@@ -1131,13 +1388,15 @@ const fetchTotalRequestCount = async () => {
                         </div>
                       </div>
                     </div>
-                    <h2 className="card-title-super-requests">Requests</h2>
+                    <h2 className="card-title-super-requests">Writing</h2>
                   </div>
                   <p></p>
                   <Container
                     // style={{ maxWidth: "700px !important", display: "flex" }}
                     className="container-dash-superadmin"
                   >
+                 
+
                     <Row className="my-row" style={{background:"#3e4954",borderRadius:"5px"}}>
                       <Col className="border p-3 department-attendance col-department-attendance">
                         <div className="test test-report">
@@ -1169,7 +1428,7 @@ const fetchTotalRequestCount = async () => {
                         <div className="score-charts">
                           <div className="chart-wrapper">
                             <p className="chart-title" style={{ color: "white" }}>
-                              Avg Score-Aptitude
+                              Avg Score-Listening
                             </p>
                             <div className="chart-container">
                               {renderChartAvgAptitudeScore()}
@@ -1178,262 +1437,106 @@ const fetchTotalRequestCount = async () => {
 
                           <div className="chart-wrapper">
                             <p className="chart-title" style={{ color: "white" }}>
-                              Avg Score-Coding
+                              Avg Score-Reading
                             </p>
                             <div className="chart-container">
                               {renderChartAvgCodingScore()}
                             </div>
                           </div>
                         </div>
+                        <div className="score-charts">
+                          <div className="chart-wrapper">
+                            <p className="chart-title" style={{ color: "white" }}>
+                              Avg Score-Speaking
+                            </p>
+                            <div className="chart-container">
+                              {renderChartAvgspeakingScore()}
+                            </div>
+                          </div>
+
+                          <div className="chart-wrapper">
+                            <p className="chart-title" style={{ color: "white" }}>
+                              Avg Score-writing
+                            </p>
+                            <div className="chart-container">
+                              {renderChartAvgWritingScore()}
+                            </div>
+                          </div>
+                        </div>
                       </Col>
 
                       <Col className="border p-3 department-attendance col-department-attendance">
-                        <div className="test test-college-topper">
-                          <h6 className="h6-bold-topper" style={{ color: "white" }}>
-                            COLLEGE TOPPER
-                          </h6>
-                          <select
-                            onChange={(e) => setSelectedOptionClgTop(e.target.value)}
-                            value={selectedOptionClgTop}
-                            className="college-topper-select"
-                            style={{ color: "white" }}
-                          >
-                            <option value="MCQ Test">MCQ</option>
-                            <option value="Coding Test">Coding</option>
-                             <option value="All">All</option>
-                          </select>
-                        </div>
+  <div className="test test-college-topper">
+    <h6 className="h6-bold-topper" style={{ color: "white" }}>
+      COLLEGE TOPPER
+    </h6>
 
-                        {selectedOptionClgTop === "MCQ Test" && (
-                          <table className="table college-topper-table">
-                            <thead>
-                              <tr>
-                                <th
-                                  style={{
-                                    fontWeight: "bold",
-                                    backgroundColor: "#3e4954",
-                                    color: "white",
-                                  }}
-                                  className="table-header"
-                                >
-                                  Name
-                                </th>
-                                <th
-                                  style={{
-                                    fontWeight: "bold",
-                                    backgroundColor: "#3e4954",
-                                    color: "white",
-                                  }}
-                                  className="table-header"
-                                >
-                                  Department
-                                </th>
-                              <th
-                                  style={{
-                                    fontWeight: "bold",
-                                    backgroundColor: "#3e4954",
-                                    color: "white",
-                                  }}
-                                  className="table-header"
-                                >
-                                  Score
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {clgTopper.length === 0 ? (
-                                <tr>
-                                  <td
-                                    colSpan={4} // Span all columns
-                                    style={{
-                                      color: "#ffff",
-                                      backgroundColor: "#3e4954",
-                                      textAlign: "center", // Center align text
-                                    }}
-                                    className="table-cell"
-                                  >
-                                    College Topper not found
-                                  </td>
-                                </tr>
-                              ) : (
-                                clgTopper.map((item, index) => (
-                                  <tr key={item.id || index}>
-                                    <td
-                                      style={{
-                                        color: "white",
-                                        backgroundColor: "#3e4954",
-                                      }}
-                                      className="table-cell"
-                                    >
-                                      {item.student_name}
-                                    </td>
-                                    <td
-                                      style={{
-                                        color: "white",
-                                        backgroundColor: "#3e4954",
-                                      }}
-                                      className="table-cell"
-                                    >
-                                      {item.department}
-                                    </td>
-                                    <td
-                                      style={{
-                                        color: "white",
-                                        backgroundColor: "#3e4954",
-                                      }}
-                                      className="table-cell"
-                                    >
-                                      {item.avg_mark}
-                                    </td>
-                                  </tr>
-                                ))
-                              )}
-                            </tbody>
-                          </table>
-                        )}
+  {/*}  <select
+  value={selectedTestType}
+  onChange={(e) => {
+    setSelectedTestType(e.target.value);
+    setSelectedTestCategory("");
+  }}
+  className="college-topper-select"
+>
+  <option value="MCQTest">MCQ</option>
+  <option value="Coding Test">Coding</option>
+  <option value="Audio">Audio</option>
+  <option value="All">All</option>
+</select>
 
-                        {selectedOptionClgTop === "Coding Test" && (
-                          <table className="table college-topper-table">
-                            <thead>
-                              <tr>
-                                <th
-                                  style={{
-                                    fontWeight: "bold",
-                                    backgroundColor: "#3e4954",
-                                    color: "white",
-                                  }}
-                                  className="table-header"
-                                >
-                                  Name
-                                </th>
-                                <th
-                                  style={{
-                                    fontWeight: "bold",
-                                    backgroundColor: "#3e4954",
-                                    color: "white",
-                                  }}
-                                  className="table-header"
-                                >
-                                  Department
-                                </th>
-                                <th
-                                  style={{
-                                    fontWeight: "bold",
-                                    backgroundColor: "#3e4954",
-                                    color: "white",
-                                  }}
-                                  className="table-header"
-                                >
-                                  Score
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {clgTopper.length === 0 ? (
-                                <tr>
-                                  <td
-                                    colSpan={4} // Span all columns
-                                    style={{
-                                      color: "#ffff",
-                                      backgroundColor: "#3e4954",
-                                      textAlign: "center", // Center align text
-                                    }}
-                                    className="table-cell"
-                                  >
-                                    College Topper not found
-                                  </td>
-                                </tr>
-                              ) : (
-                                clgTopperCode.map((item, index) => (
-                                  <tr key={item.id || index}>
-                                    <td
-                                      style={{
-                                        color: "white",
-                                        backgroundColor: "#3e4954",
-                                      }}
-                                      className="table-cell"
-                                    >
-                                      {item.student_name}
-                                    </td>
-                                    <td
-                                      style={{
-                                        color: "white",
-                                        backgroundColor: "#3e4954",
-                                      }}
-                                      className="table-cell"
-                                    >
-                                      {item.department}
-                                    </td>
-                                    <td
-                                      style={{
-                                        color: "white",
-                                        backgroundColor: "#3e4954",
-                                      }}
-                                      className="table-cell"
-                                    >
-                                      {item.avg_mark}
-                                    </td>
-                                  </tr>
-                                ))
-                              )}
-                            </tbody>
-                          </table>
-                        )}
-{selectedOptionClgTop === "All" && (
+*/}
+<select
+  value={selectedTestCategory}
+  onChange={(e) => setSelectedTestCategory(e.target.value)}
+  className="college-topper-select"
+  disabled={selectedTestType !== "Audio"}
+>
+  <option value="">All</option>
+  <option value="AudioMCQ">Reading</option>
+  <option value="AudioTyping">Listening</option>
+  <option value="Pronunciation">Speaking</option>
+ <option value="TypingBlank">Writing</option>
+</select>
+
+  </div>
+
+  {/* College Topper Table */}
   <table className="table college-topper-table">
     <thead>
       <tr>
-        <th  style={{
-                              fontWeight: "bold",
-                              backgroundColor: "#3e4954",
-                              color: "#fff",
-                            }}
-                            className="table-header">Name</th>
-        <th  style={{
-                              fontWeight: "bold",
-                              backgroundColor: "#3e4954",
-                              color: "#fff",
-                            }}
-                            className="table-header">Department</th>
-        <th  style={{
-                              fontWeight: "bold",
-                              backgroundColor: "#3e4954",
-                              color: "#fff",
-                            }}
-                            className="table-header">Score</th>
+        <th className="table-header" style={{ fontWeight: "bold", backgroundColor: "#3e4954", color: "white" }}>
+          Name
+        </th>
+        <th className="table-header" style={{ fontWeight: "bold", backgroundColor: "#3e4954", color: "white" }}>
+          Department
+        </th>
+        <th className="table-header" style={{ fontWeight: "bold", backgroundColor: "#3e4954", color: "white" }}>
+          Score
+        </th>
       </tr>
     </thead>
     <tbody>
-      {clgTopper.length === 0 ? (
-        <tr>
-          <td colSpan={3} style={noDataStyle}>Data not found</td>
-        </tr>
-      ) : (
-        clgTopper.map((item, index) => (
-          <tr key={item.id || index}>
-            <td style={{
-                                  color: "#fff",
-                                  backgroundColor: "#3e4954",
-                                }}
-                                className="table-cell">{item.student_name}</td>
-            <td style={{
-                                  color: "#fff",
-                                  backgroundColor: "#3e4954",
-                                }}
-                                className="table-cell">{item.department}</td>
-            <td style={{
-                                  color: "#fff",
-                                  backgroundColor: "#3e4954",
-                                }}
-                                className="table-cell">{item.avg_mark}</td>
-          </tr>
-        ))
-      )}
+    {clgTopper.length === 0 ? (
+  <tr>
+    <td colSpan={3} style={{ color: "#fff", backgroundColor: "#3e4954", textAlign: "center" }}>
+      College Topper not found
+    </td>
+  </tr>
+) : (
+  clgTopper.map((item, index) => (
+    <tr key={index}>
+      <td style={{ color: "#fff", backgroundColor: "#3e4954" }}>{item.student_name}</td>
+      <td style={{ color: "#fff", backgroundColor: "#3e4954" }}>{item.department}</td>
+      <td style={{ color: "#fff", backgroundColor: "#3e4954" }}>{item.avg_mark}</td>
+    </tr>
+  ))
+)}
+
     </tbody>
   </table>
-)}
-                     <div />
-                      </Col>
+</Col>
+
                     </Row>
                   </Container>
 

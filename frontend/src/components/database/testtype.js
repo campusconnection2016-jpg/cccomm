@@ -208,6 +208,10 @@ const TestTypeManagement = () => {
                <option value='AudioMCQ'>AudioMCQ</option>
                
                <option value='AudioTyping'>AudioTyping</option>
+               <option value='TypingBlank'>TypingBlank</option>
+               <option value='Multi_Pronunciation'>Multi_Pronunciation</option>
+               <option value='Multi_AudioTyping'>Multi_AudioTyping</option>
+          
           </select>
           <p></p>
           <div className='button-container-set'>
@@ -249,6 +253,9 @@ const TestTypeManagement = () => {
                <option value='AudioMCQ'>AudioMCQ</option>
                
                <option value='AudioTyping'>AudioTyping</option>
+               <option value='TypingBlank'>TypingBlank</option>
+               <option value='Multi_Pronunciation'>Multi_Pronunciation</option>
+               <option value='Multi_AudioTyping'>Multi_AudioTyping</option>
                
       </select>
           <p></p>

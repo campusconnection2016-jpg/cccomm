@@ -50,7 +50,8 @@ import AddQuestionsCode from './components/questions/addquestionscode.js';
 import AddQuestions from './components/questions/addquestions.js';
 import QuestionPaper from './components/questions/updatequestionpaper.js';
 import DepartmentReport from './placementofficer/reports/departmentreport.js';
-import OverallReport from './placementofficer/reports/overallreport.js';
+import Communication from './placementofficer/reports/communicationreport.js';
+//import OverallReport from './placementofficer/reports/overallreport.js';
 import JobUpdatePage from './placementofficer/database/jobupdatepage.js';
 import JobUpdateTable from './placementofficer/database/jobupdatetable.js';
 import CumulativeReport from './components/reports/cumulativereport.js';
@@ -70,6 +71,9 @@ import Demo from './components/test/practicequestion.js';
 import DayWiseReport from './components/reports/daywisereport.js';
 import PracticeTestReport from './components/reports/PracticeTestReport.js';
 import PracticeView from './components/reports/practiceviews.js';
+import AudioAccess from './components/audiotest/audioaccess.js';
+import AudioTestAssign from './components/audiotest/poaudioassigntest.js';
+
 const PlacementOfficer = ({ collegeName, username, institute, userRole }) => {
   const [theme, setTheme] = useState('black');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -121,7 +125,7 @@ const PlacementOfficer = ({ collegeName, username, institute, userRole }) => {
                         <Route path="/announce/" element={<PAnnouncement collegeName={collegeName} institute={institute} userRole={userRole} />} />
                         <Route path="/reports/test-report" element={<TestReports username={username} collegeName={collegeName} institute={institute} userRole={userRole} />} />
                         <Route path="/reports/dep-report" element={<DepartmentReport username={username} collegeName={collegeName} institute={institute} userRole={userRole} />} />
-                        <Route path="/reports/placement-report" element={<OverallReport username={username} collegeName={collegeName} institute={institute} userRole={userRole} />} />
+                        <Route path="/reports/placement-report" element={<Communication username={username} collegeName={collegeName} institute={institute} userRole={userRole} />} />
 
                         <Route path="/add-candidate/:test_name/:college_id/" element={<AddDBCandidates username={username} collegeName={collegeName} institute={institute} userRole={userRole} />} />
                         {/*} <Route path="/add/non-db-candidate" element={<AddNonDBCandidates username={username} collegeName={collegeName} institute={institute} userRole={userRole} />} />*/}
@@ -174,7 +178,15 @@ const PlacementOfficer = ({ collegeName, username, institute, userRole }) => {
       <Route path= "/practice/stu/report" element={<PracticeTestReport  collegeName={collegeName} institute={institute} userRole={userRole} username={username}/>} />
                             <Route path= "/practice/stuview/report" element={<PracticeView  collegeName={collegeName} institute={institute} userRole={userRole} username={username}/>} />
                   <Route path="/daywise/test/report" element={<DayWiseReport username={username} collegeName={collegeName} institute={institute} userRole={userRole} />} />
-
+<Route path="/test/audio/assign/" element={<AudioAccess username={username} collegeName={collegeName} institute={institute} userRole={userRole} />} /> 
+<Route
+  path="/test/audio/assign-form/"
+  element={
+    <AudioTestAssign
+     username={username} collegeName={collegeName} institute={institute} userRole={userRole}
+    />
+  }
+/>
                         <Route path="/add_coding_question" element={<AddCodingQuestion/>}/>
                         {/*}  <Route path="index.html" element={<Navigate to="/" />} />   */}
                       </Routes>

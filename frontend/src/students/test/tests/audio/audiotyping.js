@@ -7,14 +7,18 @@ import {
   updateTotalScoreTestcandidateApi,
   updateTotalAndAvgMarksdeleteanswerApi,
   Capture_Duration_Update_API,
+  logSkillTypeQuestionApi,
 } from "../../../../api/endpoints";
-import { FaPlay, FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaPlay, FaStop, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import CommunicationTimer from "../communicationtimer";
 
 const AttendAudioTyping = ({ username }) => {
-  const { state } = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
-  const { testName, duration, questions, student_id,mapping_id } = state || {};
+  const skillType = location.state?.skill_type;
+
+  const { testName, duration, questions, student_id, mapping_id } =
+    location.state || {};
 
   const [answers, setAnswers] = useState({});
   const [processing, setProcessing] = useState(false);
@@ -22,132 +26,191 @@ const AttendAudioTyping = ({ username }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [typedText, setTypedText] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
+  const [translatedText, setTranslatedText] = useState(null);
 
-  // ===== Play question as audio =====
-  const handlePlayQuestionAudio = (questionText) => {
-    window.speechSynthesis.cancel();
-    if (!questionText) {
-      alert("No question text found.");
-      return;
-    }
+  const [playingQuestionId, setPlayingQuestionId] = useState(null);
+  const [playedQuestions, setPlayedQuestions] = useState({});
 
-    const utterance = new SpeechSynthesisUtterance(questionText);
-    utterance.lang = "en-IN";
-    utterance.rate = 0.95;
-    utterance.pitch = 1.05;
+  // ✅ PER QUESTION REVIEW STATE
+  const [reviewedQuestions, setReviewedQuestions] = useState({});
+  const [reviewHighlightedMap, setReviewHighlightedMap] = useState({});
 
-    utterance.onstart = () => setIsPlaying(true);
-    utterance.onend = () => setIsPlaying(false);
+  const ALLOWED_SKILL_TYPES = [
+    "Tamil_English",
+    "Telugu_English",
+    "Hindi_English",
+    "Kannada_English",
+    "Malayalam_English",
+  ];
+
+  const SKILL_TO_SPEECH_LANG = {
+    Tamil_English: "ta-IN",
+    Telugu_English: "te-IN",
+    Hindi_English: "hi-IN",
+    Kannada_English: "kn-IN",
+    Malayalam_English: "ml-IN",
+  };
+
+  const currentQ = questions[currentQuestionIndex];
+  const isCurrentReviewed = reviewedQuestions[currentQ?.id];
+
+  // ================= AUDIO =================
+  const handlePlayQuestionAudio = (textToSpeak, qId) => {
+    if (reviewedQuestions[qId]) return; // 🔑 only block reviewed question
+    if (isPlaying || playedQuestions[qId]) return;
+    if (!textToSpeak) return;
+
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    utterance.lang = SKILL_TO_SPEECH_LANG[skillType] || "en-IN";
+
+    utterance.onstart = () => {
+      setIsPlaying(true);
+      setPlayingQuestionId(qId);
+    };
+
+    utterance.onend = () => {
+      setIsPlaying(false);
+      setPlayingQuestionId(null);
+      setPlayedQuestions((p) => ({ ...p, [qId]: true }));
+    };
 
     window.speechSynthesis.speak(utterance);
   };
 
-  useEffect(() => () => window.speechSynthesis.cancel(), []);
+  useEffect(() => {
+    window.speechSynthesis.cancel();
+    setIsPlaying(false);
+    setPlayingQuestionId(null);
+  }, [currentQuestionIndex]);
 
-  // ===== Save current answer (only when Enter, Next, or Finish pressed) =====
+  // ================= SAVE =================
   const saveTypedAnswer = async () => {
-    const q = questions[currentQuestionIndex];
-    if (!q) return;
+    if (!currentQ) return;
+    const value = typedText.trim();
+    if (!value) return;
 
-    const qId = q.id;
-    const typedAnswer = (typedText || "").trim();
-    if (!typedAnswer) return; // skip empty
+    setAnswers((p) => ({ ...p, [currentQ.id]: value }));
 
-    setAnswers((prev) => ({ ...prev, [qId]: typedAnswer }));
-
-    const payload = {
+    await addOrUpdateResultApi({
       test_name: testName,
-      question_id: qId,
+      question_id: currentQ.id,
       student_id,
-      answer: typedAnswer,
+      answer: value,
       dtm_start: new Date(),
       dtm_end: new Date(),
-    };
-
-    try {
-      setProcessing(true);
-      await addOrUpdateResultApi(payload);
-      console.log(`✅ Saved answer for Question ID ${qId}`);
-    } catch (err) {
-      console.error("❌ Error saving result:", err);
-    } finally {
-      setProcessing(false);
-    }
+    });
   };
 
-  // ===== Detect Enter press for submission =====
-  const handleKeyDown = async (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // prevent newline
-      await saveTypedAnswer();
-    }
+  // ================= COMPARE =================
+  const normalize = (text) =>
+  text
+    .toLowerCase()
+    .replace(/[.,]/g, "")   // remove punctuation
+    .split(/\s+/);          // split by space
+
+const compareText = (question, answer) => {
+  const qWords = normalize(question);
+  const aWords = normalize(answer);
+
+  return qWords
+    .map((word) => {
+      // check full or partial match
+      const isMatched = aWords.some(
+        (ansWord) =>
+          ansWord.includes(word) || word.includes(ansWord)
+      );
+
+      return isMatched
+        ? word
+        : `<span style="color:red">${word}</span>`;
+    })
+    .join(" ");
+};
+
+
+  // ================= REVIEW (PER QUESTION) =================
+  const handleReview = async () => {
+    await saveTypedAnswer();
+    window.speechSynthesis.cancel();
+
+    const highlighted = compareText(
+      currentQ.question_text,
+      answers[currentQ.id] || typedText
+    );
+
+    setReviewedQuestions((p) => ({ ...p, [currentQ.id]: true }));
+    setReviewHighlightedMap((p) => ({
+      ...p,
+      [currentQ.id]: highlighted,
+    }));
   };
 
-  // ===== Next Question =====
+  // ================= NAV =================
   const handleNext = async () => {
     await saveTypedAnswer();
-    setTypedText(""); // clear after saving
-    setCurrentQuestionIndex((prev) =>
-      prev < questions.length - 1 ? prev + 1 : prev
-    );
+    setCurrentQuestionIndex((p) => p + 1);
   };
 
-  // ===== Previous Question =====
   const handlePrevious = async () => {
     await saveTypedAnswer();
-    setTypedText(""); // clear after saving
-    setCurrentQuestionIndex((prev) => (prev > 0 ? prev - 1 : prev));
+    setCurrentQuestionIndex((p) => p - 1);
   };
 
-  // ===== Finish Test =====
+  // ================= TRANSLATION =================
+  useEffect(() => {
+    if (
+      !currentQ?.question_text ||
+      !ALLOWED_SKILL_TYPES.includes(skillType) ||
+      reviewedQuestions[currentQ?.id]
+    )
+      return;
+
+    setTranslatedText(null);
+
+    logSkillTypeQuestionApi(skillType, currentQ.question_text)
+      .then((res) =>
+        setTranslatedText(res?.data?.translated_text || null)
+      )
+      .catch(() => setTranslatedText(null));
+  }, [skillType, currentQ?.question_text, reviewedQuestions]);
+
+  useEffect(() => {
+    setTypedText(answers[currentQ?.id] || "");
+    setTranslatedText(null);
+  }, [currentQuestionIndex]);
+
+  // ================= FINISH =================
   const handleFinish = async () => {
     await saveTypedAnswer();
-    try {
-      setProcessing(true);
-    //  await updateTotalScoreTestcandidateApi(student_id, {});
-      await updateTotalAndAvgMarksdeleteanswerApi(testName, student_id);
+    await updateTotalAndAvgMarksdeleteanswerApi(testName, student_id);
 
-     const totalSeconds = duration * 60 - timeLeft;
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = Math.floor(totalSeconds % 60);
-    const formattedDuration = `${minutes} min ${seconds} sec`;
+    const totalSeconds = duration * 60 - timeLeft;
+    const formatted = `${Math.floor(totalSeconds / 60)} min ${
+      totalSeconds % 60
+    } sec`;
 
-    console.log("⏱ Duration calculation details:");
-    console.log("➡ Duration (minutes):", minutes);
-    console.log("➡ Duration (seconds):", seconds);
-    console.log("➡ Formatted Duration:", formattedDuration);
+    await Capture_Duration_Update_API(mapping_id, formatted);
+    await updateTestcadidateApi_submitted(mapping_id);
 
-    // ===== Duration Update API =====
-    console.log("📡 Sending duration to Capture_Duration_Update_API...");
-    const durationResponse = await Capture_Duration_Update_API(
-      mapping_id,
-      formattedDuration
-    );
-    console.log("✅ Duration API Response:", durationResponse);
-
-      await updateTestcadidateApi_submitted(mapping_id);
-
-      navigate("/thank-you", { state: { duration: formattedDuration, testName } });
-    } catch (err) {
-      console.error("❌ Error submitting test:", err);
-      alert("Failed to submit test. Try again.");
-    } finally {
-      setProcessing(false);
-    }
+    navigate("/thank-you", { state: { duration: formatted, testName } });
   };
 
-  // ===== Auto Submit on timer end =====
+  // ================= TIMER =================
   const handleTestCompletionTimer = () => {
     alert("⏰ Time up! Auto submitting your test...");
     handleFinish();
   };
 
-  // ===== Render question buttons =====
+  // ================= QUESTION BUTTONS =================
   const renderQuestionButtons = () =>
     questions.map((q, i) => {
       const isCompleted = !!answers[q.id];
       const isActive = currentQuestionIndex === i;
-      const backgroundColor = isActive ? "#F1A128" : isCompleted ? "#F1A128" : "grey";
+      const backgroundColor = isActive
+        ? "#F1A128"
+        : isCompleted
+        ? "#F1A128"
+        : "grey";
 
       return (
         <button
@@ -163,7 +226,6 @@ const AttendAudioTyping = ({ username }) => {
           }}
           onClick={async () => {
             await saveTypedAnswer();
-            setTypedText(answers[q.id] || "");
             setCurrentQuestionIndex(i);
           }}
           disabled={processing}
@@ -173,15 +235,7 @@ const AttendAudioTyping = ({ username }) => {
       );
     });
 
-  const currentQ = questions[currentQuestionIndex];
-
-  useEffect(() => {
-    // Load previously saved answer (if exists)
-    if (currentQ) {
-      setTypedText(answers[currentQ.id] || "");
-    }
-  }, [currentQuestionIndex, currentQ, answers]);
-
+  // ================= RENDER =================
   return (
     <div className="no-select">
       <div className="Box">
@@ -196,23 +250,47 @@ const AttendAudioTyping = ({ username }) => {
               <p className="questions" style={{ marginRight: "10px" }}>
                 {currentQuestionIndex + 1})
               </p>
-              <button
-                className="audio-play-btn"
-                onClick={() => handlePlayQuestionAudio(currentQ.question_text)}
-                disabled={isPlaying}
-                style={{
-                  background: "#ffb84d",
-                  border: "none",
-                  borderRadius: "50%",
-                  padding: "10px",
-                  cursor: "pointer",
-                }}
-              >
-                <FaPlay />
-              </button>
-              <span style={{ marginLeft: "15px", fontWeight: "bold", color: "#fff" }}>
-                Listen to the audio and type exactly what you hear:
-              </span>
+
+              {isCurrentReviewed ? (
+                <div
+                  style={{ color: "#fff", marginBottom: "10px" }}
+                  dangerouslySetInnerHTML={{
+                    __html: reviewHighlightedMap[currentQ.id],
+                  }}
+                />
+              ) : (
+                <button
+                  className="audio-play-btn"
+                  onClick={() =>
+                    handlePlayQuestionAudio(
+                      ALLOWED_SKILL_TYPES.includes(skillType) &&
+                        translatedText
+                        ? translatedText
+                        : currentQ.question_text,
+                      currentQ.id
+                    )
+                  }
+                  disabled={isPlaying || playedQuestions[currentQ.id]}
+                  style={{
+                    background: "#ffb84d",
+                    border: "none",
+                    borderRadius: "50%",
+                    padding: "10px",
+                    cursor:
+                      isPlaying || playedQuestions[currentQ.id]
+                        ? "not-allowed"
+                        : "pointer",
+                    opacity:
+                      isPlaying || playedQuestions[currentQ.id] ? 0.6 : 1,
+                  }}
+                >
+                  {isPlaying && playingQuestionId === currentQ.id ? (
+                    <FaStop />
+                  ) : (
+                    <FaPlay />
+                  )}
+                </button>
+              )}
             </div>
 
             <textarea
@@ -227,8 +305,8 @@ const AttendAudioTyping = ({ username }) => {
                 borderRadius: "8px",
               }}
               value={typedText}
-              onChange={(e) => setTypedText(e.target.value)} // ← Spaces won't trigger save
-              onKeyDown={handleKeyDown} // ← Enter key triggers save
+              onChange={(e) => setTypedText(e.target.value)}
+              readOnly={isCurrentReviewed}
               disabled={processing}
             />
           </div>
@@ -242,11 +320,25 @@ const AttendAudioTyping = ({ username }) => {
               <FaArrowLeft /> Back
             </button>
 
+           {!isCurrentReviewed && (
+  <button
+    onClick={handleReview}
+    className="button-ques-back-next finish-button"
+    disabled={!typedText.trim()}
+    style={{
+      opacity: typedText.trim() ? 1 : 0.5,
+      cursor: typedText.trim() ? "pointer" : "not-allowed",
+    }}
+  >
+    Review
+  </button>
+)}
+
+
             {currentQuestionIndex === questions.length - 1 ? (
               <button
                 onClick={handleFinish}
                 className="button-ques-back-next finish-button"
-                disabled={processing}
               >
                 Finish
               </button>
@@ -254,7 +346,6 @@ const AttendAudioTyping = ({ username }) => {
               <button
                 onClick={handleNext}
                 className="button-ques-back-next next-button"
-                disabled={processing}
               >
                 Next <FaArrowRight />
               </button>
@@ -279,6 +370,7 @@ const AttendAudioTyping = ({ username }) => {
                 handleTestCompletionTimer={handleTestCompletionTimer}
               />
             </div>
+
             <div>{renderQuestionButtons()}</div>
           </div>
         </div>

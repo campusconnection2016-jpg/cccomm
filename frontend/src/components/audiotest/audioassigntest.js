@@ -23,9 +23,11 @@ import {
 import {
   TestTypeContext,
   TestTypeCategoriesContext,
-  QuestionTypeContext,
+  QuestionTypeContext,  
   SkillTypeContext,
 } from "../test/context/testtypecontext";
+
+
 import { useTestQuesContext } from "../../placementofficer/test/context/testquescontext";
 import ErrorModal from "../auth/errormodal";
 import QuestionPaperMCQTest from "../questions/questionpapermcqtest";
@@ -51,7 +53,9 @@ const customStyles = {
   input: (provided) => ({ ...provided, color: "#fff" }),
 };
 
-const AudioTestAssign = ({ userRole, username }) => {
+const AudioTestAssign = ({ userRole, username,collegeName, institute }) => {
+
+  console.log("aa gya h",userRole, username,collegeName, institute);
   const navigate = useNavigate();
   const [detectedQuestionTypeId, setDetectedQuestionTypeId] = useState(null);
 const [detectedSkillTypeId, setDetectedSkillTypeId] = useState(null);
@@ -108,6 +112,20 @@ const [detectedSkillTypeId, setDetectedSkillTypeId] = useState(null);
 
   const handleCloseError = () => setShowError(false);
 
+// ✅ Auto select college from dropdown & lock it
+useEffect(() => {
+  if (!collegeName || userColleges.length === 0) return;
+
+  const matchedCollege = userColleges.find(
+    (c) => c.label === collegeName
+  );
+
+  if (matchedCollege) {
+    setSelectedColleges([matchedCollege]);
+  }
+}, [collegeName, userColleges]);
+
+  
   // ✅ Fetch Colleges (with Training Admin filter)
   useEffect(() => {
     const fetchColleges = async () => {
@@ -396,14 +414,16 @@ const handleSubmit = async (e) => {
             </Col>
             <Col>
               <label className="label5-ques">College</label><p></p>
-              <Select
-                isMulti
-                options={userColleges}
-                value={selectedColleges}
-                onChange={setSelectedColleges}
-                styles={customStyles}
-                placeholder="Select College"
-              />
+             <Select
+  isMulti
+  options={userColleges}
+  value={selectedColleges}
+  onChange={setSelectedColleges}
+  styles={customStyles}
+  placeholder="Select College"
+  isDisabled={!!collegeName}   // 🔒 non-editable when collegeName exists
+/>
+
             </Col>
           </Row><p></p>
 

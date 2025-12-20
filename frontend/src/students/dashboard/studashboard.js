@@ -1,11 +1,16 @@
 import { useEffect, useState, useCallback } from "react";
 import {
+  Stu_speak_test_API,
+  Stu_listen_test_API,
   Stu_Aptitute_test_API,
   Stu_Technical_test_API,
+  Stu_write_test_API,
+  Stu_read_test_API,
   Stu_cmpy_test_API,
   Stu_commun_test_API,
   Stu_Offer_Counts_API,
   Stu_Aptitude_Reports_API,
+  Stu_Communicationall_Reports_API,
   Stu_TestType_Categories_API,
   Stu_Technical_Reports_API,
   Stu_Test_Schedules_API,
@@ -68,19 +73,28 @@ const StuDashboard = ({ username }) => {
       fetchInitialData().then(() => setTriggerFetch(false));
     }
   }, [triggerFetch, fetchInitialData]);
-
-
+  const [chartListening, setChartListening] = useState(null);
+  const [chartWritingSpeaking, setChartWritingSpeaking] = useState(null);
+  
   useEffect(() => {
+    if (selectedDate) {
+      fetchCommunicationReports();
+    }
+  }, [selectedDate]);
+  
+ /* useEffect(() => {
     if (selectedDate) {
       fetchAptitudeReports();
       fetchTechnicalReports();
 
     }
-  }, [selectedDate, selectedDateTech]);
+  }, [selectedDate, selectedDateTech]);*/
 
   const fetchAptitudeCount = async () => {
     try {
-      const response = await Stu_Aptitute_test_API(username, testTaken);
+      //const response = await Stu_Aptitute_test_API(username, testTaken);
+     
+      const response = await Stu_listen_test_API(username);
       setTotalAptitudeCount(response.count);
     } catch (err) {
       console.error("Error fetching aptitude count:", err.message);
@@ -89,7 +103,9 @@ const StuDashboard = ({ username }) => {
 
   const fetchTechnicalCount = async () => {
     try {
-      const response = await Stu_Technical_test_API(username, testTaken);
+     // const response = await Stu_Technical_test_API(username, testTaken);
+      const response = await Stu_speak_test_API(username);
+     
       setTotalTechicalCount(response.count);
     } catch (err) {
       console.error("Error fetching technical count:", err.message);
@@ -115,7 +131,10 @@ const fetchcmpyCount = async () => {
 
   const fetchcommunCount = async () => {
     try {
-      const response = await Stu_commun_test_API(username);
+      
+      const response = await Stu_read_test_API(username);
+    
+     // const response = await Stu_commun_test_API(username);
       settotalcommun(response.count);
     } catch (err) {
       console.error("Error fetching technical count:", err.message);
@@ -124,8 +143,10 @@ const fetchcmpyCount = async () => {
 
   const fetchOfferCounts = async () => {
     try {
-      const response = await Stu_Offer_Counts_API(username, offerAccept);
-      setOfferCounts(response.number_of_offers);
+      const response = await Stu_write_test_API(username, offerAccept);
+      setOfferCounts(response.count);
+     // const response = await Stu_Offer_Counts_API(username, offerAccept);
+    //  setOfferCounts(response.number_of_offers);
     } catch (err) {
       console.error("Error fetching offer counts:", err.message);
     }
@@ -179,9 +200,59 @@ const fetchcmpyCount = async () => {
   //======================================
 
   //Cards
+  const fetchCommunicationReports = async () => {
+    try {
+      const data = await Stu_Communicationall_Reports_API(
+        username,
+        cat,
+        selectedDate
+      );
+  
+      // -----------------------------
+      // Chart 1: Listening
+      // -----------------------------
+      setChartListening({
+        labels: ["Listening", "Reading"],
+        datasets: [
+          {
+            label: "Listening",
+            data: [
+              data.listening_typing || 0,
+              data.listening_mcq || 0,
+            ],
+            backgroundColor: ["#4BC0C0", "#FFCE56"],
+            borderWidth: 1,
+            maxBarThickness: 25,
+          },
+        ],
+      });
+  
+      // -----------------------------
+      // Chart 2: Writing & Speaking
+      // -----------------------------
+      setChartWritingSpeaking({
+        labels: ["Writing", "Speaking"],
+        datasets: [
+          {
+            label: "Writing",
+            data: [
+              data.typing_blank || 0,
+              data.pronunciation || 0,
+            ],
+            backgroundColor: ["#36A2EB", "#FF6384"],
+            borderWidth: 1,
+            maxBarThickness: 25,
+          },
+        ],
+      });
+  
+    } catch (err) {
+      console.error("Error fetching communication reports:", err.message);
+    }
+  };
+  
 
-
-  const fetchAptitudeReports = async () => {
+ /* const fetchAptitudeReports = async () => {
     try {
       const data = await Stu_Aptitude_Reports_API(username, cat, selectedDate); // Await the promise
       setChartData({
@@ -226,7 +297,7 @@ const fetchcmpyCount = async () => {
       console.log(err.message);
     }
   };
-
+*/
 
   // Function to download chart data as an Excel sheet
   const downloadChartData = () => {
@@ -248,6 +319,40 @@ const fetchcmpyCount = async () => {
       console.log(err.message);
     }
   };
+  const chartOptions = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        min: 0,
+        max: 100,
+        ticks: {
+          stepSize: 10,
+          color: "#FFFFFF", // Y-axis label color
+        },
+      },
+      x: {
+        ticks: {
+          color: "#FFFFFF", // X-axis label color
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        labels: {
+          color: "#FFFFFF", // Dataset label color
+        },
+      },
+    },
+    elements: {
+      bar: {
+        borderColor: "#FFFFFF", // Bar border color
+        borderWidth: 2,
+        barThickness: 20,
+        maxBarThickness: 25,
+      },
+    },
+  };
+  
   return (
     <div className="form-ques-studash">
       <section className="card-list">
@@ -279,7 +384,7 @@ const fetchcmpyCount = async () => {
                 </div>
               </div>
             </div>
-            <h6 className="card-title-stu">Softskill Test</h6>
+            <h6 className="card-title-stu">Reading</h6>
           </div>
 
           <div className="student-role">
@@ -295,7 +400,7 @@ const fetchcmpyCount = async () => {
               </div>
             </div>
             <h2 className="card-title-stu">
-              Aptitude Test
+              Listening
               {/* style={{ marginRight: "-16px" }} */}
             </h2>
           </div>
@@ -313,7 +418,7 @@ const fetchcmpyCount = async () => {
               </div>
             </div>
             <h2 className="card-title-stu">
-              Technical Test
+              Speaking
               {/* style={{ marginRight: "-30px" }} */}
             </h2>
           </div>
@@ -331,14 +436,14 @@ const fetchcmpyCount = async () => {
               </div>
             </div>
           </div>
-          <h2 className="card-title-stu-off">Total Offers</h2>
+          <h2 className="card-title-stu-off">Writing</h2>
         </div>
         <p style={{ height: "40px" }}></p>
 
         <div className="container-student" style={{ marginTop: "55px" }}>
           <div className="row">
-            <div className="row">
-              <div className="parents">
+            <div className="row chart-row ">
+             {/*} <div className="parents">
                 <div className="col-dashboard-stu">
                   <h4
                     style={{
@@ -384,141 +489,52 @@ const fetchcmpyCount = async () => {
                     ))}
                   </select>
                 </div>
-              </div>
-              <div className="col-dash" style={{ marginRight: "25px" }}>
-                <h3
-                  style={{
-                    fontSize: "16px",
-                    color: "#ffff",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Aptitude Test Report
-                </h3>
-                <p></p>
-                <div className="date-select-wrapper">
-                  <div className="date-picker-wrapper">
-                    <DatePicker
-                      selected={selectedDate}
-                      onChange={(date) => setSelectedDate(date)}
-                      dateFormat="dd-MMM-yyyy"
-                      className="input-date-train"
-                    />
-                  </div>
-                  <p></p>
+                    </div>*/}
+             <div className="col-dash chart-col">
+  <h3 style={{ fontSize: "16px", color: "#ffff", fontWeight: "bold" }}>
+  Listening & Reading Test Report
+  </h3>
+
+  <div className="date-select-wrapper">
+    <DatePicker
+      selected={selectedDate}
+      onChange={(date) => setSelectedDate(date)}
+      dateFormat="dd-MMM-yyyy"
+      className="input-date-train"
+    />
+  </div>
+
+  {chartListening && chartListening.datasets && (
+    <Bar
+      data={chartListening}
+      options={chartOptions}
+    />
+  )}
+</div>
 
 
-                </div>
-                <p></p>
+<div className="col-dash chart-col">
+  <h3 style={{ fontSize: "16px", color: "#ffff", fontWeight: "bold" }}>
+    Writing & Speaking Report
+  </h3>
 
-                {chartData && chartData.datasets && (
-                  <Bar
-                    data={chartData}
-                    options={{
-                      scales: {
-                        y: {
-                          beginAtZero: true,
-                          min: 0,
-                          max: 100,
-                          ticks: {
-                            stepSize: 10,
-                            color: "#FFFFFF", // Y-axis label color
-                          },
-                        },
-                        x: {
-                          ticks: {
-                            color: "#FFFFFF", // X-axis label color
-                          },
-                        },
-                      },
-                      plugins: {
-                        legend: {
-                          labels: {
-                            color: "#FFFFFF", // Dataset label color
-                          },
-                        },
-                      },
-                      elements: {
-                        bar: {
-                          borderColor: "#FFFFFF", // Bar border color
-                          borderWidth: 2, // Optional: Border width
-                          barThickness: 20, // Decrease the bar width (You can adjust this value)
-                          maxBarThickness: 25, // Optional: Set a maximum thickness
-                        },
-                      },
-                    }}
-                    onClick={downloadChartData} // Attach click handler to chart
-                  />
-                )}
-              </div>
+  <div className="date-select-wrapper">
+    <DatePicker
+      selected={selectedDate}
+      onChange={(date) => setSelectedDate(date)}
+      dateFormat="dd-MMM-yyyy"
+      className="input-date-train"
+    />
+  </div>
 
-              <div className="col-dash">
-                <h3
-                  style={{
-                    fontSize: "16px",
-                    color: "#ffff",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Technical Test Report
-                </h3>
-                <p></p>
-                <div className="date-select-wrapper">
-                  <div className="date-picker-wrapper">
-                    <DatePicker
-                      selected={selectedDateTech}
-                      onChange={(date) => setSelectedDateTech(date)}
-                      dateFormat="dd-MMM-yyyy"
-                      className="input-date-train"
-                    />
-                  </div>
-                  <p></p>
+  {chartWritingSpeaking && chartWritingSpeaking.datasets && (
+    <Bar
+      data={chartWritingSpeaking}
+      options={chartOptions}
+    />
+  )}
+</div>
 
-
-                </div>
-                <p></p>
-
-                {chartDataTech && chartDataTech.datasets && (
-                  <Bar
-                    data={chartDataTech}
-                    options={{
-                      scales: {
-                        y: {
-                          beginAtZero: true,
-                          min: 0,
-                          max: 100,
-                          ticks: {
-                            stepSize: 10,
-                            color: "#FFFFFF", // Y-axis label color
-                          },
-                        },
-                        x: {
-                          ticks: {
-                            color: "#FFFFFF", // X-axis label color
-                          },
-                        },
-                      },
-                      plugins: {
-                        legend: {
-                          labels: {
-                            color: "#FFFFFF", // Dataset label color
-                          },
-                        },
-                      },
-                      elements: {
-                        bar: {
-                          borderColor: "#FFFFFF", // Bar border color
-                          borderWidth: 2, // Optional: Border width
-                          barThickness: 20, // Decrease the bar width (You can adjust this value)
-                          maxBarThickness: 25, // Optional: Set a maximum thickness
-                        },
-                      },
-                    }}
-
-                    onClick={downloadChartDataTech}
-                  />
-                )}
-              </div>
             </div>
           </div>
 

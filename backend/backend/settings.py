@@ -173,7 +173,7 @@ DATABASES = {
  #'USER': 'postgres',
  #'PASSWORD': 'xszZcLqrdSzM06KnuyI0',
  #'HOST': 'cc-portal.cv0aoio6ihof.ap-south-1.rds.amazonaws.com',
- #'PORT': '5432' 
+ 'PORT': '5432' 
    }
 }
 

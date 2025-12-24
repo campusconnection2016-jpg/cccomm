@@ -3791,22 +3791,54 @@ def get_candidate_login(request):
 
 class TestAssignFor_Selected(APIView):
     def post(self, request):
-        stu_id = request.data.get('stu_id', [])  # Fetching stu_id from request data
+        stu_id = request.data.get('stu_id', [])
         if not isinstance(stu_id, list):
-            return Response({"error": "stu_id must be a list"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "stu_id must be a list"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         test_name = request.data.get('test_name')
         question_id = request.data.get('question_id')
 
-        # 🔎 1) Get existing config for this test (to reuse is_camera_on)
-        # You can filter only by test_name, or by test_name + question_id
+        print("📌 test_name:", test_name)
+        print("📌 question_id:", question_id)
+
+        # 🔎 1) Get existing config for is_camera_on
         existing_test = tests_candidates_map.objects.filter(
             test_name=test_name,
             question_id=question_id
         ).order_by('-id').first()
 
-        # Default from existing record (if any)
         existing_is_camera_on = existing_test.is_camera_on if existing_test else None
+
+        # =====================================================
+        # ✅ FALLBACK LOGIC (ONLY if question_id NOT received)
+        # =====================================================
+        question_ids_fallback = None
+        no_of_question_fallback = None
+
+        if not question_id:
+            existing_test_for_questions = (
+                tests_candidates_map.objects
+                .filter(test_name=test_name)
+                .exclude(question_ids__isnull=True)
+                .order_by('-id')
+                .first()
+            )
+
+            if existing_test_for_questions:
+                question_ids_fallback = existing_test_for_questions.question_ids
+                no_of_question_fallback = existing_test_for_questions.no_of_question
+
+                print("📌 Fallback question_ids:", question_ids_fallback)
+                print("📌 Fallback no_of_question:", no_of_question_fallback)
+
+        # Decide final values
+        final_question_id = question_id if question_id else None
+        final_question_ids = question_ids_fallback if not question_id else None
+        final_no_of_question = no_of_question_fallback if not question_id else None
+        # =====================================================
 
         data = []
 
@@ -3814,30 +3846,38 @@ class TestAssignFor_Selected(APIView):
             try:
                 student = candidate_master.objects.get(id=s_id, deleted=0)
             except candidate_master.DoesNotExist:
-                return Response({"error": f"Student with id {s_id} does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"error": f"Student with id {s_id} does not exist"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
-            # 🔁 2) Decide is_camera_on for this new row
-            #    - If frontend sends is_camera_on → use that
-            #    - Else → copy from existing_test (same test_name)
+            # 🔁 Decide is_camera_on
             incoming_is_camera_on = request.data.get('is_camera_on', None)
             if incoming_is_camera_on is None:
                 is_camera_on_value = existing_is_camera_on
             else:
                 is_camera_on_value = incoming_is_camera_on
 
-            # Preparing test candidate data
+            # ✅ Preparing data
             test_candidate_data = {
                 'test_name': test_name,
-                'question_id': question_id,
+
+                # Existing / fallback question logic
+                'question_id': final_question_id,
+                'question_ids': final_question_ids,
+                'no_of_question': final_no_of_question,
+
                 'college_id': student.college_id.id if student.college_id else None,
                 'department_id': student.department_id.id if student.department_id else None,
                 'year': student.year if student.year else None,
                 'student_id': student.id,
+
                 'dtm_start': request.data.get('dtm_start'),
                 'dtm_end': request.data.get('dtm_end'),
                 'dtm_start1': request.data.get('dtm_start'),
                 'dtm_end1': request.data.get('dtm_end'),
-                'is_camera_on': is_camera_on_value,   # ⭐ here is the copied value
+
+                'is_camera_on': is_camera_on_value,
                 'duration': request.data.get('duration'),
                 'duration_type': request.data.get('duration_type'),
                 'rules_id': request.data.get('rules_id'),
@@ -3851,14 +3891,21 @@ class TestAssignFor_Selected(APIView):
                 data.append(serializer.data)
 
                 # Update candidate_master.need_candidate_info once
-                if student.need_candidate_info is None and request.data.get('need_candidate_info') is True:
-                    student.need_candidate_info = request.data.get('need_candidate_info')
+                if (
+                    student.need_candidate_info is None
+                    and request.data.get('need_candidate_info') is True
+                ):
+                    student.need_candidate_info = True
                     student.save(update_fields=['need_candidate_info'])
             else:
-                print(serializer.errors)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                print("❌ Serializer errors:", serializer.errors)
+                return Response(
+                    serializer.errors,
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
         return Response(data, status=status.HTTP_201_CREATED)
+
 
 @api_view(['GET'])
 def get_group_test_name(request, college_id=None):
@@ -34259,166 +34306,6 @@ import pandas as pd
 import re
 from datetime import datetime
 from django.http import JsonResponse
-from django.shortcuts import render
-from rest_framework.decorators import api_view, parser_classes
-from rest_framework.parsers import MultiPartParser, FormParser
-from .models import question_master, question_paper_master, test_type
-
-
-@api_view(['GET', 'POST'])
-@parser_classes([MultiPartParser, FormParser])
-def upload_communication_questionsold(request):
-    """
-    Upload communication test questions 
-    (Handles AudioMCQ, Pronunciation, AudioTyping)
-    Supports Excel headers like: 
-    Questions**, Option A, Option B, Option C, Option D, Answer**, Mark**, Difficulty Level
-    """
-    if request.method == 'GET':
-        return render(request, 'upload_communication_questions.html')
-
-    try:
-        # ✅ Get form data
-        question_paper_name = request.data.get("question_paper_name")
-        duration_of_test = request.data.get("duration_of_test")
-        test_type_name = "Audio"
-        test_type_category = request.data.get("test_type_categories")
-        topic = request.data.get("topic")
-        sub_topic = request.data.get("sub_topic")
-        created_by = request.data.get("created_by", "admin")
-        audio_text_from_form = request.data.get("audio_text", "")
-        excel_file = request.FILES.get("excel_file")
-
-        if not excel_file:
-            return JsonResponse({"error": "Excel file is required"}, status=400)
-
-        # ✅ Create or get test type
-        test_type_obj, _ = test_type.objects.get_or_create(
-            test_type=test_type_name,
-            test_type_categories=test_type_category
-        )
-
-        # ✅ Create Question Paper entry
-        qp = question_paper_master.objects.create(
-            question_paper_name=question_paper_name,
-            duration_of_test=duration_of_test,
-            no_of_questions=0,
-            test_type=test_type_name,
-            topic=topic,
-            sub_topic=sub_topic,
-            upload_type="Excel",
-            created_by=created_by,
-            dtm_created=datetime.now(),
-            audio_text=audio_text_from_form,
-            remarks=test_type_category,
-        )
-
-        # ✅ Read Excel
-        df = pd.read_excel(excel_file)
-        category = test_type_category.strip().lower()
-
-        # ✅ Header mapping: maps Excel headers → model fields
-        header_map = {
-            "questions": "question_text",
-            "questions**": "question_text",
-            "question": "question_text",
-            "optiona": "option_a",
-            "option_a": "option_a",
-            "optionb": "option_b",
-            "option_b": "option_b",
-            "optionc": "option_c",
-            "option_c": "option_c",
-            "optiond": "option_d",
-            "option_d": "option_d",
-            "optione": "option_e",
-            "option_e": "option_e",
-            "answer": "answer",
-            "answer**": "answer",
-            "mark": "mark",
-            "mark**": "mark",
-            "difficulty_level": "difficulty_level",
-            "difficultylevel": "difficulty_level",
-        }
-
-        # ✅ Normalize and rename columns
-        normalized_cols = []
-        for col in df.columns:
-            clean_name = re.sub(r'[^a-z0-9_]', '', col.strip().lower().replace(" ", "_"))
-            mapped_name = header_map.get(clean_name, clean_name)
-            normalized_cols.append(mapped_name)
-        df.columns = normalized_cols
-
-        print("✅ Normalized columns:", df.columns.tolist())
-
-        # ✅ Question creation
-        count = 0
-
-        # Pronunciation / AudioTyping (no options)
-        if category in ["pronunciation", "audiotyping"]:
-            required_cols = ["question_text", "mark", "difficulty_level"]
-            for col in required_cols:
-                if col not in df.columns:
-                    return JsonResponse({"error": f"Missing column: {col}"}, status=400)
-
-            for _, row in df.iterrows():
-                q_text = str(row.get("question_text", "")).strip()
-                if not q_text:
-                    continue
-                question_master.objects.create(
-                    question_name_id=qp,
-                    question_text=q_text,
-                    answer=q_text,
-                    mark=int(row.get("mark", 1)),
-                    difficulty_level=str(row.get("difficulty_level", "")).strip(),
-                    created_by=created_by,
-                    dtm_created=datetime.now(),
-                )
-                count += 1
-
-        else:
-            # AudioMCQ type (options + answer)
-            required_cols = ["question_text", "answer", "mark", "difficulty_level"]
-            for col in required_cols:
-                if col not in df.columns:
-                    return JsonResponse({"error": f"Missing column: {col}"}, status=400)
-
-            for _, row in df.iterrows():
-                q_text = str(row.get("question_text", "")).strip()
-                if not q_text:
-                    continue
-
-                question_master.objects.create(
-                    question_name_id=qp,
-                    question_text=q_text,
-                    option_a=row.get("option_a", ""),
-                    option_b=row.get("option_b", ""),
-                    option_c=row.get("option_c", ""),
-                    option_d=row.get("option_d", ""),
-                    option_e=row.get("option_e", ""),
-                    answer=str(row.get("answer", "")),
-                    mark=int(row.get("mark", 1)),
-                    difficulty_level=str(row.get("difficulty_level", "")).strip(),
-                    dtm_created=datetime.now(),
-                    created_by=created_by,
-                )
-                count += 1
-
-        # ✅ Update question count
-        qp.no_of_questions = count
-        qp.save(update_fields=["no_of_questions"])
-
-        return JsonResponse({
-            "message": f"✅ '{question_paper_name}' uploaded successfully! ({count} questions added)"
-        }, status=200)
-
-    except Exception as e:
-        print("❌ Error in upload_communication_questions:", str(e))
-        return JsonResponse({"error": str(e)}, status=500)
-
-
-
-from rest_framework.decorators import api_view, parser_classes
-from rest_framework.parsers import MultiPartParser, FormParser
 
 @api_view(['GET', 'POST'])
 @parser_classes([MultiPartParser, FormParser])
@@ -34450,6 +34337,11 @@ def upload_communication_questions(request):
         audio_text_from_form = request.data.get("audio_text", "")
         upload_type = request.data.get("upload_type")
         no_of_questions = request.data.get("no_of_questions", 0)
+        no_of_questions = request.data.get("no_of_questions", 0)
+        communication_category = request.data.get("communication_category", "")
+        print("communication category : ",communication_category)
+
+
 
         print(f"🧾 Upload Type: {upload_type}")
         print(f"📘 Paper Name: {question_paper_name}")
@@ -34474,6 +34366,8 @@ def upload_communication_questions(request):
                 dtm_created=datetime.now(),
                 audio_text=audio_text_from_form,
                 remarks=test_type_category,
+                communication_category=communication_category,
+                
             )
 
             print(f"✅ Manual question paper created successfully! ID = {qp.id}")
@@ -34498,6 +34392,7 @@ def upload_communication_questions(request):
                 dtm_created=datetime.now(),
                 audio_text=audio_text_from_form,
                 remarks=test_type_category,
+                communication_category=communication_category,
             )
 
             print(f"✅ Word Question Paper created! ID = {qp.id}")
@@ -34541,6 +34436,7 @@ def upload_communication_questions(request):
             dtm_created=datetime.now(),
             audio_text=audio_text_from_form,
             remarks=test_type_category,
+            communication_category=communication_category,
         )
         print(f"✅ Question Paper created for Excel upload: ID = {qp.id}")
 
@@ -34659,6 +34555,7 @@ def upload_communication_questions(request):
         import traceback
         traceback.print_exc()
         return JsonResponse({"error": str(e)}, status=500)
+
 
 @api_view(['GET'])
 def download_communication_template(request):
@@ -34988,17 +34885,32 @@ def get_audio_test_types(request):
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
-
 @csrf_exempt
 def get_audio_category_questions(request, category_name):
     """
     Returns all question papers that belong to the given audio test category.
-    It filters records where 'remarks' matches the test_type_category clicked.
+    Filters by:
+      - remarks (audio category)
+      - communication_category (if provided)
     """
     try:
-        queryset = question_paper_master.objects.filter(
-            remarks__iexact=category_name, deleted=0
-        ).values(
+        # ✅ NEW: read query param
+        communication_category = request.GET.get("communication_category", "").strip()
+
+        print("🔍 category_name:", category_name)
+        print("🔍 communication_category:", communication_category)
+
+        # ✅ Base filter
+        filters = {
+            "remarks__iexact": category_name,
+            "deleted": 0
+        }
+
+        # ✅ ADD conditionally
+        if communication_category:
+            filters["communication_category__iexact"] = communication_category
+
+        queryset = question_paper_master.objects.filter(**filters).values(
             "id",
             "question_paper_name",
             "topic",
@@ -35027,6 +34939,7 @@ def get_audio_category_questions(request, category_name):
             "status": "error",
             "message": str(e)
         }, status=500)
+
 
 class TestAssignviewBatchAudio(APIView):
     def post(self, request, format=None):

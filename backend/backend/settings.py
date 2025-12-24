@@ -160,9 +160,15 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.postgresql',
-   'NAME': 'cc_dbs11',
- 'USER':'cc_dev',
- 'PASSWORD':'CA!mp2us3',
+#   'NAME': 'cc_dbs11',
+# 'USER':'cc_dev',
+# 'PASSWORD':'CA!mp2us3',
+
+ 'NAME': 'ccportal_db',
+ 'USER':'sumi',
+ 'PASSWORD':'campus@123',
+ 'HOST': '13.205.128.114'
+ 
  #'NAME': 'ccportal3',
  #'USER': 'postgres',
  #'PASSWORD': 'xszZcLqrdSzM06KnuyI0',

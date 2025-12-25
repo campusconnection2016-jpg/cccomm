@@ -1,0 +1,246 @@
+.navbar {
+    background-image: linear-gradient(to right, #3366FF, #FF66CC);
+    padding: 10px;
+    border-radius: 1px; /* Specify border radius */
+    border: 1px solid transparent; /* Set a transparent border */
+    border-image: linear-gradient(to right, #FF66CC, #3366FF) 1;
+}
+
+
+.links {
+    margin-right: 30px;
+    font-weight: bold;
+    font-size: large;
+    list-style-type: none; /* Remove bullet points */
+}
+
+.links a {
+    text-decoration: none; /* Remove underline */
+    color: white; /* Set link color to white */
+}
+
+.links a:hover {
+    color: yellow; /* Change link color on hover */
+}
+
+.links a:active {
+    color: red; /* Change link color on click */
+}
+
+.ul {
+    display: flex;
+    padding: 0; /* Remove default padding from ul */
+}
+
+.instruction-container {
+    padding: 60px;
+    margin-left: 30px;
+    background-color: white;
+    box-sizing: border-box;
+    border: none;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    padding: 10px;
+    width: 100%;
+}
+
+.ins-start {
+    padding-top: 50px;
+    width: 70%;
+    margin: center;
+}
+
+.test-container {
+    display: flex; /* Change display property to flex */
+    justify-content: space-between; /* Add space between the child elements */
+    border: none;
+    padding: 10px;
+    max-width: 100%;
+    border-radius: 20px;
+    margin-left: -110px;
+  }
+  
+  .question-container {
+    border: none;
+    padding: 10px;
+    margin-right: 10px;
+    width: 50%;
+    max-width: 100%;
+    /* border-radius: 10px;  Add curved border shape */
+    box-sizing: border-box;
+    border: none;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  
+  .question-buttons-container {
+    border: none;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+
+
+
+  .questions{
+    display: flex;
+    padding: 10px;
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+.Box{
+    display: flex;
+    padding: 10px;
+    border: none;
+    width: 80%;
+    box-sizing: border-box;
+    font-size: 17px;
+    font-weight: bold;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    margin-left: 60px;
+}
+.hai{
+    padding: 10px;
+    align-items: center;
+    border: none;
+    margin-left: 30px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 17px;
+    font-weight: bold;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);  
+}
+.hai1{
+    padding: 10px;
+    align-items: center;
+    border: none;
+    width: 70%;
+    box-sizing: border-box;
+    font-size: 17px;
+    font-weight: bold;
+    margin-left: 100px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);  
+}
+
+.hai2{
+    padding: 10px;
+    align-items: center;
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 17px;
+    font-weight: bold;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);  
+}
+
+
+
+.question-container1 {
+    border: none;
+    padding: 10px;
+    margin-right: 10px;
+    width: 70%;
+    /*max-width: 100%;  */
+    /* border-radius: 10px;  Add curved border shape */
+    box-sizing: border-box;
+    border: none;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  
+  .question-buttons-container1 {
+    border: none;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+
+/*--------------------------------------------------------------------*/
+
+
+.questions-container-code {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 20px;
+    width: 80%;
+    margin-left: 10%; /* Center the container */
+}
+
+.question-item-code {
+     margin-bottom: 20px; 
+     width: 100%;
+     margin-left: -50px;
+ }
+
+.question-item-code-disabled {
+    pointer-events: none;
+    opacity: 0.6; /* Optional: To visually indicate that the question is disabled */
+}
+
+.question-button-code {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    height: 50px;
+    text-align: left; /* Ensure text starts from the left */
+}
+
+.question-button-code:hover {
+    background-color: #0d6efd;
+}
+
+.faarrow{
+    background-color: #0d6efd;   
+}
+
+.savebutton{
+    background-color: #0d6efd;    
+    border-radius: 5px; 
+    border:none;
+}
+
+
+/* App.css */
+
+/* Prevent text selection */
+.no-select {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+  }
+  
+  /* Disable context menu (right-click) */
+  .no-right-click {
+    pointer-events: none;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

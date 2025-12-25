@@ -1,0 +1,361 @@
+.rotate-up {
+  transform: rotate(180deg);
+}
+
+.rotate-right {
+  transform: rotate(-90deg);
+}
+
+.images12 {
+  float: right;
+  width: 10px;
+  height: 10px;
+  margin-left: 80px;
+  margin-top: 6px;
+}
+.images12Q {
+  float: right;
+  width: 10px;
+  height: 10px;
+  margin-left: 80px;
+  margin-top: -12px;
+}
+
+.images121 {
+  float: right;
+  width: 10px;
+  height: 10px;
+  margin-left: 80px;
+  margin-top: 6px;
+}
+
+.images122 {
+  float: right;
+  width: 10px;
+  height: 10px;
+  margin-left: 64px;
+  margin-top: 6px;
+}
+
+.imagestest {
+  float: right;
+  width: 10px;
+  height: 10px;
+  margin-left: 78px;
+  margin-top: 6px;
+}
+
+.images1233 {
+  float: right;
+  width: 10px;
+  height: 10px;
+  margin-left: 66px;
+  margin-top: 6px;
+}
+
+
+.images13 {
+  float: right;
+  width: 10px;
+  height: 10px;
+  margin-left: 60px;
+  margin-top: 6px;
+}
+
+.images18 {
+  float: right;
+  width: 10px;
+  height: 10px;
+  margin-left: 60px;
+  margin-top: -14px;
+}
+
+.images14 {
+  float: right;
+  width: 10px;
+  height: 10px;
+  margin-left: 18px;
+  margin-top: 6px;
+}
+
+.images15 {
+  float: right;
+  width: 10px;
+  height: 10px;
+  margin-left: 18px;
+  margin-top: -15px;
+}
+
+.sidebar {
+  margin-top: 65px;
+  width: 200px;
+  height: 100%;
+  position: fixed;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: #fff;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  font-size: 16px;
+  font-weight: bold;
+  background: #39444e;
+  z-index: 1000;
+}
+
+.sidebar.collapsed {
+  width: 50px;
+}
+
+.main-content {
+  margin-left: 190px; 
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar.collapsed ~ .main-content {
+  margin-left: 40px !important;
+}
+
+
+/* Toggle button styles */
+.toggle-btn {
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #fff;
+ 
+}
+.toggle-btn .arrow {
+  display: inline-block;
+  font-size: 24px; /* Increase the size of the arrow */
+  font-weight: bold;
+  line-height: 1;
+  
+}
+
+
+.app {
+  position: relative;
+  overflow-x: hidden;
+  /* Prevent horizontal scrollbar */
+}
+
+/* Sidebar navigation styles */
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-nav ul li {
+  padding: 20px;
+}
+
+/* Menu item container styles */
+.sidebar-nav ul li .menu-item {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-nav ul li:hover,
+.sidebar-nav ul li:active {
+  background-color: transparent;
+  /* Change background color to orange */
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.select-lms {
+  display: none;
+}
+
+.select-option {
+  display: none;
+}
+
+.select-lms-skill {
+  display: none;
+}
+
+
+.sidebar-nav ul li .test-options li.active a {
+  color: #020202;
+  /* Set the text color to the desired active color */
+}
+
+
+.sidebar-nav ul li .test-options li:hover,
+.sidebar-nav ul li .test-options li:active {
+
+  /*text-decoration: underline;*/
+  padding: 10px;
+}
+
+/* Hover effect for menu items */
+/* Sidebar navigation styles */
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-nav ul li {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+/* Hide text content when sidebar is collapsed */
+.sidebar.collapsed .sidebar-nav ul li span {
+  display: none;
+}
+
+/* Hide text when sidebar is collapsed, except for Dashboard */
+.sidebar.collapsed ul li span {
+  display: none;
+}
+
+.sidebar.collapsed ul li.dashboard-text {
+  display: inline-block; /* Ensure Dashboard text is visible */
+}
+
+.sidebar.collapsed .sidebar-nav ul li a {
+  display: none;
+}
+
+/* Icon styles */
+
+.icon-image {
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+}
+
+/* Additional hover effect for the icons */
+.sidebar-nav ul li img:hover {
+  filter: brightness(0.8);
+  /* Adjust brightness on hover */
+}
+
+/* Menu text styles */
+.sidebar-nav ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+ /* Media queries for responsiveness */
+  /*Mobile view*/
+  @media (max-width: 769px) {
+    .main-content {
+      margin-left: 80px; /* Adjust main content margin */
+    }
+  .sidebar-nav ul {
+font-size:10px;
+  }
+  .icon-image{
+width:10px;
+height:10px;
+  }
+    .sidebar.collapsed .sidebar-nav ul li span,
+    .sidebar.collapsed .sidebar-nav ul li a {
+      display: none;
+    }
+    .images13,
+    .images12 {
+      display: none;
+  }
+    .sidebar {
+      top: -15px;
+      width: 140px; /* Full width when expanded */
+      transition: width 0.3s;
+    }
+    .main-content {
+      margin-left: 105px; /* Adjust according to sidebar width */
+      transition: margin-left 0.3s;
+    }
+    
+    /* Compact state styles */
+    .sidebar.collapsed {
+      width: 40px; /* Reduced width when collapsed */
+    }
+    .sidebar.collapsed .sidebar-nav ul li span,
+    .sidebar.collapsed .sidebar-nav ul li a {
+      display: none; /* Hide text and links */
+    }
+    .sidebar.collapsed .sidebar-nav ul li {
+      text-align: center; /* Center icons */
+    }
+    .sidebar.collapsed .sidebar-nav ul li i {
+      font-size: 24px; /* Adjust icon size if needed */
+    }
+    .sidebar.collapsed .logo {
+      display: none; /* Hide logo in compact state */
+    }
+    
+    /* Adjust main content margin when sidebar is collapsed */
+    .sidebar.collapsed ~ .main-content {
+      margin-left: 25px;
+    }
+  }
+  .sidebar-scroll {
+    height: calc(100vh - 60px); 
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; 
+  }
+  
+  
+/* Sidebar.css */
+
+/* Hide elements with hide-collapsed class when sidebar is collapsed */
+
+
+
+
+
+.sidebar-scroll {
+  height: calc(100vh - 60px);
+  /* Adjust the height as needed */
+  overflow-y: auto;
+}
+
+
+/*--------------------------Active-------------------------------*/
+
+.sidebar-nav ul li.active a {
+  color: black;
+}
+
+/* Optionally, you can add styles for the active menu item itself */
+.sidebar-nav ul li.active {
+  background-color: #94989b;
+  border-radius: 8px;
+
+
+}
+
+.icon-announ {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.menu-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;   /* 🔥 blocks all clicks */
+}
+
+.menu-item.disabled .icon-image {
+  filter: grayscale(100%);
+}
+
+.disabled-link {
+  cursor: not-allowed !important;   /* 🚫 disabled icon */
+}
+
+.disabled-link * {
+  cursor: not-allowed !important;
+}

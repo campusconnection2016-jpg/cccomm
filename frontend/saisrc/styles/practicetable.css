@@ -1,0 +1,220 @@
+/* =====================================================
+   PRACTICE TABLE — FULL RESPONSIVE + HORIZONTAL SCROLL
+   ===================================================== */
+
+/* ---- Full page container ---- */
+.practice-page-wrapper {
+  width: 100%;
+  overflow-x: auto;                /* ✅ Whole page horizontal scroll */
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  background-color: #1f252b;
+  min-height: 100vh;
+  padding: 12px 16px;
+  box-sizing: border-box;
+}
+
+/* Custom scrollbar for desktop */
+.practice-page-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+.practice-page-wrapper::-webkit-scrollbar-thumb {
+  background-color: #777;
+  border-radius: 6px;
+}
+.practice-page-wrapper::-webkit-scrollbar-track {
+  background-color: #222;
+}
+
+/* ---- Dropdown section ---- */
+.dropdown-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;                /* ✅ keep in single row */
+  overflow-x: auto;                 /* ✅ horizontal scroll if many dropdowns */
+  gap: 16px;
+  margin-bottom: 16px;
+  min-width: max-content;           /* allow scrolling instead of wrapping */
+  -webkit-overflow-scrolling: touch;
+}
+
+.dropdown-container::-webkit-scrollbar {
+  height: 6px;
+}
+.dropdown-container::-webkit-scrollbar-thumb {
+  background-color: #666;
+  border-radius: 4px;
+}
+.dropdown-container::-webkit-scrollbar-track {
+  background-color: #222;
+}
+
+.dropdown-container label {
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+.dropdown-container select {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #36404a;
+  color: white;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+/* ---- Table container ---- */
+.table-scroll-wrapper {
+  width: 100%;
+ 
+  border: 1px solid #fff;
+  background-color: #36404a;
+  min-width: max-content;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+.table-scroll-wrapper::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+.table-scroll-wrapper::-webkit-scrollbar-track {
+  background: #222;
+}
+
+/* ---- Table ---- */
+.table-scroll-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+ 
+  table-layout: auto;
+}
+
+.table-scroll-wrapper th,
+.table-scroll-wrapper td {
+  padding: 12px 16px;
+  text-align: left;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  white-space: nowrap;
+}
+
+.table-scroll-wrapper th {
+  font-weight: 700;
+  background-color: #2f3a43;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.table-scroll-wrapper tr:nth-child(even) {
+  background-color: #3e4953;
+}
+.table-scroll-wrapper tr:nth-child(odd) {
+  background-color: #36404a;
+}
+
+/* ---- Buttons ---- */
+.table-scroll-wrapper button {
+  background-color: orange;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.table-scroll-wrapper button:hover:not(:disabled) {
+  background-color: #f1a128;
+  transform: scale(1.05);
+}
+.table-scroll-wrapper button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---- Empty rows ---- */
+.table-scroll-wrapper td[colspan] {
+  text-align: center;
+  padding: 20px;
+  color: #ccc;
+  font-style: italic;
+}
+
+/* ---- Pagination ---- */
+.pagination-custom {
+  display: flex;
+  justify-content: flex-end;
+  margin: 16px 0;
+  list-style: none;
+  padding: 0;
+  min-width: max-content;
+}
+
+.pagination-custom button,
+.pagination-custom span {
+  border: none;
+  background: #3a3a3a;
+  color: #fff;
+  cursor: pointer;
+  margin-right: 4px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.pagination-custom .active span {
+  background-color: #f1a128;
+}
+
+/* =====================================================
+   MOBILE VIEW
+   ===================================================== */
+@media (max-width: 768px) {
+  /* Page scroll remains horizontal */
+  .practice-page-wrapper {
+    overflow-x: scroll;
+  }
+
+  /* Keep dropdowns in a scrollable row on mobile */
+  .dropdown-container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .dropdown-container label {
+    font-size: 16px;
+  }
+
+  .dropdown-container select {
+    font-size: 13px;
+  }
+
+  /* Table smaller text */
+  .table-scroll-wrapper th,
+  .table-scroll-wrapper td {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .pagination-custom {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-scroll-wrapper table {
+    min-width: 800px;
+  }
+  .table-scroll-wrapper th,
+  .table-scroll-wrapper td {
+    font-size: 12px;
+  }
+}

@@ -4,8 +4,13 @@ import { format, formatDate } from "date-fns";
 import moment from 'moment';
 
 //const API_URL = "http://localhost:8000";
+const API_URL =
+  process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+  export const GET_LOGIN = `${API_URL}/api/get/login/`;
+export const ADD_LOGIN = `${API_URL}/api/add/login/`;
 
-const API_URL = "https://ccportal.co.in";
+
+const API_URL = "https://cccomm.co.in";
 
 export function getLoginApi() {
   return axios

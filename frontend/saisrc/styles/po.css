@@ -1,0 +1,594 @@
+.placement-container {
+    background-color: #36404a;
+    color: #fff;
+    padding: 20px;
+    max-height: auto;
+    margin-top: -14px;
+   /* margin-left: -17px;*/
+    border-radius: 8px;
+}
+
+.placement-table {
+    width: 100%;
+    margin-top: 15px;
+    border-color: white;
+    background-color: #39444e;
+    color: white;
+}
+
+.placement-table th,
+.placement-table td {
+    padding: 10px;
+
+    text-align: left;
+    border-bottom: 1px solid rgb(80, 79, 79) !important;
+}
+
+.placement-table thead {
+    background-color: #3e4954;
+    color: white;
+    border-color: #424e5a;
+}
+
+.placement-table tbody {
+    border-color: inherit;
+    border-style: solid;
+    border-width: 0;
+}
+
+.placement-table tbody tr {
+    padding: 20px;
+    color: white;
+}
+
+.placement-table img {
+    width: 40px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+
+.pagination-custom-placement {
+    box-shadow: none !important;
+    outline: none !important;
+    border: none !important;
+}
+
+.pagination-custom-placement .page-link {
+    background-color: #3a3a3a;
+    /* Pagination button background color */
+    color: #ffffff;
+    /* Pagination button text color */
+    border: 1px solid #3a3a3a;
+    /* Pagination button border color */
+}
+
+.pagination-custom-placement .page-item.active .page-link {
+    background-color: #f1a128;
+    border: none;
+}
+
+.pagination-custom-placement .page-link {
+    color: #fff;
+    box-shadow: none;
+    background-color: #3a3a3a;
+    border: none;
+    margin: 0 5px;
+}
+
+.pagination-custom-placement .page-link:focus,
+.pagination-custom-placement .page-link:hover {
+    outline: none;
+    box-shadow: none;
+    border-color: transparent;
+    color: #ffffff;
+    box-shadow: none;
+    /* Change hover color to white */
+    background-color: #39444e;
+    /* Optional: Change background color on hover */
+}
+
+.pagination-custom-placement .page-item.disabled .page-link {
+    box-shadow: none;
+    background-color: #5a5a5a;
+    cursor: not-allowed;
+}
+
+.pagination-custom-placement .page-link:hover {
+    -webkit-box-shadow: 0 0 0 0.1rem #39444e;
+    /* Optional: Change border color on hover for old WebKit */
+    box-shadow: 0 0 0 0.1rem #39444e;
+    /* Optional: Change border color on hover */
+}
+
+
+
+.placement-display-pagination {
+    display: flex;
+    justify-content: space-between;
+}
+
+.label-dis-placement {
+    margin-top: 5%;
+    height: 70%;
+}
+
+.po-action-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+
+.po-add-products-button {
+    background-color: #f1a128;
+    border: none;
+    padding: 10px 20px;
+    color: #0a0a0a;
+    border-radius: 5px;
+    cursor: pointer;
+   
+}
+
+
+.po-search-box {
+    margin-right: 10px;
+    background-color: #36404a;
+    width: 32%;
+    padding:7px;
+    border-radius: 4px;
+    border: 1px solid #7a828b;
+    color: #bfcddd;
+}
+
+
+.button-po-save {
+    margin-left: 0%;
+    width: 110px;
+    background-color: #f1a128;
+    color: black;
+    border-color: none;
+    padding: 10px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+
+/* Custom dropdown styling */
+.po-dropdown-custom {
+    background: transparent;
+    color: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    width: 120px;
+    text-align: center;
+    appearance: none;
+    /* Removes default styling */
+    -webkit-appearance: none;
+    /* For Safari */
+    -moz-appearance: none;
+    /* For Firefox */
+}
+
+/* Dropdown options */
+.po-dropdown-custom option {
+    background: #39444e;
+    color: white;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.po-dropdown-custom:focus {
+    background: transparent !important;
+    outline: none;
+}
+
+/* Remove hover background */
+.po-dropdown-custom option:hover,
+.po-dropdown-custom option:focus .po-dropdown-custom option:checked {
+    background: transparent !important;
+    outline: none;
+}
+
+
+/* Control Panel Container */
+
+.po-control-panel {
+    display: flex;
+    justify-content: space-between;
+    /* Space between left and right groups */
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background-color: #36404a;
+    border-radius: 8px;
+}
+
+/* Left and Right Groups */
+.po-left-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.po-right-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+
+.button-po-save img {
+    margin-right: 5px;
+    height: 16px;
+}
+
+
+
+@media (max-width: 768px) {
+    .po-table-responsive {
+        width: 65%;
+        overflow-x: auto;
+    }
+
+    .po-table-responsive-test-schedule {
+        width: 280px;
+        overflow-x: auto;
+    }
+
+    .po-table-responsive-test-assign-candidates {
+        width: 52%;
+        overflow-x: auto;
+    }
+
+    .po-table-responsive-add-candidates {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .po-table-responsive-test-attend-candidates {
+        width: 37%;
+        overflow-x: auto;
+    }
+
+    .play-video-text {
+        display: none;
+        font-weight: 12px;
+    }
+
+    .open-file-text {
+        font-size: 12px;
+    }
+
+    .pagination-custom-placement {
+        margin-left: 1%;
+        margin-top: 1%;
+    }
+
+    .placement-display-pagination {
+        display: flex;
+        justify-content: initial;
+    }
+
+    .po-add-products-button {
+        width: 15%;
+        margin-left: 6px;
+        height: 43px;
+        margin-top: 7px;
+        padding-inline: 19px;
+    }
+
+    .po-search-box {
+        width: 130px;
+        height: 37px;
+        margin-top: 7px;
+    }
+
+    .button-po-save {
+        width: 80px;
+        margin: 5px;
+        padding: 5px;
+    }
+
+    .po-control-panel {
+        flex-direction: column;
+        /* Stack the groups vertically */
+        align-items: stretch;
+        /* Full width for groups */
+        gap: 15px;
+        width: 30%;
+    }
+
+    .po-left-group,
+    .po-right-group {
+        justify-content: space-between;
+        width: 100%;
+        /* Full width for better alignment */
+    }
+
+    .button-po-save img {
+        margin-right: 0;
+        /* Remove icon spacing */
+    }
+
+
+    .po-title-place {
+        flex: 1 1 30%;
+        min-width: 100px;
+    }
+
+}
+
+
+/*---------13-02-2025-----------------*/
+
+
+
+.po-dropdown-custom-repo {
+    background: transparent;
+    color: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    width: 300px;
+    height: 41px;
+    text-align: center;
+    appearance: none;
+    /* Removes default styling */
+    -webkit-appearance: none;
+    /* For Safari */
+    -moz-appearance: none;
+    /* For Firefox */
+}
+
+.po-dropdown-custom-repo1 {
+    background: transparent;
+    color: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    width: 140px;
+
+    text-align: center;
+    appearance: none;
+    /* Removes default styling */
+    -webkit-appearance: none;
+    /* For Safari */
+    -moz-appearance: none;
+    /* For Firefox */
+}
+
+
+
+.po-dropdown-custom-repo option {
+    background: #39444e;
+    color: white;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.po-dropdown-custom-repo:focus {
+    background: transparent !important;
+    outline: none;
+}
+
+/* Remove hover background */
+.po-dropdown-custom-repo option:hover,
+.po-dropdown-custom-repo option:focus .po-dropdown-custom-repo option:checked {
+    background: transparent !important;
+    outline: none;
+}
+
+
+.po-input-ques {
+    background-color: #39444e;
+    color: #d4dae0;
+    border: 1px solid white;
+    border-radius: 5px;
+    display: block;
+    width: 100%;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+
+.po-input-ques::placeholder {
+    color: #6c757d;
+}
+
+.po-parent-container {
+    display: flex;
+    margin-top: -180px;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Full viewport height */
+    width: 100%;
+  }
+
+.sidebar-collapsed .po-parent-container {
+    width: 100%;
+  }
+  
+  .sidebar-collapsed .po-parent-container {
+    width: 100%;
+  }
+
+@media screen and (max-width: 768px) {
+
+    .po-table-responsive-report-old {
+        width: 57%;
+        overflow-x: auto;
+    }
+
+    .po-dropdown-custom-repo {
+        width: 100%;
+        font-size: 15px;
+    }
+
+    .po-dropdown-custom-repo1 {
+        width: 160%;
+        font-size: 16px;
+    }
+
+    .po-input-ques {
+        width: 100%;
+        padding: 0.45rem 0.9rem;
+    }
+
+    .po-table-responsive-stu-res {
+        width: 92%;
+        overflow-x: auto;
+    }
+
+    .po-table-responsive-jp {
+        width: 27%;
+        overflow-x: auto;
+    }
+    
+    .po-table-responsive-jp-data {
+        width: 38%;
+        overflow-x: auto;
+    }
+    
+  .po-parent-container {
+    margin-top: 453px;
+  }
+
+  
+  .po-table-responsive-stu-data {
+    width: 280px;
+    overflow-x: auto;
+}
+
+}
+
+.toggle-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .toggle-label {
+    font-weight: bold;
+  }
+  
+  .toggle-option {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .toggle-option.selected {
+    background-color: #319d08;
+    color: white;
+    border-color: #319d08;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .action-container {
+      flex-direction: column;
+      align-items: center;
+      margin-left:-190px;
+      gap: 6px;
+    }
+  
+    .action-container1 {
+        flex-direction: column;
+        align-items: center;
+        margin-left:-300px;
+        gap: 6px;
+      }
+      .action-container2 {
+        flex-direction: column;
+        align-items: center;
+        margin-left:-200px;
+        gap: 6px;
+      }
+    
+      .action-container4 {
+        flex-direction: column;
+        align-items: center;
+        margin-left:-350px;
+        gap: 6px;
+      }
+    
+    .po-add-products-button,
+    .po-search-box,
+    .button-po-save {
+      width: 100px;
+      
+    }
+  
+    .toggle-filter {
+      flex-direction: row;
+      align-items: center;
+    }
+  
+    .toggle-option {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  
+  /* 📟 Tablet View (max-width: 1024px) */
+  @media screen and (max-width: 1024px) {
+    .po-add-products-button {
+      width: 18%;
+    }
+  
+    .po-search-box {
+      width: 40%;
+      margin-left:90px;
+    }
+  }
+  .action-container ,.action-container1,.action-container2,.action-container4 {
+    display: flex;
+    align-items: center;
+   /* justify-content: space-between; /* Ensure spacing */
+    gap: 6px; /* Adds space between elements */
+    flex-wrap: wrap; /* Allow wrapping for responsiveness */
+    padding: 10px;
+ }
+  
+ /* Add this to your CSS file */
+.filter-cont-set {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-cont-set > div {
+  flex: 1;
+  min-width: 250px; /* fallback size for desktop and small tablet */
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .filter-cont-set {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .filter-cont-set > div {
+    width: 100%;
+  }
+}

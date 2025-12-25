@@ -1,0 +1,86 @@
+/* Style for the form container */
+.form-container {
+  margin: auto;
+  max-width: 400px;
+  color:black;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  text-align: center; /* Center the form */
+}
+/* styles.css */
+.lab-username {
+  margin-left: 200px;
+  margin-top: 50px;
+}
+
+.con-username {
+  width: 50%;
+  padding: 15px;
+  margin-left: 360px;
+  margin-top: -50px;
+}
+
+/* Style for form inputs */
+.form-group {
+  margin-left:350px;
+  margin-bottom: 20px;
+}
+
+/* Style for labels */
+.form-label {
+  margin-left:350px;
+  font-weight: bold;
+}
+
+/* Style for input fields */
+.form-control {
+  margin-left:350px;
+  width: 50%; /* Make input fields smaller */
+  padding: 15px;
+  font-size: 14px; /* Decrease font size */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Style for select dropdown */
+.form-select {
+  margin-left:350px;
+  width: 50%; /* Make dropdown smaller */
+  padding: 15px;
+  font-size: 14px; /* Decrease font size */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+}
+.css-13cymwt-control {
+  margin-left:360px;
+}
+/* Style for buttons */
+.btn {
+  margin-left:400px;
+
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Style for error messages */
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+/* Style for success messages */
+.success-message {
+  color: green;
+  margin-top: 10px;
+}
+.modal-content{
+  margin-top:70px;
+}

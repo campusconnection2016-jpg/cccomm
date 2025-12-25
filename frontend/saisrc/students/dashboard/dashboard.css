@@ -1,0 +1,908 @@
+.stu-board {
+  display: flex;
+}
+
+.App-stu {
+  background-color: #323b44;
+  color: #ffff;
+  width: 100%;
+}
+
+.header-stu {
+  background-color: #323b44;
+  color: white;
+  padding: 10px 20px;
+  margin-bottom: 15px;
+}
+
+.h5-stu {
+  color: #ffff;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-weight: 700;
+}
+
+/* CARDS 
+.card-list-stu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  text-align: center;
+  margin: 30px 0px;
+  background-color: #323B44;
+}
+
+.card-stu {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 10px;
+  width: 280px;
+  height: 125px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s;
+}*/
+.card-list-stu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  text-align: center;
+  margin: 30px 0;
+  background-color: #323b44;
+  gap: 10px;
+  /* Add gap for spacing between cards */
+}
+
+.card-stu {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 10px;
+  width: 20%;
+  /* Ensure cards fit in one row */
+  height: 125px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.card-stu:hover {
+  transform: scale(1.05);
+}
+
+.card-green {
+  border-left: 10px solid #c4e538;
+  background-color: #323b44;
+  margin-left: 0%;
+  margin-top: 0%;
+  height: 100px;
+}
+
+.card-purple {
+  border-left: 10px solid #d980fa;
+  background-color: #323b44;
+  margin-left: 0%;
+  margin-top: 0%;
+  height: 100px;
+}
+
+.card-paint {
+  border-left: 10px solid #7bed9f;
+  background-color: #323b44;
+  margin-left: 0%;
+  margin-top: 0%;
+  height: 100px;
+}
+
+.card-yellow {
+  border-left: 10px solid #ffb142;
+  background-color: #323b44;
+  margin-left: 0%;
+  margin-top: 0%;
+  height: 100px;
+}
+
+.card-title-stu {
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  /* margin-left: -21%; */
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  margin-top: 15%;
+}
+
+.card-title-stu-off {
+  font-size: 15px;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  margin-left: -15%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-top: 21%;
+}
+
+.table-responsive-stu {
+  max-height: 231px;
+  /* Adjust to match the height of five rows */
+  transition: all 0.3s ease;
+  overflow-y: auto;
+  /* Enable scrolling */
+}
+
+/* Ensure proper layout and styling of the table within the container */
+.table-responsive-stu table {
+  width: 100%;
+  border-collapse: collapse;
+  /* Consistent border display */
+  font-size: 14px;
+}
+
+.table-responsive-stu thead,
+.table-responsive-stu tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  /* Ensures column widths are maintained */
+}
+
+/* Ensures tbody does not collapse */
+.table-responsive-stu tbody {
+  display: block;
+}
+
+.table-responsive-stu th,
+.table-responsive-stu td {
+  width: 20%;
+  /* Adjust to your table's needs */
+  padding: 8px;
+  /* Adjust padding */
+  text-align: left;
+  /* Align text as needed */
+}
+
+/* Optional: Scrollbar styling */
+.table-responsive-stu::-webkit-scrollbar {
+  width: 5px;
+}
+
+.table-responsive-stu::-webkit-scrollbar-thumb {
+  background-color: #888;
+  /* Scrollbar thumb color */
+  border-radius: 10px;
+}
+
+.news {
+  margin-left: 45%;
+}
+
+.td-stu,
+.news-img {
+  color: #ffffff;
+  background-color: #3e4954;
+  font-weight: bold;
+  text-align: center;
+}
+
+.events-container {
+  margin-left: 50%;
+  margin-right: auto;
+  transform: translateX(-45%);
+  text-align: center;
+}
+
+.text {
+  margin-left: 45%;
+}
+
+/*
+.card-content-wrapper-stu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-grow: 1;
+  align-items: center;
+}
+
+
+.card-title-stu {
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  font-size: 20px;
+}
+
+
+.card-content-stu {
+  font-size: 30px;
+  color: #faf8f8;
+  font-weight: bold;
+}*/
+
+/* PROGRESS-SECTION */
+.event-form-list-container-stu {
+  width: 270px;
+}
+
+.calendar-container-stu {
+  float: right;
+  width: 270px;
+  margin-left: -20px;
+}
+
+.h6-stu {
+  font-weight: bold;
+  padding: 10px;
+  background-color: #3e4954;
+}
+
+.dtm-txt-stu {
+  font-weight: bold;
+}
+
+.progress-section-stu {
+  margin-top: 40px;
+  max-height: auto;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #ffff;
+}
+
+.assessment-taken-stu {
+  margin-right: 8px;
+  color: white;
+  margin-left: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.test1-stu {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #3e4954;
+  display: flex;
+  justify-content: space-between;
+}
+
+.h6-report-stu {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.apti-stu {
+  width: 232px;
+  height: 216px;
+}
+
+.chart-stu {
+  color: #3e4954;
+}
+
+.dashboard-stu {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  background-color: #39444e;
+  padding: 1rem;
+  border-radius: 8px;
+  color: white;
+  box-sizing: border-box;
+  border: 1px solid white;
+  border-radius: 5px;
+  margin: 30px;
+}
+
+.dashboard-tables {
+  background-color: #323b44;
+  padding: 1rem;
+  border-radius: 8px;
+  color: white;
+  box-sizing: border-box;
+  border: 1px solid white;
+
+  margin: 30px;
+}
+
+.card-container-event-stu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.card12-stu {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 10px;
+  width: 110px;
+  height: 80px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s;
+  margin-left: 10px;
+}
+
+.news-container-stu {
+  background-color: #39444e;
+  width: 310px;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid white;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.box-size {
+  box-sizing: border-box;
+  border: 1px solid white;
+  text-align: center;
+}
+
+.container-stu {
+  background-color: #2a2f3a;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin: auto;
+  margin-top: 55px;
+  border: 1px solid;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.button-to-accept {
+  background-color: #f1a128;
+  color: black;
+  border-color: none;
+
+  padding: 5px;
+  border-radius: 4px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+
+.card-stu {
+  background-color: #323b44;
+  width: 120px;
+  /* Set the width */
+  height: 120px;
+  /* Set the height equal to width to make it circular */
+  border: 1px solid white;
+  border-radius: 50%;
+  /* This makes the card circular */
+  padding: 16px;
+  margin: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  margin-left: 20px;
+}
+
+.card-test-count-stu {
+  background-color: #323b44;
+  width: 140px;
+  /* Set the width */
+  height: 140px;
+  /* Set the height equal to width for a circular shape */
+  border: 15px solid #2eccb7;
+  border-radius: 50%;
+  /* Makes it circular */
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  margin-left: 20px;
+}
+
+.card-test-stu {
+  background-color: #323b44;
+  width: 140px;
+  /* Set the width */
+  height: 140px;
+  border: 15px solid hsl(27, 80%, 47%);
+  border-radius: 50%;
+  /* Makes it circular */
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  margin-left: 20px;
+}
+
+.card-companies-stu {
+  background-color: #323b44;
+  width: 140px;
+  /* Set the width */
+  height: 140px;
+  /* Set the height equal to width for a circular shape */
+  border: 15px solid #2eccb7;
+  border-radius: 50%;
+  /* Makes it circular */
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  margin-left: 20px;
+}
+
+.card-offers-stu {
+  background-color: #323b44;
+  width: 140px;
+  /* Set the width */
+  height: 140px;
+  border: 15px solid hsl(27, 80%, 47%);
+  border-radius: 50%;
+  /* Makes it circular */
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  margin-left: 20px;
+}
+
+.card-requests-stu {
+  background-color: #323b44;
+  width: 140px;
+  /* Set the width */
+  height: 140px;
+  /* Set the height equal to width for a circular shape */
+  border: 15px solid #2eccb7;
+  border-radius: 50%;
+  /* Makes it circular */
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  margin-left: 20px;
+}
+
+.col-dashboard-stu {
+  margin-bottom: 20px;
+  margin-right: 20px; /* from second block */
+  background-color: #3e4954;
+  color: #ffff; /* from second block */
+  margin-top: 20px;
+  width: 230px;
+  margin-left: 31%;
+  text-align: center; /* from second block */
+  border-radius: 10px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.parents {
+ /* display: flex;*/
+  flex: 1; 
+  flex-direction: column;
+  /* Stack items vertically */
+  margin-left: -78px;
+}
+
+.col-dash {
+  margin-bottom: 20px;
+
+  background-color: #3e4954;
+  color: #ffff;
+  margin-top: 20px;
+  width: 270px;
+
+  border-radius: 10px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.select-dropdown-stu {
+  color: white;
+  border-radius: 10px;
+  background-color: #3e4954;
+  padding: 10px;
+  height: 38px;
+  margin-top: -7px;
+  width: 160px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.date-select-wrapper {
+  display: flex;
+  align-items: center;
+  /* Aligns both DatePicker and select element vertically */
+  gap: 10px;
+  /* Adds spacing between the two elements */
+}
+
+.input-date-train {
+  flex: 1;
+  padding: 5px;
+}
+
+.select-dropdown {
+  flex: 1;
+  padding: 8px;
+  width: 70px;
+}
+
+.cards-studentrole {
+  display: flex;
+  justify-content: space-between;
+  gap: 0px;
+  flex-wrap: wrap;
+  margin-left: -1%;
+}
+
+.container-student {
+  background-color: #2a2f3a;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 90%;
+  margin: auto;
+  margin-top: 70px;
+}
+
+
+
+.row-table-train {
+  display: block;
+}
+
+/*gayu*/
+/* Container to limit the table height */
+.table-responsive-stu {
+  max-height: 231px;
+  /* Adjust to match the height of five rows */
+  transition: all 0.3s ease;
+  overflow-y: auto;
+  /* Enable scrolling */
+}
+
+/* Ensure proper layout and styling of the table within the container */
+.table-responsive-stu table {
+  width: 100%;
+  border-collapse: collapse;
+  /* Consistent border display */
+  font-size: 14px;
+}
+
+.table-responsive-stu thead,
+.table-responsive-stu tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  /* Ensures column widths are maintained */
+}
+
+/* Ensures tbody does not collapse */
+.table-responsive-stu tbody {
+  display: block;
+}
+
+.table-responsive-stu th,
+.table-responsive-stu td {
+  width: 20%;
+  /* Adjust to your table's needs */
+  padding: 8px;
+  /* Adjust padding */
+  text-align: left;
+  /* Align text as needed */
+}
+
+/* Optional: Scrollbar styling */
+.table-responsive-stu::-webkit-scrollbar {
+  width: 5px;
+}
+
+.table-responsive-stu::-webkit-scrollbar-thumb {
+  background-color: #888;
+  /* Scrollbar thumb color */
+  border-radius: 10px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  /* Ensures that borders don't have extra space */
+}
+
+.table-header,
+.table-cell {
+  border: 1px solid rgb(160, 158, 158);
+  /* Adds the border to both the headers and cells */
+  padding: 10px;
+  /* Adds space inside the cells */
+  text-align: center;
+  /* Centers text inside cells */
+}
+
+.table-header {
+  background-color: #3e4954;
+  color: white;
+  font-weight: bold;
+}
+
+.table-cell {
+  background-color: #3e4954;
+  color: white;
+}
+
+.button-to-accept:disabled {
+  background-color: #c2934c;
+  cursor: not-allowed;
+  color: #050505;
+}
+
+.form-ques-studash {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: #39444e;
+  padding: 1rem;
+  max-height: auto;
+  border-radius: 8px;
+}
+
+.announcement-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 90%;
+  margin-left: 5%;
+  border-radius: 10px;
+}
+
+/*--------------------------------*/
+
+.student-role {
+  margin-left: 1%;
+}
+
+.card-container-student {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Center-aligns the text below each square */
+}
+
+/* Square container */
+.square-container-student {
+  width: 170px;
+  /* Adjust size as needed */
+  height: 170px;
+  display: flex;
+  /* Enable flexbox */
+  flex-direction: column;
+  /* Align contents vertically */
+  align-items: center;
+  /* Center items horizontally */
+  justify-content: center;
+  /* Center items vertically */
+  border-radius: 5px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  /* Smooth transition for zoom effect */
+  border: 2px solid #333;
+  /* Add border for square effect */
+  cursor: pointer;
+  /* Indicate it's interactable */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Zoom effect */
+.square-container-student:hover {
+  transform: scale(1.1);
+  /* Zoom in on hover */
+}
+
+.card-content-stu {
+  font-size: 35px;
+  /* Adjust font size for better visibility */
+  color: #faf8f8;
+  /* Adjust color as needed */
+  font-weight: bold;
+  margin: 0;
+  /* Remove any unwanted margins */
+  text-align: center;
+  /* Ensure text is centered */
+  line-height: 1;
+  /* Adjust line height for better centering */
+}
+
+/* .card-content-wrapper-stu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  text-align: center;
+} */
+
+
+
+/*new 8-10-25 */
+@media (max-width: 768px) {
+  .col-dashboard-stu {
+    width: 105%; /* take most of screen width */
+    margin: 11px 71px;
+  }
+
+  .card-content-stu {
+    font-size: 18px; /* smaller text for mobile */
+    margin-left: 0 !important;
+  }
+
+  .select-dropdown-stu{
+    width: 100%;
+  }
+
+    .card-title-stu {
+      text-align: center;
+      /* margin-left: 25%;
+      margin-top: 16%; */
+    }
+
+    .card-stu {
+      margin-left: 7%;
+    }
+
+    .cards-studentrole {
+      display: block;
+      gap: 39px !important;
+    }
+
+    .parents {
+    flex-direction: column; /* stack vertically on small screens */
+    align-items: center;
+  }
+
+    .form-ques-studash {
+      margin-left: -19px !important;
+      margin-top: -15px !important;
+      width: 113%;
+    }
+
+    .card12-stu {
+      width: 100px;
+      height: 50px;
+    }
+
+    .news-container-stu {
+      padding: 10px;
+      width: 100%;
+    }
+
+    .news-container-stu td {
+      font-size: 12px;
+    }
+
+    .h5-plan {
+      font-size: 12px;
+    }
+
+    .h6-stu {
+      font-size: 12px;
+    }
+
+    .h5-stu {
+      margin-top: 0%;
+      margin-left: 35px;
+    }
+
+    .h5-plan {
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .dashboard-stu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px;
+      padding: 10px;
+    }
+
+    .card-title-stu-off {
+      margin-left: 14%;
+    }
+
+    .event-form-list-container-stu,
+    .calendar-container-stu,
+    .news-container-stu {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .card-container-event-stu {
+      justify-content: center;
+    }
+
+    .card12-stu {
+      width: 100px;
+      height: 60px;
+      margin: 5px;
+    }
+
+    .card-list {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 3px;
+      margin-left: 42px;
+      width: 113%;
+    }
+
+    .card-test-stu,
+    .card-companies-stu,
+    .card-offers-stu,
+    .card-requests-stu {
+      margin-left: 13%;
+    }
+
+    .container-student {
+      margin-top: -10%;
+      margin-left: -17%;
+    }
+
+    .col-dash {
+      margin-bottom: 20px;
+      margin-right: 2px;
+      background-color: #3e4954;
+      color: #ffff;
+      margin-top: 20px;
+      width: 289px;
+      margin-left: 5px;
+      border-radius: 10px;
+      padding: 16px;
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+.chart-row {
+  display: flex;
+  gap: 20px; /* space between charts */
+}
+
+.chart-col {
+  flex: 1; /* split space equally */
+  background: transparent;
+}
+
+.chart-title {
+  font-size: 16px;
+  color: #fff;
+  font-weight: bold;
+}

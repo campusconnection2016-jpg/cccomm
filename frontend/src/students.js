@@ -109,9 +109,9 @@ const Students = ({ collegeName, username, institute, userRole }) => {
                   <Sidebar
                     isSidebarOpen={isSidebarOpen}
                     toggleSidebar={toggleSidebar}
-                     username={username}
-                              collegeName={collegeName}
-                              institute={institute}
+                    username={username}
+                    collegeName={collegeName}
+                    institute={institute}
                   />
                   <div
                     className={`main-content ${isSidebarOpen ? "shifted" : ""}`}
@@ -155,13 +155,14 @@ const Students = ({ collegeName, username, institute, userRole }) => {
                           }
                         />
                         <Route
-  path="/students/practice/audioaccess"
-  element={<AudioAccess 
-   username={username}
-                              collegeName={collegeName}
-                              institute={institute}
-  />}
-/>
+                          path="/students/practice/audioaccess"
+                          element={<AudioAccess
+                            username={username}
+                            collegeName={collegeName}
+                            institute={institute}
+                            communication_category="PracticeTest"
+                          />}
+                        />
                         <Route
                           path="/test/ts-online"
                           element={
@@ -174,8 +175,8 @@ const Students = ({ collegeName, username, institute, userRole }) => {
                             />
                           }
                         />
-                        <Route path="/attend-fill-blank-test/:testName" element={<AttendFillBlankTest  username={username}
-                              collegeName={collegeName} />} />
+                        <Route path="/attend-fill-blank-test/:testName" element={<AttendFillBlankTest username={username}
+                          collegeName={collegeName} />} />
 
 
                         <Route
@@ -231,7 +232,7 @@ const Students = ({ collegeName, username, institute, userRole }) => {
                           }
                         />
 
- <Route
+                        <Route
                           path="/practice"
                           element={
                             <PracticeAccess
@@ -240,7 +241,7 @@ const Students = ({ collegeName, username, institute, userRole }) => {
                             />
                           }
                         />
-<Route
+                        <Route
                           path="/practice-question"
                           element={
                             <Demo
@@ -250,9 +251,9 @@ const Students = ({ collegeName, username, institute, userRole }) => {
                           }
                         />
 
-  <Route
+                        <Route
 
-  
+
                           path="/test/practice-code/"
                           element={
                             <AttendCodePracticeTest
@@ -276,7 +277,7 @@ const Students = ({ collegeName, username, institute, userRole }) => {
                             />
                           }
                         />
-                         <Route
+                        <Route
                           path="/test/practice-communication/"
                           element={
                             <PracticeCommunication
@@ -288,7 +289,7 @@ const Students = ({ collegeName, username, institute, userRole }) => {
                             />
                           }
                         />
-    <Route path="/test-result" element={<TestResultPage />} />
+                        <Route path="/test-result" element={<TestResultPage />} />
                         <Route
                           path="/offers"
                           element={
@@ -298,7 +299,7 @@ const Students = ({ collegeName, username, institute, userRole }) => {
                             />
                           }
                         />
-                          <Route
+                        <Route
                           path="/test/communication/"
                           element={
                             <AttendCommunication
@@ -308,12 +309,12 @@ const Students = ({ collegeName, username, institute, userRole }) => {
                           }
                         />
                         <Route path="/thank-you" element={<ThankYouPage />} />
-<Route path="/attend-audio-test/:testName" element={<AttendAudioTest  username={username}
-                              collegeName={collegeName} />} />
-                              <Route path="/attend-audio/typing/:testName" element={<AttendAudioTyping  username={username}
-                              collegeName={collegeName} />} />
-                              <Route path="/attend/audio-pronun/:testName" element={<Pronunciation  username={username}
-                              collegeName={collegeName} />} />
+                        <Route path="/attend-audio-test/:testName" element={<AttendAudioTest username={username}
+                          collegeName={collegeName} />} />
+                        <Route path="/attend-audio/typing/:testName" element={<AttendAudioTyping username={username}
+                          collegeName={collegeName} />} />
+                        <Route path="/attend/audio-pronun/:testName" element={<Pronunciation username={username}
+                          collegeName={collegeName} />} />
                         {/*}  <Route path="index.html" element={<Navigate to="/" />} />   */}
                       </Routes>
                     </TestProvider>

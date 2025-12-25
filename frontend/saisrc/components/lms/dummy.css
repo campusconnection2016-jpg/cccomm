@@ -1,0 +1,44 @@
+.cui-statusbar .cui-ctl, .cui-statusbar .cui-ctl-medium,.cui-statusbar .cui-toolbar-buttondock{
+  display: none !important;
+}
+
+.cui-img-container img, .cui-img-cont-float img{
+  display: none !important;
+}
+/* Example CSS to hide full-screen or toolbar elements */
+.embedded-document {
+  position: relative;
+  display: inline-block;
+  z-index: 9999;
+  width: 100%;
+  height: 510px;
+}
+
+.svg-icon,.bolt-button{
+  display:none;
+}
+/* Adjust specific elements within the embedded document */
+.embedded-document .fullscreen-button {
+  display: none !important; /* Hide full-screen button */
+}
+
+.embedded-document .toolbar {
+  display: none !important; /* Hide toolbar */
+}
+/*
+@media (max-width: 768px)
+{
+ .product-table-container
+  {
+    width: 350px;
+  }
+  .product-table-container h4
+  {
+    font-size: 12px;
+  }
+  .button-ques-save
+  {
+    margin-left: 10px;
+
+  }
+}*/

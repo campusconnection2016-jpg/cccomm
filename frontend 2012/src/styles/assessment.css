@@ -1,0 +1,501 @@
+/* assessment.css — Mobile view styling */
+@media screen and (max-width: 768px) {
+
+  /* General page layout */
+  body {
+    margin: 0;
+    padding: 0;
+   
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+    overflow-x: hidden;
+  }
+
+  /* Main container */
+  .mainLayout {
+   
+    border-radius: 8px;
+    margin: 10px;
+    padding: 12px;
+    box-sizing: border-box;
+    min-height: 100vh;
+  }
+
+  /* Scrollable child container */
+  .scrll-new-prac {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px !important;
+    padding: 2px !important;
+    overflow-y: auto;
+    max-height: 60vh;
+  }
+
+  /* Topic and child circles */
+  .circle {
+    width: 90px !important;
+    height: 90px !important;
+    min-width: 90px;
+    min-height: 90px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid #555;
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .circle:hover {
+    background-color: rgba(76, 175, 80, 0.15);
+    transform: scale(1.05);
+    border-color: #4caf50;
+  }
+
+  /* Breadcrumb navigation */
+  nav[aria-label="Breadcrumb"] {
+    flex-wrap: wrap;
+    font-size: 13px;
+    padding: 8px;
+    gap: 4px;
+  
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+
+  nav[aria-label="Breadcrumb"] span {
+    color: #ccc;
+  }
+
+  nav[aria-label="Breadcrumb"] span[style*="underline"] {
+    text-decoration: underline;
+    color: #4caf50;
+  }
+
+  /* Topics navigation */
+  nav[aria-label="Topics"] {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+    gap: 14px;
+    /* padding: 10px; */
+    padding: 1px 1px;
+  }
+
+  /* PracticeTable area */
+  main {
+    width: 100%;
+    margin-top: 10px;
+    overflow-x: auto;
+    padding: 8px;
+   
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Popup overlays */
+  .popup-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 10px;
+  }
+
+  .popup-content {
+    background: #252a31;
+    border-radius: 10px;
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 16px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  }
+
+  /* Modal buttons */
+  .popup-content button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    background: #4caf50;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .popup-content button.cancel {
+    background: #f44336;
+  }
+
+  /* Forms inside modals */
+  .popup-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .popup-content form input,
+  .popup-content form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #555;
+    background: #1a1d22;
+    color: white;
+    font-size: 14px;
+  }
+
+  /* Buttons inside upload modal */
+  .popup-content form button {
+    flex: 1 1 45%;
+    padding: 10px 14px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .popup-content form button:hover {
+    opacity: 0.85;
+  }
+
+  /* Folder icons and logos */
+  img {
+    max-width: 40px;
+    max-height: 40px;
+  }
+
+  /* Adjust circle icon sizes */
+  .circle div:first-child {
+    font-size: 24px;
+    margin-bottom: 3px;
+  }
+
+  /* Scrollbar customization */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #4caf50;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   Additional Professional Mobile View Fixes
+   ---------------------------------------------------------- */
+@media screen and (max-width: 768px) {
+
+  /* Ensure entire main layout fits */
+  .mainLayout,
+  .mainLayoutStyle {
+    padding: 10px !important;
+    margin: 0 auto;
+    width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Breadcrumb spacing */
+  nav[aria-label="Breadcrumb"] {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+    gap: 4px;
+    line-height: 1.4;
+  }
+
+  /* Topic and Subtopic circles - smaller, centered */
+  .scrll-new-prac {
+    justify-content: center !important;
+    padding: 4px 8px !important;
+    gap: 12px !important;
+    flex-wrap: wrap;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    max-height: 65vh !important;
+  }
+
+  .scrll-new-prac > div {
+    margin: 0 auto;
+  }
+
+  /* Circles fit 3–4 per row */
+  .circle {
+    width: 80px !important;
+    height: 80px !important;
+    font-size: 11px !important;
+    border: 1px solid #555 !important;
+  }
+
+  .circle img {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  /* Toggle buttons (MCQ/Coding/company toggle) */
+  label[style*="cursor: 'pointer'"],
+  .mcq-toggle,
+  .coding-toggle {
+    transform: scale(0.9);
+    margin-bottom: 10px !important;
+  }
+
+  /* Top-right toggle section alignment */
+  div[style*="justify-content: 'flex-end'"] {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* Company-specific toggle */
+  input[type="range"][max="2"] {
+    width: 100px !important;
+    height: 26px !important;
+  }
+
+  /* Upload modal adjustment */
+  .popup-overlay {
+    padding: 5px !important;
+  }
+
+  .popup-content {
+    width: 95% !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+  }
+
+  .popup-content form {
+    gap: 12px !important;
+  }
+
+  .popup-content form button {
+    width: 100% !important;
+    margin-top: 8px;
+  }
+
+  /* PracticeTable scroll fix */
+  main {
+    width: 300px;
+    overflow-x: auto !important;
+    padding: 6px !important;
+  }
+
+  /* Prevent any horizontal overflow */
+  * {
+   
+    box-sizing: border-box;
+  }
+}
+
+/* table css */
+
+/* Container */
+.container-styles {
+  margin-top: 10px;
+  user-select: none;
+  padding: 0 24px;
+}
+
+/* Dropdown container */
+.dropdown-containers {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+/* Labels */
+.dropdown-labels {
+  font-weight: 600;
+  color: white;
+  font-size: 15px;
+  margin-right: 3px;
+}
+
+.spaced-labels {
+  margin-left: 20px;
+}
+
+/* Select dropdown */
+.dropdown-selects {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background-color: transparent;
+  color: white;
+  min-width: 120px;
+  max-width: 160px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Scrollbar for dropdowns */
+.dropdown-containers::-webkit-scrollbar {
+  height: 6px;
+}
+.dropdown-containers::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 3px;
+}
+
+/* --- Mobile View --- */
+@media (max-width: 768px) {
+  .container-styles {
+    padding: 0 10px;
+  }
+
+  .dropdown-containers {
+    flex-direction: column;
+    align-items: flex-start;
+    overflow-x: visible;
+    gap: 10px;
+  }
+
+  .dropdown-labels {
+    font-size: 14px;
+    margin-left: 0;
+  }
+
+  .dropdown-selects {
+    width: 100%;
+    max-width: none;
+  }
+
+  .spaced-labels {
+    margin-left: 0;
+  }
+}
+.right-content-container {
+  margin-top: 20px;
+  padding: 0 10px 0 20px;
+  user-select: none;
+  flex-grow: 1;
+  min-width: 0;
+ /* overflow-y: auto;*/
+}
+
+/* 📱 Mobile View Fix */
+@media (max-width: 768px) {
+  .right-content-container {
+          /* Take full viewport width */
+    padding: 10px;           /* Comfortable spacing */
+    box-sizing: border-box;  /* Include padding in width */
+    overflow-x: auto;        /* Scroll if still too wide */
+  }
+
+  /* Optional: make the parent flex column-based */
+  .parent-flex-container {
+    flex-direction: column;  /* Sidebar above, content below */
+  }
+
+}
+
+/* Add this to your mobile view section in assessment.css */
+@media screen and (max-width: 768px) {
+  
+  /* Next/Pagination button positioning - LEFT ALIGNMENT */
+  .pagination-container,
+  .next-button-container {
+    display: flex;
+    justify-content: flex-start !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  /* Individual next/prev buttons - COMPACT SIZING (excluding MCQ) */
+  button[class*="next"]:not([class*="mcq"]):not(.mcq-button),
+  button[class*="prev"]:not([class*="mcq"]):not(.mcq-button),
+  .next-page-btn,
+  .prev-page-btn {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    width: auto !important;
+    max-width: fit-content !important;
+  }
+  
+  /* Table pagination controls (excluding MCQ) */
+  main button:not([class*="mcq"]):not(.mcq-button),
+  .table-controls button:not([class*="mcq"]):not(.mcq-button),
+  .pagination button:not([class*="mcq"]):not(.mcq-button) {
+    margin-left: 0 !important;
+    padding: 8px 12px !important;
+  }
+  
+  /* Button container alignment (excluding MCQ) */
+  .right-content-container button:not([class*="mcq"]):not(.mcq-button),
+  .container-styles button:not([class*="mcq"]):not(.mcq-button) {
+    align-self: flex-start !important;
+    margin-left: 0 !important;
+  }
+  
+  /* Flex parent containers */
+  .right-content-container,
+  .container-styles,
+  main,
+  .table-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+  
+  /* Remove center/right alignment on mobile */
+  [style*="justify-content: center"]:not(.mcq-container),
+  [style*="justify-content: flex-end"]:not(.mcq-container) {
+    justify-content: flex-start !important;
+  }
+  
+  /* Specific pagination patterns (excluding MCQ) */
+  nav button:not([class*="mcq"]):not(.mcq-button),
+  .pagination-wrapper button:not([class*="mcq"]):not(.mcq-button),
+  .button-row button:not([class*="mcq"]):not(.mcq-button),
+  .action-buttons button:not([class*="mcq"]):not(.mcq-button) {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+  }
+  
+  /* Button width control (excluding MCQ) */
+  button:not([class*="mcq"]):not(.mcq-button) {
+    width: auto !important;
+    min-width: auto !important;
+    max-width: fit-content !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Button container gap (excluding MCQ containers) */
+  div:has(button):not(.mcq-container):not([class*="mcq"]) {
+    justify-content: flex-start !important;
+    gap: 8px !important;
+  }
+}

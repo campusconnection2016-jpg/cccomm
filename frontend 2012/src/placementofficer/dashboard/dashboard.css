@@ -1,0 +1,734 @@
+.body {
+  background-color: black;
+  color: #acbfd2;
+}
+
+.App-placement {
+  font-family: Arial, sans-serif;
+}
+
+.report-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 24px;
+}
+
+.generate-report-button {
+  background-color: darkblue;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.generate-report-button:hover {
+  background-color: #241cc6;
+}
+
+.generate-report-button .fa-download {
+  margin-left: 8px;
+}
+
+.card-list-place {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 10px;
+  width: 200px;
+  height: 120px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s;
+  margin-left: 10px;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card-icon1 {
+  width: 20px;
+  color: rgba(185, 176, 176, 0.977);
+  height: 30px;
+  margin-left: 190px;
+}
+
+/* .card-title-place {
+  font-size: 15px;
+  font-weight: bold;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: white;
+  margin-left: -64px;
+} */
+.card-title-placedrop {
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  /* margin-left: -17px; */
+  text-align: center;
+  margin-top: 15%;
+  /* margin-right: -14px; */
+}
+.card-title-placeoffrequ {
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  /* margin-left: 15px; */
+  text-align: center;
+  margin-top: 15%;
+  /* margin-right: 3px; */
+}
+.card-title-place-attan {
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+}
+
+/* .card-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-grow: 1;
+  text-align: center;
+} */
+.progress-container {
+  margin-bottom: 20px;
+}
+
+.progress-section {
+  margin-top: 40px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+  border-radius: 10px;
+}
+.college-select-place:focus {
+  border-color: none; /* Same color on focus to avoid color change */
+  box-shadow: none; /* Removes any additional shadows or highlights */
+}
+.college-select-place {
+  /* Ensures no outline on focus */
+  outline: none;
+  border: 10px solid #18c4bb; /* Keeps custom border */
+  box-shadow: none; /* Removes any default focus shadow */
+}
+
+/* Prevent white border or highlight when the select box is focused or active */
+select.college-select-place:focus,
+select.college-select-place:active {
+  outline: none;
+  border-color: #18c4bb; /* Keeps the same border color on focus/active */
+  box-shadow: none; /* Prevents any default shadow effect */
+}
+.department-attendance {
+  margin-left: 10px;
+  border-radius: 2%;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.assessment-taken {
+  margin-left: 10px;
+  border-radius: 2%;
+  border-bottom: 1px solid #e9ecef;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.assessment-taken2 {
+  height: 80%;
+  width: 40%;
+}
+
+.test {
+  display: flex;
+  justify-content: space-between;
+}
+
+.test1 {
+  display: flex;
+  justify-content: space-between;
+}
+.test2 {
+  display: flex;
+  justify-content: space-between;
+}
+/* .month{
+  display: flex;
+  justify-content: space-between;
+}
+.graph{
+  display: flex;
+  justify-content: space-between;
+} */
+.NEWSUPDATES {
+  border: 2px solid rgb(173, 166, 166);
+  border-radius: 10px;
+  margin-left: 200px;
+  margin-right: 200px;
+  margin-top: 15px;
+  padding: 8px;
+}
+.progress-section1 {
+  display: flex;
+  justify-content: space-between;
+}
+.assessment-taken1 {
+  padding-top: 20px;
+}
+.table1 {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+.td {
+  height: 20px;
+}
+
+/*--------------------------calendar events--------------------------------------*/
+
+/* src/App.css */
+
+.dashboard-placement {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 1fr for the first column, 2fr for the second */
+  gap: 1rem; /* spacing between columns */
+  background-color: #39444e;
+  padding: 1rem;
+  border-radius: 8px;
+  color: white;
+  box-sizing: border-box;
+  border: 1px solid white;
+  border-radius: 5px;
+  width: 90%;
+}
+.news-container {
+  background-color: #39444e;
+  width: 330px;
+  padding: 20px;
+
+  box-sizing: border-box;
+  border: 1px solid white;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.event-form-list-container {
+}
+
+.calendar-container {
+}
+
+.card-container-event {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px; /* Adjust as needed */
+}
+
+.card-event {
+  background-color: #39444e;
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: calc(50% - 10px); /* 50% width with spacing */
+}
+
+.card-event h3 {
+  font-size: 18px;
+  margin-bottom: 0.5rem;
+}
+
+.card-event p {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+.test-college-topper-officer {
+  margin-bottom: 10px;
+  background-color: #3e4954;
+  padding: 10px;
+}
+@media (max-width: 768px) {
+  .container-placement {
+    max-width: 300px !important;
+  }
+  .h6-bold-interview-place {
+    margin-left: 8px !important;
+  }
+  .card-content-officer {
+    margin-left: 17px !important;
+  }
+  .cards-officer {
+    margin-top: -23px;
+    gap: 44% !important;
+  }
+  .test-college-topper-officer {
+    width: 67% !important;
+  }
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+  .btn-train-dash {
+    position: absolute;
+    right: 26px;
+    bottom: 39px;
+    border: none;
+    padding: 0;
+    font-size: 24px;
+    height: 30px;
+    background: #f1a128;
+    border-radius: 2px;
+  }
+  .h6-bold-interview-pace {
+    font-weight: bold;
+    margin-left: 22% !important;
+  }
+  .card-content-pla {
+    margin-left: 2% !important;
+  }
+  .h6-bold-report-place {
+    font-weight: bold;
+    margin-left: -2% !important;
+  }
+  .h6-bold-topper-place {
+    font-weight: bold;
+    margin-left: -2% !important;
+  }
+  .table-test-place {
+    overflow-x: auto;
+    width: 296% !important;
+  }
+
+  .college-select-place option {
+    width: 30%;
+  }
+ 
+  .h6-bold-sts {
+    font-weight: bold;
+    margin-left: -2% !important;
+  }
+  .table-trainer-place {
+    width: 180% !important;
+  }
+  .h6-bold-news-place {
+    font-weight: bold;
+    margin-left: 22% !important;
+  }
+  .App-placement {
+    width: 112%;
+    margin-left: -24px;
+    margin-top: -9%;
+  }
+  .card-list-place {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 15px;
+    display: block;
+  }
+  .card-title-place {
+    max-width: 100% !important;
+    margin-left: 52px !important;
+    margin-top: 17px !important;
+  }
+  .card-title-place-request {
+    max-width: 100% !important;
+    margin-left: 62px !important;
+    margin-top: 17px !important;
+  }
+  .card-content-attend {
+    margin-left: 30% !important;
+  }
+  .card-title-placedrop,
+  .card-title-placeoffrequ {
+    margin-left: -17% !important;
+    margin-top: 8% !important;
+  }
+  .card-content-off {
+    margin-left: 2% !important;
+  }
+  .card-title-place-attan {
+    max-width: 100% !important;
+    margin-right: 23px !important;
+    margin-left: 19% !important;
+    margin-top: 16px !important;
+  }
+  .square-container-placeofficer {
+    margin-left: 257px !important;
+    margin-top: 8%;
+  }
+}
+.container-placement {
+  background-color: #2a2f3a;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 90%;
+  margin: auto;
+  margin-top: 70px;
+}
+/* .container-dash {
+  width: 85.5%;
+  margin-top: 80px;
+  margin-left: 4.5%;
+} */
+.container-place-dash {
+  background-color: #2a2f3a;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 85%;
+  margin: auto;
+  margin-top: 20px;
+  margin-left: 7%;
+}
+.h6-bold-news-place {
+  font-weight: bold;
+  margin-left: 45%;
+}
+
+/*gayu*/
+/* Container to limit the table height */
+.table-responsive-place {
+  max-height: 337px; /* Adjust to match the height of five rows */
+  transition: all 0.3s ease;
+  overflow-y: auto; /* Enable scrolling */
+}
+
+/* Ensure proper layout and styling of the table within the container */
+.table-responsive-place table {
+  width: 100%;
+  border-collapse: collapse; /* Consistent border display */
+  font-size: 14px;
+}
+
+.table-responsive-place thead,
+.table-responsive-place tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed; /* Ensures column widths are maintained */
+}
+
+/* Ensures tbody does not collapse */
+.table-responsive-place tbody {
+  display: block;
+}
+
+.table-responsive-place th,
+.table-responsive-place td {
+  width: 20%; /* Adjust to your table's needs */
+  padding: 8px; /* Adjust padding */
+  text-align: left; /* Align text as needed */
+}
+
+/* Optional: Scrollbar styling */
+.table-responsive-place::-webkit-scrollbar {
+  width: 5px;
+}
+
+.table-responsive-place::-webkit-scrollbar-thumb {
+  background-color: #888; /* Scrollbar thumb color */
+  border-radius: 10px;
+}
+
+.table-trainer-place {
+  width: 90%;
+  overflow-x: auto;
+}
+
+.btn-train-place {
+  position: absolute;
+  right: 26px;
+  bottom: 39px;
+  border: none;
+  padding: 0;
+  font-size: 24px;
+  height: 30px;
+  background: #f1a128;
+  border-radius: 2px;
+}
+
+.input-date-report {
+  background-color: #39444e;
+  color: #ffff;
+  border: 1px solid white;
+  border-radius: 5px;
+  display: block;
+  width: 100%;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  line-height: 1.5;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+
+.college-select-place {
+  margin-left: 21% !important;
+  color: rgb(157, 190, 210);
+  font-weight: bold;
+  border-radius: 40px;
+  background-color: #3e4954;
+  width: 50%;
+  padding: 10px;
+  margin: 20px;
+  border: 10px solid #18c4bb;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.college-select-place:hover {
+  background-color: #4a545f;
+  /* Change background color on hover */
+}
+.row-place {
+  display: block;
+}
+.news-head-place,
+.news-img-place {
+  text-align: center;
+  font-weight: bold;
+}
+.card-lms {
+  background-color: #323b44;
+  width: 120px; /* Set the width */
+  height: 120px; /* Set the height equal to width to make it circular */
+  border: 1px solid white;
+  border-radius: 50%; /* This makes the card circular */
+  padding: 16px;
+  margin: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  margin-left: 20px;
+}
+.card-test-count {
+  background-color: #323b44;
+  width: 140px; /* Set the width */
+  height: 140px; /* Set the height equal to width for a circular shape */
+  border: 15px solid #18c4bb; /* Full circular border */
+  border-radius: 50%; /* Makes it circular */
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  margin-left: 25px;
+}
+.card-companies {
+  background-color: #323b44;
+  width: 140px; /* Set the width */
+  height: 140px; /* Set the height equal to width for a circular shape */
+  border: 15px solid hsl(27, 80%, 47%); /* Full circular border */
+  border-radius: 50%; /* Makes it circular */
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  margin-left: 20px;
+}
+.card-offers {
+  background-color: #323b44;
+  width: 140px; /* Set the width */
+  height: 140px; /* Set the height equal to width for a circular shape */
+  border: 15px solid #18c4bb; /* Full circular border */
+  border-radius: 50%; /* Makes it circular */
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  margin-left: 20px;
+}
+.card-requests {
+  background-color: #323b44;
+  width: 140px; /* Set the width */
+  height: 140px; /* Set the height equal to width for a circular shape */
+  border: 15px solid #d86e18; /* Full circular border */
+  border-radius: 50%; /* Makes it circular */
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  margin-left: 20px;
+}
+
+.card-content-officer {
+  font-size: 35px;
+  margin-left: 4px;
+  color: #faf8f8;
+  font-weight: bold;
+  margin-top: 14px;
+}
+
+.cards-officer {
+  display: flex;
+  gap: 83px;
+  margin-left: 17%;
+  text-align: center;
+  flex-wrap: wrap;
+}
+.card-content-pla {
+  font-size: 35px;
+  color: #faf8f8;
+  font-weight: bold;
+  margin-top: 14px;
+}
+
+.card-content-attend {
+  display: flex;
+  /*  align-items: center;
+  justify-content: center; */
+  color: white;
+  font-weight: bold;
+  margin-left: 8px;
+  margin-top: 17px;
+  font-size: 35px;
+}
+
+.card-content-off {
+  font-size: 35px;
+  margin-left: 3px;
+  /* text-align: center; */
+  color: #faf8f8;
+  font-weight: bold;
+  margin-top: 14px;
+}
+
+.square-container-placeofficer {
+  width: 170px; /* Adjust size as needed */
+  height: 170px;
+  display: flex;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.3s ease; /* Smooth transition for zoom effect */
+  border: 2px solid #333; /* Add border for square effect */
+  cursor: pointer; /* Indicate it's interactable */
+  margin-left: 152px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.square-container-placeofficer:hover {
+  transform: scale(1.1);
+}
+
+.card-container-placeofficer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  margin-left: -223px !important;
+
+  padding: 0;
+}
+.card-content-attend,
+.card-content-officer {
+  color: white;
+  font-weight: bold;
+  font-size: 35px;
+}
+.card-title-place-attan,
+.card-title-place {
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  margin-top: 23%;
+}
+.card-title-place-request {
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  margin-left: -23% !important;
+  text-align: center;
+  margin-top: 31% !important;
+}
+
+.square-container-placedrop {
+  width: 170px; /* Adjust size as needed */
+  height: 170px;
+  display: flex;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.3s ease; /* Smooth transition for zoom effect */
+  border: 2px solid #333; /* Add border for square effect */
+  cursor: pointer; /* Indicate it's interactable */
+  margin-left: 152px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.square-container-placedrop:hover {
+  transform: scale(1.1);
+}
+
+.card-container-placedrop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  margin-left: -144px !important;
+
+  padding: 0;
+}
+
+.placement-officer {
+  margin-left: -7%;
+  margin-top: 8%;
+}
+.placement-officer-drp {
+  margin-left: 0%;
+  margin-top: 3%;
+}
+/* In your CSS */
+.custom-scrollbar {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #888 transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

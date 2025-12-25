@@ -1,0 +1,68 @@
+<form id="updateForm">
+  <input type="hidden" id="training_id" value="{{ training_id }}">
+
+  <label>College ID</label>
+  <input type="text" id="college_id" value="{{ college_id }}">
+
+  <label>Batches</label>
+  <input type="text" id="batches" value="{{ batches }}">
+
+  <label>Trainers</label>
+  <input type="text" id="trainers" value="{{ trainers }}">
+
+  <label>Department ID</label>
+  <input type="text" id="department_id" value="{{ department_id }}">
+
+  <label>Year</label>
+  <input type="text" id="year" value="{{ year }}">
+
+  <label>Trainer IDs</label>
+  <input type="text" id="trainer_ids" value="{{ trainer_ids }}">
+
+  <label>Trainer Date (JSON)</label>
+  <textarea id="trainer_date">{{ trainer_date }}</textarea>
+  
+   <label>Remarks File (optional)</label>
+  <input type="file" id="remarks_file" accept=".docx,.pdf,.xls,.xlsx,.txt">
+
+  <label>Remarks / Topics</label>
+  <textarea id="remarks_text">{{ topics }}</textarea>
+
+  <button type="submit">Update Training</button>
+</form>
+
+<script>
+document.getElementById("updateForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const training_id = document.getElementById("training_id").value;
+  const form = document.getElementById("updateForm");
+  const formData = new FormData();
+
+  formData.append("college_id", document.getElementById("college_id").value);
+  formData.append("batches", document.getElementById("batches").value);
+  formData.append("trainers", document.getElementById("trainers").value);
+  formData.append("department_id", document.getElementById("department_id").value);
+  formData.append("year", document.getElementById("year").value);
+  formData.append("trainer_ids", document.getElementById("trainer_ids").value);
+  formData.append("trainer_date", document.getElementById("trainer_date").value);
+  formData.append("remarks_text", document.getElementById("remarks_text").value);
+
+  const fileInput = document.getElementById("remarks_file");
+  if (fileInput.files.length > 0) {
+    formData.append("remarks_file", fileInput.files[0]);
+  }
+
+  fetch(`/api/update-training-schedule/${training_id}/`, {
+    method: "POST",  // NOTE: If you're handling file upload, use POST instead of PUT
+    body: formData
+  })
+    .then(res => res.json())
+    .then(result => {
+      alert(result.message || result.error);
+    })
+    .catch(err => {
+      alert("❌ Error: " + err.message);
+    });
+});
+</script>

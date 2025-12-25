@@ -1,0 +1,1213 @@
+.body {
+  background-color: black;
+  color: #acbfd2;
+}
+
+.App-training {
+  font-family: Arial, sans-serif;
+  max-width: 102%;
+  font-size:16px;
+}
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.card-title-trainer-techtestcore{
+  font-size: 15px;
+    font-weight: bold;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: white;
+    margin-left: 70%;
+    margin-top: -3%;
+    text-align: center;
+}
+/* Obfuscation overlay */
+.obfuscate {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.2) 10px,
+    rgba(0, 0, 0, 0.2) 10px,
+    rgba(0, 0, 0, 0.2) 20px
+  );
+  pointer-events: none;
+  display: none;
+  z-index: 9999;
+  animation: flash 0.1s steps(1) infinite;
+}
+
+@keyframes flash {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.8;
+  }
+}
+
+.report-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 18px;
+}
+
+.generate-report-button {
+  background-color: darkblue;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.generate-report-button:hover {
+  /* background-color: #241cc6; */
+}
+
+.generate-report-button .fa-download {
+  margin-left: 8px;
+}
+
+.card-list-train {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  background-color: #323b44;
+}
+
+.card-lms {
+  background-color: #323b44;
+  width: 200px;
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 10px;
+  height: 120px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  transition: transform 0.2s;
+  margin-left: 11px !important;
+}
+
+.card-lms:hover {
+  transform: scale(1.05);
+}
+
+.card-icon1 {
+  width: 40px;
+  color: rgb(157, 190, 210);
+  height: 40px;
+  font-weight: bold;
+}
+
+.card-title-super {
+  font-size: 15px;
+  margin-top: 203px;
+  font-weight: bold;
+  color: rgb(253, 254, 255);
+  /* margin-left: 21% !important; */
+  white-space: nowrap;
+  text-align: center;
+  text-overflow: ellipsis;
+  /* margin-right: 76px; */
+  margin-top: 8%;
+}
+.card-title-super-requests {
+  font-size: 15px;
+  margin-top: 9%;
+  font-weight: bold;
+  color: rgb(253, 254, 255);
+  /* margin-left: 38% !important; */
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  /* margin-right: 76px; */
+}
+.card-title-trainer-super {
+  font-size: 15px;
+  font-weight: bold;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: white;
+  /* margin-left: 33%; */
+  margin-top: 18%;
+  text-align: center;
+}
+.card-title-trainer-presuper {
+  font-size: 15px;
+  font-weight: bold;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: white;
+  text-align: center;
+  /* margin-left: 18%; */
+  margin-top: 20%;
+}
+.card-title-superadmin {
+  font-size: 15px;
+  margin-top: 15%;
+  margin-right: 10px;
+  font-weight: bold;
+  color: rgb(253, 254, 255);
+  margin-left: -86%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.college-select-super-role:focus,
+.college-select-super-role:active,
+.college-select-super:focus,
+.college-select-super:active {
+  outline: none; /* Removes focus outline */
+  border-color: none; /* Keeps border color consistent */
+  box-shadow: none; /* Prevents any default shadow effect */
+}
+.college-select-super-role,
+.college-select-super {
+  outline: none; /* Removes default outline */
+  box-shadow: none; /* Prevents default shadow */
+}
+.card-content-superadmin {
+  font-size: 35px;
+  font-weight: 700;
+  color: white;
+  padding-top: 20px;
+  margin-left: 9px !important;
+}
+.card-content-supercompany {
+  font-size: 35px;
+  font-weight: 700;
+  color: white;
+  padding-top: 20px;
+  margin-left: 2px !important;
+}
+.card-content-super {
+  color: white;
+  font-weight: bold;
+  margin-left: -2%;
+  margin-top: 17px;
+  font-size: 40px;
+}
+.card-content-super-totattan {
+  display: flex;
+  color: white;
+  font-weight: bold;
+  margin-left: 7px;
+  margin-top: 17px;
+  font-size: 35px;
+}
+.card-content-super-apt {
+  color: white;
+  font-weight: bold;
+  margin-left: -10%;
+  margin-top: 17px;
+  font-size: 35px;
+}
+/* .card-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  flex-grow: 1;
+  align-items: center;
+} */
+
+.card-test-count {
+  border-left: 15px solid #3742fa;
+}
+
+.card-companies {
+  margin-top: -1%;
+  border-left: 15px solid #d86e18;
+}
+
+.card-offers {
+  border-left: 15px solid #2ecc71;
+}
+
+.card-requests {
+  border-left: 15px solid #3498db;
+}
+
+.my-row {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.col-department-attendance {
+  margin-right: 8px;
+  margin-top: 20px;
+}
+
+.test-report {
+  background-color: #3e4954;
+  padding: 10px;
+}
+
+.test-report-title {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.date-picker-wrapper {
+  margin-bottom: 10px;
+}
+
+.graph-type-select {
+  color: rgb(157, 190, 210);
+  font-weight: 700;
+  border-radius: 8px;
+  background-color: #3e4954;
+}
+
+.score-charts {
+  display: flex;
+  max-width: 600px;
+}
+
+.chart-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  margin:-5px;
+}
+
+.chart-title {
+  margin-right: 60px;
+  color: rgb(157, 190, 210);
+  margin-top: 10px;
+}
+
+.chart-container {
+  width: 300px;
+  height: 200px;
+}
+
+.col-assessment-taken {
+  margin-right: 8px;
+  color: rgb(157, 190, 210);
+  margin-top: 20px;
+  overflow-y: auto;
+  height: 400px;
+}
+
+.test-college-topper {
+  margin-bottom: 10px;
+  background-color: #3e4954;
+  padding: 10px;
+}
+
+.college-topper-title {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.college-topper-table {
+  background-color: #3e4954;
+}
+
+.table-cell {
+  color: #a7bfd2;
+  background-color: #3e4954;
+}
+
+.news-updates-training {
+  margin-top: 28px;
+  margin-bottom: 10px;
+  background-color: #3e4954;
+  padding: 10px;
+}
+
+.news-updates-header {
+  background-color: #3e4954;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.news-updates-title {
+  font-weight: bold;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+}
+
+.container {
+  background-color: #2a2f3a;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 90%;
+  margin: auto;
+  margin-top: 70px;
+}
+.container-superplace {
+  background-color: #3e4954;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 90%;
+  margin: auto;
+  margin-top: 70px;
+}
+.container-dash-superadmin {
+  margin-top: 80px;
+  margin-left: 4.5%;
+}
+.container-supertraining {
+  background-color: #3e4954;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 90%;
+  margin: auto;
+  margin-top: 70px;
+}
+.row-table-training {
+  display: block;
+}
+
+.row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+}
+
+.no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.col-dashboard {
+  flex: 1;
+  margin-right: 8px;
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  background-color: #3e4954;
+  color: #a7bfd2;
+  margin-left: 20px;
+  border-radius: 10px;
+}
+
+.pie-chart-container {
+  margin-bottom: 20px;
+}
+
+.select-container {
+  display: flex;
+  justify-content: space-between;
+  background-color: #3e4954;
+  margin-top: 20px;
+}
+
+.select-dropdown-ss {
+  color: rgb(157, 190, 210);
+  border-radius: 10px;
+  width:150px !important;
+  background-color: #3e4954;
+}
+
+.col-wide {
+  width: 900px;
+  margin-bottom: 20px;
+  background-color: #3e4954;
+  color: #a7bfd2;
+  margin-top: 20px;
+  margin-left: 10px;
+  border-radius: 10px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.col-dashboard-pkg {
+  margin-bottom: 20px;
+  margin-right: 20px;
+  background-color: #3e4954;
+  color: #a7bfd2;
+  margin-top: 20px;
+  margin-left: 20px;
+  border-radius: 10px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 95%;
+}
+
+.col-wide-pkg {
+  width: 900px;
+  margin-bottom: 20px;
+  background-color: #3e4954;
+  color: #a7bfd2;
+  margin-top: 20px;
+  margin-left: 10px;
+  border-radius: 10px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.h6-bold {
+  font-weight: bold;
+ 
+}
+.h6-bold-sts {
+  font-weight: bold;
+  margin-left: 25%;
+}
+/* External CSS file */
+
+.progress-section {
+  color: rgb(157, 190, 210);
+  font-weight: 700;
+  display: flex;
+
+  justify-content: space-around;
+  margin-top: 25px;
+  width: 100%;
+}
+
+.assessment-taken1 {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+  align-items: center;
+}
+
+.button {
+  /* display: flex; */
+  font-weight: bold;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgb(52, 152, 219);
+  color: white;
+  padding: 10px 20px;
+  margin: 0 20px;
+  margin-top: -6%;
+}
+
+.buttons-foo {
+  justify-content: space-between;
+  display: flex;
+  margin-left: 10px;
+}
+
+.link {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.college-select-super {
+  margin-left: 23% !important;
+  color: rgb(157, 190, 210);
+  font-weight: bold;
+  border-radius: 40px;
+  background-color: #3e4954;
+  width: 25%;
+  padding: 10px;
+  margin: 20px;
+  cursor: pointer;
+  border: 10px solid #d86e18;
+  transition: background-color 0.3s;
+}
+
+.college-select-super:hover {
+  background-color: #4a545f;
+}
+.college-select-super-role {
+  margin-left: 13% !important;
+  color: rgb(157, 190, 210);
+  font-weight: bold;
+  border-radius: 40px;
+  background-color: #3e4954;
+  width: 25%;
+  padding: 10px;
+  margin: 20px;
+  border: 10px solid #18c4bb;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.college-select-super-role:hover {
+  background-color: #4a545f;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+/* Custom dropdown styling */
+.dropdown-custom-dash {
+  background: transparent;
+  color: white;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  width: 120px;
+  text-align: center;
+  appearance: none; /* Removes default styling */
+  -webkit-appearance: none; /* For Safari */
+  -moz-appearance: none; /* For Firefox */
+}
+
+/* Dropdown options */
+.dropdown-custom-dash option {
+  background: #39444e;
+  color: white;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.dropdown-custom-dash:focus {
+  background: transparent !important;
+  outline: none;
+}
+/* Remove hover background */
+.dropdown-custom-dash option:hover,
+.dropdown-custom-dash option:focus
+.dropdown-custom-dash option:checked  {
+  background: transparent !important;
+  outline: none;
+}
+
+@media (max-width: 768px) {
+ .testing{
+  margin-left:10px;
+ }
+ .dropdown-custom-dash{
+  width:50%;
+  font-size:12px
+ }
+  .col-dashboard {
+    width: 94% !important;
+}
+.App-training {
+  font-family: Arial, sans-serif;
+  
+  font-size:10px;
+}
+  .card-title-trainer-super {
+    /* margin-right: 127px; */
+    text-align: center;
+    /* margin-left: 10% !important; */
+    margin-top: 10% !important;
+  }
+  .card-title-trainer-presuper {
+    /* margin-left: 10% !important; */
+    margin-top: 1% !important;
+    text-align: center;
+    /* margin-right: 31% !important; */
+  }
+  .container-dash-superadmin {
+    min-width: 300px !important;
+    margin-left: -39% !important;
+  }
+  .card-content-super-apt {
+    align-items: center;
+    justify-content: center;
+    margin-left: 4% !important;
+  }
+  .card-title-super-requests {
+    /* margin-left: 21% !important; */
+    margin-top: 8%;
+    text-align: center;
+  }
+  .college-select-super {
+    width: 70%;
+    margin: 10px;
+    display: block;
+    top: 50px;
+    left: 45px;
+  }
+  
+.card-title-trainer-techtestcore{
+  font-size: 12px;
+   
+    margin-left:38px;
+    color: white;
+   
+}
+.dummy-css{
+  width: 80%;
+}
+.news-updates-training{
+  margin-left: 10px;
+        width: 300px !important;
+}
+  .container-superplace {
+    margin-left: -36%;
+    background-color: #3e4954;
+    max-width: 166% !important;
+  }
+  .container-supertraining {
+    margin-left: -46%;
+    margin-top: -10px;
+    max-width: 138% !important;
+}
+ 
+  .college-select-super-role {
+    width: 70%;
+    margin: 10px;
+    display: block;
+    top: 50px;
+    left: 45px;
+  }
+  .card-lms {
+    width: 65%;
+    justify-content: center;
+    margin-left: 50px;
+  }
+
+  .card-content-super {
+    font-size: 12px;
+    margin-left: -3%;
+  }
+
+  /* .card-content-wrapper {
+    margin-left: 0;
+    
+  } */
+
+  .buttons-foo {
+    display: grid;
+  }
+
+  .link {
+    color: #ffffff;
+    font-size: 12px;
+    text-decoration: none;
+  }
+
+  .button {
+    width: 30%;
+    font-size: 12px;
+    margin-left: 0;
+  }
+
+  .col-dashboard,
+  .col-wide {
+    width: 50%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 10px;
+  }
+
+  .col-dashboard-pkg,
+  .col-wide-pkg {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 10px;
+  }
+  .card-content-superadmin {
+    font-size: 12px;
+    margin-left: 27px !important;
+  }
+  .table {
+    width: 90%;
+    overflow-x: auto;
+  }
+  .card-content-supercompany {
+    margin-left: 30% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .buttons-foo {
+    margin-left: -300px;
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
+.college-topper-select {
+  color: rgb(157, 190, 210);
+  border-radius: 8px;
+  background-color: #3e4954;
+  padding: 3px;
+  height: 30px;
+  margin-top: -7px;
+  border-radius: 4px;
+}
+
+.select-dropdown-ss {
+  color: rgb(157, 190, 210);
+  border-radius: 10px;
+  background-color: #3e4954;
+  padding: 10px;
+  height: 38px;
+  margin-top: -7px;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .assessment-taken {
+    width: 80%;
+  }
+
+  .test-college-topper {
+    width: 71% !important;
+  }
+
+  .chart-container {
+    width: 140%;
+    margin-left: -27%;
+  }
+
+  .test-report-title {
+    font-size: 12px;
+  }
+
+  .card-list-train {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 15px;
+    margin-left: 29% !important;
+  }
+  .card-title-superadmin {
+    margin-left: 3% !important;
+  }
+  .score-charts {
+    display: block;
+    margin-left: 10px;
+  }
+
+  .department-attendance {
+    width: 284px;
+  }
+
+  .buttons-foo {
+    display: grid;
+  }
+
+  .link {
+    color: #ffffff;
+    font-size: 12px;
+    text-decoration: none;
+  }
+
+  .button {
+    width: 30%;
+    font-size: 12px;
+    margin-left: 0;
+  }
+
+  .col-dashboard,
+  .col-wide {
+    width: 65%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 10px;
+  }
+
+  .col-dashboard-pkg,
+  .col-wide-pkg {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 10px;
+  }
+
+  .table-header,
+  .table-cell {
+    font-size: 12px;
+  }
+
+  .row {
+    
+    flex-direction: column;
+  }
+
+  .buttons-foo {
+    margin-left: -300px;
+    flex-direction: column;
+  }
+
+  .button {
+    margin-left: 60%;
+    width: 100%;
+  }
+
+  .App-training {
+    align-items: center;
+        
+        width: 125%;
+        margin-left: -14px;
+        margin-top: -28px;
+  }
+  .college-topper-select {
+    margin-left: 15px !important;
+    margin-top: 7px;
+    font-size:12px;
+  }
+
+  .btns {
+    display: flex;
+  }
+
+  .btn-train-dash {
+    position: absolute;
+    right: 26px;
+    bottom: 39px;
+    border: none;
+    padding: 0;
+    font-size: 12px;
+    height: 30px;
+    background: #f1a128;
+    border-radius: 2px;
+  }
+  .row-table-training {
+    display: block;
+  }
+  .h6-bold-interview-component {
+    font-weight: bold;
+    margin-left: -2% !important;
+  }
+  .h6-bold-report {
+    font-weight: bold;
+    margin-left: -2% !important;
+  }
+  .table-cmpy {
+  }
+  .h6-bold-sts {
+    font-weight: bold;
+    margin-left: -2% !important;
+  }
+  .h6-bold-news-place {
+    font-weight: bold;
+    margin-left: 22% !important;
+  }
+  .h6-bold-topper {
+    font-weight: bold;
+    margin-left: 0% !important;
+  }
+  .table-test {
+    overflow-x: auto;
+    width: 268% !important;
+  }
+  .table-trainer {
+    width: 172% !important;
+  }
+  .input-date-train {
+    max-width: 80% !important;
+    margin-left: 25px;
+    height: 30px;
+  }
+  .table-responsive-dash-traidet {
+  }
+  .news-head-com,
+  .news-img {
+    margin-left: 36%;
+  }
+  .news-head-train,
+  .news-img-train {
+    margin-left: -36%;
+  }
+}
+.news-head-com {
+  text-align: center;
+  font-weight: bold;
+  margin-left: 2%;
+}
+.news-img-com {
+  margin-left: 47%;
+  text-align: center;
+  font-weight: bold;
+}
+.h6-bold-topper {
+  font-weight: bold;
+  margin-left: 2% !important;
+}
+.h6-bold-report {
+  font-weight: bold;
+ 
+}
+.btns {
+  display: flex;
+}
+
+.cont-train {
+  margin-top: 20px;
+}
+
+.table-responsive-dash {
+  max-height: 233px;
+  transition: all 0.3s ease;
+  overflow-y: auto;
+}
+
+.table-responsive-dash table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table-responsive-dash thead,
+.table-responsive-dash tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table-responsive-dash tbody {
+  display: block;
+}
+
+.table-responsive-dash th,
+.table-responsive-dash td {
+  width: 20%;
+  padding: 8px;
+  text-align: left;
+}
+
+.table-responsive-dash::-webkit-scrollbar {
+  width: 5px;
+}
+
+.table-responsive-dash::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+.btn-train-dash {
+  position: absolute;
+  right: 26px;
+  bottom: 39px;
+  border: none;
+  padding: 0;
+  font-size: 16px;
+  height: 30px;
+  background: #f1a128;
+  border-radius: 2px;
+}
+
+.input-date-train {
+  background-color: #39444e;
+  color: #ffff;
+
+  border: 1px solid white;
+  border-radius: 5px;
+  display: block;
+  width: 100%;
+  padding: 0.45rem 0.9rem;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.table-responsive-dash-traidet {
+  max-height: 233px;
+  transition: all 0.3s ease;
+  overflow-y: auto;
+}
+
+.table-responsive-dash-traidet table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.table-responsive-dash-traidet thead,
+.table-responsive-dash-traidet tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table-responsive-dash-traidet tbody {
+  display: block;
+}
+
+.table-responsive-dash-traidet th,
+.table-responsive-dash-traidet td {
+  width: 20%;
+  padding: 8px;
+  text-align: left;
+}
+
+.table-responsive-dash-traidet::-webkit-scrollbar {
+  width: 5px;
+}
+
+.table-responsive-dash-traidet::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+/* Gayathri */
+
+/* Option hover effect */
+select option:hover {
+  background-color: #505a66; /* Lighter shade for hover */
+}
+
+@media (max-width: 768px) {
+  .component-super-drp {
+    margin-left: -50% !important;
+  }
+  .square-container-super {
+    margin-left: -16% !important;
+  }
+  .card-title-super {
+    color: #fdfeff;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 9%;
+    width: 75px !important;
+    margin-left: 8% !important;
+  }
+  .card-content-requ {
+    margin-left: 7% !important;
+  }
+  .select {
+    display: block !important;
+    width: 150%;
+    margin-left: 25px;
+    height: 156px;
+  }
+  .college-select-super {
+    margin-left: 40px !important;
+  }
+  .announcement-item {
+    width: 33%;
+    margin-left: 1%;
+  }
+}
+
+.announcement-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 90%;
+  margin-left: 5%;
+  border-radius: 10px;
+}
+
+.card-content-requ {
+  display: flex;
+  /* align-items: center;
+  justify-content: center; */
+  color: white;
+  font-weight: bold;
+  margin-left: -2px;
+  margin-top: 17px;
+  font-size: 35px;
+}
+
+/* cards */
+
+.square-container-super {
+  width: 170px; /* Adjust size as needed */
+  height: 170px;
+  display: flex;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.3s ease; /* Smooth transition for zoom effect */
+  border: 2px solid #333; /* Add border for square effect */
+  cursor: pointer; /* Indicate it's interactable */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Zoom effect */
+.square-container-super:hover {
+  transform: scale(1.1); /* Zoom in on hover */
+}
+
+.card-container-super {
+  margin-left: 2% !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.square-container-placetrain {
+  width: 170px; /* Adjust size as needed */
+  height: 170px;
+  display: flex;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.3s ease; /* Smooth transition for zoom effect */
+  border: 2px solid #333; /* Add border for square effect */
+  cursor: pointer; /* Indicate it's interactable */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  margin-left: -45%;
+}
+
+/* Zoom effect */
+.square-container-placetrain:hover {
+  transform: scale(1.1); /* Zoom in on hover */
+}
+
+.card-container-placetrain {
+  margin-left: 7% !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 67%;
+}
+
+/*-------------------------------*/
+.component-super {
+  margin-left: 0%;
+}
+/* In your CSS */
+.custom-scrollbar {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #888 transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

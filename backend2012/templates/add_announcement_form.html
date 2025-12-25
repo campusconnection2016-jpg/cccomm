@@ -1,0 +1,10 @@
+<form method="post" enctype="multipart/form-data">
+    
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    <label for="announcement_image">Upload Announcement Image:</label>
+    <input type="file" name="announcement_image" id="announcement_image">
+    
+    <button type="submit">Create Announcement</button>
+</form>

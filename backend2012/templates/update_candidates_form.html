@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Candidate Files</title>
+</head>
+<body>
+    <h2>Update Resume & Photo for {{ candidate.user_name }}</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>Upload Resume (PDF):</label>
+        <input type="file" name="resume" accept=".pdf,.doc,.docx"><br><br>
+
+        <label>Upload Photo (JPG/PNG):</label>
+        <input type="file" name="photo" accept="image/*"><br><br>
+
+        <button type="submit">Update</button>
+    </form>
+
+    {% if candidate.resume_link %}
+        <p>Current Resume: <a href="{{ candidate.resume_link }}" target="_blank">View Resume</a></p>
+    {% endif %}
+    {% if candidate.photo_link %}
+        <p>Current Photo: <a href="{{ candidate.photo_link }}" target="_blank">View Photo</a></p>
+    {% endif %}
+</body>
+</html>

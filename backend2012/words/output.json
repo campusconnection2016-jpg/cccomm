@@ -1,0 +1,150 @@
+{
+    "questions": [
+        {
+            "answer": "a",
+            "explanation": "",
+            "marks": 1,
+            "difficulty_level": "Difficulty",
+            "options": {
+                "a": [
+                    "very",
+                    false
+                ],
+                "b": [
+                    "much",
+                    false
+                ],
+                "c": [
+                    "too",
+                    false
+                ],
+                "d": [
+                    "more",
+                    false
+                ]
+            }
+        }
+    ],
+    "unmatched_lines": [
+        [
+            "If the ratio of income to expenditure is 5:3, what is the saving percentage?",
+            "Unmatched pattern"
+        ],
+        [
+            "A man can row 6 km/h in still water. If the river runs at 2 km/h, how far can he go downstream in 30 minutes?",
+            "Unmatched pattern"
+        ],
+        [
+            "What is the compound interest on \u20b95000 for 2 years at 5% per annum?",
+            "Unmatched pattern"
+        ],
+        [
+            "What is the next number in the series: 3, 6, 11, 18, 27, ?",
+            "Unmatched pattern"
+        ],
+        [
+            "The average of 5 consecutive even numbers is 34. What is the largest number?",
+            "Unmatched pattern"
+        ],
+        [
+            "The selling price of an item is \u20b92400 and profit is 20%. What is the cost price?",
+            "Unmatched pattern"
+        ],
+        [
+            "In how many years will \u20b91200 become \u20b91320 at 5% simple interest per annum?",
+            "Unmatched pattern"
+        ],
+        [
+            "If 8 workers complete a task in 12 days, how many workers are needed to finish it in 6 days?",
+            "Unmatched pattern"
+        ],
+        [
+            "What is 15% of 640?",
+            "Unmatched pattern"
+        ],
+        [
+            "The sum of two numbers is 50 and their difference is 10. What is the larger number?",
+            "Unmatched pattern"
+        ],
+        [
+            "What comes next in the pattern: AZ, BY, CX, ?",
+            "Unmatched pattern"
+        ],
+        [
+            "If TOMORROW is coded as UPNPTQPX, how is TODAY coded?",
+            "Unmatched pattern"
+        ],
+        [
+            "Choose the odd one: Apple, Banana, Carrot, Mango",
+            "Unmatched pattern"
+        ],
+        [
+            "Arrange logically: 1. College 2. Exam 3. Admission 4. Result",
+            "Unmatched pattern"
+        ],
+        [
+            "In a family of 6, A is the father of B. C is the mother of B. D is the sister of A. E is the brother of B. F is the daughter of C. How is F related to E?",
+            "Unmatched pattern"
+        ],
+        [
+            "If 3x + 2 = 17, then x = ?",
+            "Unmatched pattern"
+        ],
+        [
+            "Which number replaces the question mark: 5, 11, 23, 47, ?",
+            "Unmatched pattern"
+        ],
+        [
+            "Find the missing number: 7, 14, 28, ?, 112",
+            "Unmatched pattern"
+        ],
+        [
+            "If A = 26, B = 25,... Z = 1, then what is the value of CAT?",
+            "Unmatched pattern"
+        ],
+        [
+            "Which Venn diagram fits: Doctor, Male, Surgeon",
+            "Unmatched pattern"
+        ],
+        [
+            "Choose the correct synonym for 'Adversity':",
+            "Unmatched pattern"
+        ],
+        [
+            "Identify the error: He don\u2019t know the answer.",
+            "Unmatched pattern"
+        ],
+        [
+            "Fill in the blank: She _____ her homework before dinner.",
+            "Unmatched pattern"
+        ],
+        [
+            "Antonym of 'Generous':",
+            "Unmatched pattern"
+        ],
+        [
+            "Select the correctly spelled word:",
+            "Unmatched pattern"
+        ],
+        [
+            "Choose the correct sentence:",
+            "Unmatched pattern"
+        ],
+        [
+            "One word for: A person who hates marriage",
+            "Unmatched pattern"
+        ],
+        [
+            "Choose the best substitute: One who knows everything",
+            "Unmatched pattern"
+        ],
+        [
+            "Find the meaning of the idiom: 'Hit the nail on the head'",
+            "Unmatched pattern"
+        ],
+        [
+            "Choose the appropriate word: The movie was _____ interesting.",
+            "Unmatched pattern"
+        ]
+    ]
+}

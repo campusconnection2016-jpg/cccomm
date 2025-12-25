@@ -1,0 +1,28 @@
+<!-- templates/view_college_data.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>College Data View</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td, th {
+            border: 1px solid #888;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h2>Training Schedule for {{ college.college }}</h2>
+    
+    {% if college.data %}
+        <!-- Safely render stored HTML table -->
+        <div>{{ college.data|safe }}</div>
+    {% else %}
+        <p>No Training schedule  available.</p>
+    {% endif %}
+</body>
+</html>

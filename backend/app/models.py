@@ -106,7 +106,7 @@ class question_paper_master(models.Model):
     created_by= models.CharField(max_length=100,null=True, blank=True)
     dtm_created= models.DateTimeField(null=True, blank=True)
     modified_by= models.CharField(max_length=100,null=True, blank=True)
-    dtm_modified= models.DateTimeField(null=True, blank=True)
+    communication_category= models.TextField(max_length=1000,null=True, blank=True)
     remarks= models.TextField(max_length=1000,null=True, blank=True)
     audio_text= models.TextField(max_length=1000,null=True, blank=True)
     class Meta:

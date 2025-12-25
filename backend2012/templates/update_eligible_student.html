@@ -1,0 +1,17 @@
+<!-- update_eligible_student.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Eligible Students</title>
+</head>
+<body>
+    <h2>Update Eligible Students for Round: {{ round_of_interview }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>

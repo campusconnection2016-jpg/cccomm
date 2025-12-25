@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Training Schedule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            margin: 20px auto;
+            width: 70%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="file"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+        }
+        input[type="submit"] {
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .checkbox-group, .multi-select {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h2 style="text-align:center;">Create Training Schedule</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+
+    <input type="submit" value="Create Schedule">
+</form>
+
+</body>
+</html>

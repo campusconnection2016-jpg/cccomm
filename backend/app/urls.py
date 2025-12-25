@@ -175,7 +175,7 @@ urlpatterns = [
 
     #------------------Placement admin Dashboard------------------------#
 
-    path('api/distinct-test-name-count-today/', views.get_distinct_test_name_count_today, name='get_distinct_test_name_count_today'),
+    #path('api/distinct-test-name-count-today/', views.get_distinct_test_name_count_today, name='get_distinct_test_name_count_today'),
    
     #-----------------Students Dashboards------------------------------------#
 

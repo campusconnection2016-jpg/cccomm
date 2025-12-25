@@ -1,7 +1,15 @@
+# Python
+venv/
 __pycache__/
 *.pyc
-venv/
 .env
+*.log
+db.sqlite3
+
+# Node
 node_modules/
 build/
-*.log
+dist/
+
+# OS
+.DS_Store
